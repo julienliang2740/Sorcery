@@ -1,1 +1,0 @@
-std::cout << "nice" << std::endl;
