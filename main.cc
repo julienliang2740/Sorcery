@@ -33,7 +33,7 @@ int main(int argc, char * argv[]) {
     Player player2("", 2, vector<int>(), 0);
 
     // assuming that very first line is Player 1's name and second line is Player 2's name
-    string cmd, aux1, aux2, aux3;
+    string cmd;
     ifstream initfile(config.init_file);
     int lines_read = 0;
     bool readFromFile = true;
@@ -68,8 +68,67 @@ int main(int argc, char * argv[]) {
                 helpfile.close();
             }
         }
+        else if (cmd == "end") {
+            cout << "end turn" << endl; //  INCOMPLETE INCOMPLETE INCOMPLETE
+        }
         else if (cmd == "quit") {
             break;
+        }
+        else if (cmd == "draw") { //  INCOMPLETE INCOMPLETE INCOMPLETE
+            if (config.testing) {
+                cout << "draw card" << endl; 
+            }
+            else {
+                cout << "draw is only available on testing mode" << endl;
+            }
+        }
+        else if (cmd == "discard") {
+            int i = -1;
+            cin >> i;
+            if (config.testing) {
+                cout << "discard " << i << "th card in hand" << endl; //  INCOMPLETE INCOMPLETE INCOMPLETE
+            }
+            else {
+                cout << "discard is only available on testing mode" << endl;
+            }
+        }
+        else if (cmd == "attack") { //  INCOMPLETE INCOMPLETE INCOMPLETE
+            int i,j = -1;
+            cin >> i;
+
+            if (cin.peek() != '\n') cin >> j;
+
+            if (j == -1) cout << i << "th minion attacks enemy player" << endl;
+            else cout << i << "th minion attacks enemy player's " << j << "th minion";
+        }
+        else if (cmd == "play") { //  INCOMPLETE INCOMPLETE INCOMPLETE
+            int i,p,t = -1;
+            cin >> i;
+
+            if (cin.peek() != '\n') cin >> p >> t;
+
+            if (p == -1) cout << "Play" << i << "th card in active player's hand" << endl;
+            else cout << "Play" << i << "th card in active player's hand on card " << t << " owned by player " << p << endl;
+        }
+        else if (cmd == "use") { //  INCOMPLETE INCOMPLETE INCOMPLETE
+            int i,p,t = -1;
+            cin >> i;
+
+            if (cin.peek() != '\n') cin >> p >> t;
+
+            if (p == -1) cout << "Use" << i << "th card in active player's hand" << endl;
+            else cout << "Use" << i << "th card in active player's hand on card " << t << " owned by player " << p << endl;
+        }
+        else if (cmd == "inspect") { //  INCOMPLETE INCOMPLETE INCOMPLETE
+            int i = 0;
+            cin >> i;
+            cout << "Inspecting " << i << "th minion";
+        }
+        else if (cmd == "hand") { //  INCOMPLETE INCOMPLETE INCOMPLETE
+            cout << "*Displaying active player's hand*" << endl;
+        }
+        else if (cmd == "board") { //  INCOMPLETE INCOMPLETE INCOMPLETE
+            cout << "*Dispalying the board*" << endl;
         }
         ///////////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////////////
