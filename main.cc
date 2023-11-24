@@ -25,4 +25,18 @@ int main(int argc, char * argv[]) {
     cout << "init file: " << config.init_file << endl;
     cout << "testing mode: " << config.testing << endl;
     cout << "fancy graphics: " << config.graphics << endl;
+
+    string cmd, aux1, aux2, aux3;
+
+    while (cin >> cmd) {
+        if (cmd == "t1") {
+            cout << "t1" << endl;
+        }
+        else if (cmd == "天王盖地虎") {
+            cout << "宝塔镇河妖" << endl; 
+        }
+        else if (cmd == "quit") {
+            break;
+        }
+    }
 }
