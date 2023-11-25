@@ -4,7 +4,7 @@
 
 #include "player.h"
 
-Player::Player(std::string newname, int playerID, std::vector<int> initalHand, int initialMagic) : 
+Player::Player(std::string newname, int playerID, std::vector<Card> initalHand, int initialMagic) : 
 name(newname), 
 playerID(playerID), 
 hand(initalHand),
@@ -22,7 +22,7 @@ int Player::getID() {
     return playerID;
 }
 
-std::vector<int> Player::getHand() {
+std::vector<Card> Player::getHand() {
     return hand;
 }
 

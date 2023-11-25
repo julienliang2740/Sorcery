@@ -7,8 +7,4 @@
 
 #include "player.h"
 
-class Board {
-    Player::Player 
-}
-
 #endif

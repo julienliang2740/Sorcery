@@ -5,19 +5,21 @@
 #include <string>
 #include <vector>
 
+#include "card.h"
+
 class Player {
     std::string name;
     int playerID;
-    std::vector<int> hand; // PLACEHOLDER BEFORE CARDS ARE IMPLEMENTED
+    std::vector<Card> hand; 
     int magic; 
     const int deckMax = 5;
 
     public:
-        Player(std::string newname, int playerID, std::vector<int> initialHand, int initialMagic);
+        Player(std::string newname, int playerID, std::vector<Card> initialHand, int initialMagic);
         std::string getName();
         void assignName(std::string newname);
         int getID();
-        std::vector<int> getHand(); // PLACEHOLDER BEFORE CARDS ARE IMPLEMENTED
+        std::vector<Card> getHand(); 
         int getMagic();
         int getDeckMax();
 };

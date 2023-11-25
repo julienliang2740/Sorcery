@@ -29,8 +29,8 @@ int main(int argc, char * argv[]) {
     cout << "testing mode: " << config.testing << endl;
     cout << "fancy graphics: " << config.graphics << endl;
 
-    Player player1("", 1, vector<int>(), 0);
-    Player player2("", 2, vector<int>(), 0);
+    Player player1("", 1, vector<Card>(), 0);
+    Player player2("", 2, vector<Card>(), 0);
 
     // assuming that very first line is Player 1's name and second line is Player 2's name
     string cmd;
