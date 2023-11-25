@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+
 #include "player.h"
 
 Player::Player(std::string newname, int playerID, std::vector<int> initalHand, int initialMagic) : 
