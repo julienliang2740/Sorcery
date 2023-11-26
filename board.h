@@ -9,8 +9,8 @@
 class Board {
     std::vector<int> p1Minions;
     std::vector<int> p2Minions;
-    Player * player1;
-    Player * player2;
+    Player* player1;
+    Player* player2;
     int activePlayerID;
     // ritual * p1Ritual; WILL UNCOMMENT ONCE RITUALS ARE IMPLEMENTED
     // ritual * p2Ritual;
@@ -21,7 +21,7 @@ class Board {
     public:
         Board(
             std::vector<int> p1Minions, std::vector<int> p2Minions, 
-            Player * player1, Player * player2, 
+            Player* player1, Player* player2, 
             int activePlayerID,
             std::vector<int> p1Graveyard, std::vector<int> p2Graveyard);
         int getActiveID();        

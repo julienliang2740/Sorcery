@@ -49,6 +49,7 @@ int Player::getHealth() const {
 }
 
 bool Player::drawCard() {
+    std::cout << "deck size: " << playerDeck.getNumCards() << std::endl;
     if (playerDeck.isEmpty()) {
         std::cout << "Deck is empty. Cannot draw." << std::endl;
         return false;
@@ -58,4 +59,8 @@ bool Player::drawCard() {
         return false;
     }
     hand.emplace_back(playerDeck.draw());
+}
+
+void Player::setDeck(Deck&& d) {
+    playerDeck = std::move(d);
 }

@@ -32,27 +32,29 @@ int main(int argc, char * argv[]) {
     cout << "testing mode: " << config.testing << endl;
     cout << "fancy graphics: " << config.graphics << endl;
 
-    Deck tempdeck1(vector<Card*>(), 0);
-    Deck tempdeck2(vector<Card*>(), 0);
+    Player player1("", 1, vector<Card*>(), Deck{vector<Card*>(), 0}, 0);
+    Player player2("", 2, vector<Card*>(), Deck{vector<Card*>(), 0}, 0);
 
-    Player player1("", 1, vector<Card*>(), tempdeck1, 0);
-    Player player2("", 2, vector<Card*>(), tempdeck2, 0);
+    std::cout << "just made blank players, now setting deck" << std::endl;
     
-    /*
     ifstream d1 {config.deck1};
     ifstream d2 {config.deck2};
-    player1.deck = Deck{d1};
-    player2.deck = Deck{d2};
-    */
+    player1.playerDeck = Deck{d1, player1.getID()};
+    std::cout << "player 1 has this many cards: " << player1.playerDeck.getNumCards() << std::endl;
+    player2.playerDeck = Deck{d2, player2.getID()};
+    std::cout << "player 2 has this many cards: " << player2.playerDeck.getNumCards() << std::endl;
 
     Board gameBoard(vector<int>(), vector<int>(), &player1, &player2, 1, vector<int>(), vector<int>());
+    
+    std::cout << "player 1 has this many cards after board is initialized: " << player1.playerDeck.getNumCards() << std::endl;
+    std::cout << "player 2 has this many cards after board is initialized: " << player2.playerDeck.getNumCards() << std::endl;
 
     // assuming that very first line is Player 1's name and second line is Player 2's name
     string cmd;
     ifstream initfile(config.init_file);
     int lines_read = 0;
     bool readFromFile = true;
-
+    
     while (true) {
         // Figuring out whose turn it is
         int activePlayerID = gameBoard.getActiveID();
@@ -63,6 +65,7 @@ int main(int argc, char * argv[]) {
             else {
                 cout << "It is the turn of " << player2.getName() << " (Player 2)" << endl;
             }
+            std::cout << "player 1 has this many cards: " << player1.playerDeck.getNumCards() << std::endl;
         }
 
         // Determining where to read from
@@ -108,6 +111,8 @@ int main(int argc, char * argv[]) {
             break;
         }
         else if (cmd == "draw") { //  INCOMPLETE INCOMPLETE INCOMPLETE
+            std::cout << "player 1 deck length: " << player1.playerDeck.getNumCards() << std::endl;
+            std::cout << "player 2 deck length: " << player2.playerDeck.getNumCards() << std::endl;
             if (config.testing) {
                 Player& activePlayer = (activePlayerID == player1.getID()) ? player1 : player2;
                 if (activePlayer.drawCard()) cout << activePlayer.getName() << " drew a card" << endl;
