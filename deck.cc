@@ -42,7 +42,7 @@ Deck::Deck(std::ifstream& deckFile, int ownerID): theDeck{std::vector<Card *>()}
     std::cout << "cards number: " << cardsNumber << std::endl;
 }
 
-int Deck::getNumCards() {
+int Deck::getNumCards() const {
     return cardsNumber;
 }
 

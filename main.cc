@@ -32,16 +32,13 @@ int main(int argc, char * argv[]) {
     cout << "testing mode: " << config.testing << endl;
     cout << "fancy graphics: " << config.graphics << endl;
 
-    Player player1("", 1, vector<Card*>(), Deck{vector<Card*>(), 0}, 0);
-    Player player2("", 2, vector<Card*>(), Deck{vector<Card*>(), 0}, 0);
-
-    std::cout << "just made blank players, now setting deck" << std::endl;
-    
     ifstream d1 {config.deck1};
     ifstream d2 {config.deck2};
-    player1.playerDeck = Deck{d1, player1.getID()};
+
+    Player player1("", 1, vector<Card*>(), Deck{d1, 1}, 0);
+    Player player2("", 2, vector<Card*>(), Deck{d2, 2}, 0);
+    
     std::cout << "player 1 has this many cards: " << player1.playerDeck.getNumCards() << std::endl;
-    player2.playerDeck = Deck{d2, player2.getID()};
     std::cout << "player 2 has this many cards: " << player2.playerDeck.getNumCards() << std::endl;
 
     Board gameBoard(vector<int>(), vector<int>(), &player1, &player2, 1, vector<int>(), vector<int>());

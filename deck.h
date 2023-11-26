@@ -15,7 +15,7 @@ class Deck {
     public:
         Deck(std::vector<Card *> theDeck, int cardsNumber);
         Deck(std::ifstream& deckFile, int ownerID);
-        int getNumCards();
+        int getNumCards() const;
 
         bool isEmpty(); // ALWAYS CALL THIS FIRST BEFORE ATTEMPTING TO DRAW!!!
         Card* draw();

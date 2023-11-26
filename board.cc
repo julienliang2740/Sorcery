@@ -8,6 +8,7 @@ Board::Board(
     Player* player1, Player* player2, 
     int activePlayerID,
     std::vector<int> p1Graveyard, std::vector<int> p2Graveyard) :
+    
     p1Minions{p1Minions}, p2Minions{p2Minions},
     player1{player1}, player2{player2},
     activePlayerID{activePlayerID},
