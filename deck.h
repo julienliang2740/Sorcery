@@ -10,10 +10,11 @@
 class Deck {
     std::vector<Card *> theDeck;
     int cardsNumber;
+    int ownershipID;
 
     public:
         Deck(std::vector<Card *> theDeck, int cardsNumber);
-        Deck(ifstream& deckFile);
+        Deck(std::ifstream& deckFile, int ownerID);
         int getNumCards();
 
         bool isEmpty(); // ALWAYS CALL THIS FIRST BEFORE ATTEMPTING TO DRAW!!!
