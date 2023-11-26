@@ -12,10 +12,10 @@ int Board::endTurn() {
         // LOOP THROUGH OBSERVERS AND NOTIFY THEM
     }
 
-    if (activePlayerID == player1.getID()) {
-        activePlayerID = player2.getID();
+    if (activePlayerID == player1->getID()) {
+        activePlayerID = player2->getID();
     } else {
-        activePlayerID = player2.getID();
+        activePlayerID = player2->getID();
     }
 
     return activePlayerID;
@@ -34,7 +34,7 @@ bool placeMinion(vector<int>& minions, int minion) {
 bool Board::addMinion(int minion) {
     bool placed = false;
 
-    if (activePlayerID == player1.getID()) {
+    if (activePlayerID == player1->getID()) {
         placed = placeMinion(p1Minions, minion);
     } else {
         placed = placeMinion(p2Minions, minion);
@@ -51,14 +51,14 @@ bool Board::addMinion(int minion) {
 
 bool Board::playCard(int i, int p, int t) {
 
-    Player& activePlayer = (activePlayerID == player1.getID()) ? player1 : player2;
+    Player* activePlayer = (activePlayerID == player1.getID()) ? player1 : player2;
 
-    if (i < 1 || i > activePlayer.getHand().size()) {
+    if (i < 1 || i > activePlayer->getHand().size()) {
         std::cerr << "no such card exists" << std::endl;
         return false;
     }
 
-    Card& c = activePlayer.getHand()[i];
+    Card& c = activePlayer->getHand()[i];
 
     if (c.hasATarget() && (p < 0 || t < 0)) {
         std::cerr << "must provide target for card" << std::endl;
@@ -78,7 +78,7 @@ bool Board::playCard(int i, int p, int t) {
     }
 
     if (placed) {
-        activePlayer.removeCard(i);
+        activePlayer->removeCard(i);
     }
 
     return placed;
