@@ -5,6 +5,22 @@
 #include <string>
 #include <vector>
 
+#include "card.h"
 
+class Deck {
+    std::vector<Card> theDeck;
+    int cardsNumber;
+
+    public:
+        Deck(std::vector<Card> theDeck, int cardsNumber);
+        int getNumber();
+
+        bool isEmpty(); // ALWAYS CALL THIS FIRST BEFORE ATTEMPTING TO DRAW!!!
+        Card draw();
+        void shuffle();
+        bool addCardFront(Card theCard); // returns true if succesfully added
+        bool addCardBack(Card theCard); // returns true if succesfully added
+        
+};
 
 #endif
