@@ -64,7 +64,7 @@ int main(int argc, char * argv[]) {
                 cout << "It is the turn of " << player2.getName() << " (Player 2)" << endl;
             }
         }
-        
+
         // Determining where to read from
         if (config.init_file == "inits/empty.txt") {
             readFromFile = false;
@@ -137,9 +137,7 @@ int main(int argc, char * argv[]) {
             else {
                 cin >> i;
                 if (cin.peek() != '\n') cin >> j;
-            }
-            
-            cout << j << endl;
+            }         
             if (j == -1) cout << i << "th minion attacks enemy player" << endl;
             else cout << i << "th minion attacks enemy player's " << j << "th minion" << endl;
         }
