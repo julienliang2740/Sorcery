@@ -19,12 +19,19 @@ Deck::Deck(std::vector<Card *> theDeck, int cardsNumber) :
 theDeck(theDeck), 
 cardsNumber(cardsNumber) {}
 
+Deck::~Deck() {
+    for (auto card: theDeck) {
+        delete card;
+    }
+}
+
 Deck::Deck(std::ifstream& deckFile, int ownerID): theDeck{vector<Card *>()}, cardsNumber{0}, ownershipID{ownerID} {
     string cardName;
 
     while (getline(deckFile, cardName)) {
         ++cardsNumber;
         Card * newCard = new Card(0, cardName, 0, ownerID, cardtype::Minion, "file", false);
+        theDeck.emplace_back(newCard);
     }
 }
 

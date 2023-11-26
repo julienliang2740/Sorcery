@@ -22,6 +22,7 @@ class Deck {
         void shuffle();
         bool addCardFront(Card *theCard); // returns true if succesfully added
         bool addCardBack(Card *theCard); // returns true if succesfully added
+        ~Deck();
 };
 
 #endif
