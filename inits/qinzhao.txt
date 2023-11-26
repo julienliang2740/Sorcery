@@ -2,4 +2,7 @@
 廉颇
 players
 天王盖地虎
+play 1
+play 1 2 3
+天王盖地虎
 quit

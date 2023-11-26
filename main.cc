@@ -9,7 +9,7 @@ using namespace std;
 struct GameConfig {
     string deck1 = "decks/default.deck";
     string deck2 = "decks/default.deck";
-    string init_file = "inits/chuhan.txt";
+    string init_file = "inits/empty.txt";
     bool testing = false;
     bool graphics = false;
 };
@@ -44,6 +44,9 @@ int main(int argc, char * argv[]) {
     bool readFromFile = true;
 
     while (true) {
+        if (config.init_file == "inits/empty.txt") {
+            readFromFile = false;
+        }
         // Determing where to read from (or rather where to not read from, and when to stop)
         if (readFromFile && !(initfile >> cmd)) { // can't read from initfile anymore => start reading from cin
             initfile.close();
