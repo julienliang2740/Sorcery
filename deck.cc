@@ -19,9 +19,6 @@ Deck::Deck(std::vector<Card *> theDeck, int cardsNumber) :
 theDeck(theDeck), 
 cardsNumber(cardsNumber) {}
 
-Card::Card(int cost, std::string name, int ownershipID, cardtype cardType, std::string displayFile, bool hasTarget) : 
-
-
 Deck::Deck(std::ifstream& deckFile, int ownerID): theDeck{vector<Card *>()}, cardsNumber{0}, ownershipID{ownerID} {
     string cardName;
 
@@ -51,7 +48,7 @@ void Deck::shuffle() {
     std::shuffle (theDeck.begin(), theDeck.end(), std::default_random_engine(seed));
 }
 
-bool Deck::addCardFront(Card theCard) {
+bool Deck::addCardFront(Card *theCard) {
     try{
         theDeck.insert(theDeck.begin(), theCard);
         cardsNumber += 1;
@@ -62,7 +59,7 @@ bool Deck::addCardFront(Card theCard) {
     }
 }
 
-bool Deck::addCardBack(Card theCard) {
+bool Deck::addCardBack(Card *theCard) {
     try{
         theDeck.push_back(theCard);
         cardsNumber += 1;

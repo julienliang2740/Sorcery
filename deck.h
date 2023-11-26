@@ -20,8 +20,8 @@ class Deck {
         bool isEmpty(); // ALWAYS CALL THIS FIRST BEFORE ATTEMPTING TO DRAW!!!
         Card draw();
         void shuffle();
-        bool addCardFront(Card theCard); // returns true if succesfully added
-        bool addCardBack(Card theCard); // returns true if succesfully added
+        bool addCardFront(Card *theCard); // returns true if succesfully added
+        bool addCardBack(Card *theCard); // returns true if succesfully added
 };
 
 #endif

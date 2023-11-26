@@ -12,7 +12,7 @@ class Player {
     std::string name;
     int playerID;
     std::vector<Card *> hand;
-    Deck playerDeck; // WORK IN PROGRESS
+    Deck& playerDeck;
     int magic; 
     int health;
     static const int handMax = 5;
@@ -24,7 +24,7 @@ class Player {
         int getID() const;
         std::vector<Card> getHand() const; 
         int getMagic() const;
-        int getHandMax() const;
+        static int getHandMax() const;
         int getHealth() const;
         bool removeCard(int i);
 };
