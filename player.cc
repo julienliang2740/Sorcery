@@ -4,12 +4,19 @@
 
 #include "player.h"
 
-Player::Player(std::string newname, int playerID, std::vector<Card *> initalHand, Deck playerDeck, int initialMagic) : 
+Player::Player(std::string newname, int playerID, std::vector<Card *> initalHand, Deck* playerDeck, int initialMagic) : 
 name(newname), 
 playerID(playerID), 
 hand(initalHand),
 playerDeck(playerDeck),
 magic(initialMagic) {}
+
+Player::~Player() {
+    for (auto card: hand) {
+        delete card;
+    }
+    delete playerDeck;
+}
 
 std::string Player::getName() const {
     return name;
@@ -49,8 +56,8 @@ int Player::getHealth() const {
 }
 
 bool Player::drawCard() {
-    std::cout << "deck size: " << playerDeck.getNumCards() << std::endl;
-    if (playerDeck.isEmpty()) {
+    std::cout << "deck size: " << playerDeck->getNumCards() << std::endl;
+    if (playerDeck->isEmpty()) {
         std::cout << "Deck is empty. Cannot draw." << std::endl;
         return false;
     }
@@ -58,9 +65,5 @@ bool Player::drawCard() {
         std::cout << "Hand is full. Cannot draw." << std::endl;
         return false;
     }
-    hand.emplace_back(playerDeck.draw());
-}
-
-void Player::setDeck(Deck&& d) {
-    playerDeck = std::move(d);
+    hand.emplace_back(playerDeck->draw());
 }

@@ -8,13 +8,13 @@ Board::Board(
     Player* player1, Player* player2, 
     int activePlayerID,
     std::vector<int> p1Graveyard, std::vector<int> p2Graveyard) :
-    
+
     p1Minions{p1Minions}, p2Minions{p2Minions},
     player1{player1}, player2{player2},
     activePlayerID{activePlayerID},
     p1Graveyard{p1Graveyard}, p2Graveyard{p2Graveyard} {
-        std::cout << "player 1 deck has " << player1->playerDeck.getNumCards() << " cards" << std:: endl;
-        std::cout << "player 2 deck has " << player2->playerDeck.getNumCards() << " cards" << std:: endl;
+        std::cout << "player 1 deck has " << player1->playerDeck->getNumCards() << " cards" << std:: endl;
+        std::cout << "player 2 deck has " << player2->playerDeck->getNumCards() << " cards" << std:: endl;
     }
 
 int Board::getActiveID() {

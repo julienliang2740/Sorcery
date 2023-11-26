@@ -17,9 +17,10 @@ class Player {
     static const int handMax = 5;
 
     public:
-        Deck& playerDeck;
+        Deck* playerDeck;
         
-        Player(std::string newname, int playerID, std::vector<Card *> initialHand, Deck playerDeck, int initialMagic);
+        Player(std::string newname, int playerID, std::vector<Card *> initialHand, Deck* playerDeck, int initialMagic);
+        ~Player();
         std::string getName() const;
         void assignName(std::string newname);
         int getID() const;
@@ -29,7 +30,6 @@ class Player {
         int getHealth() const;
         bool removeCard(int i);
         bool drawCard();
-        void setDeck(Deck&& d);
 };
 
 #endif
