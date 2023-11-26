@@ -19,6 +19,11 @@ class Board {
     bool placeMinion(std::vector<int>& minions, int minion);
     
     public:
+        Board(
+            std::vector<int> p1Minions, std::vector<int> p2Minions, 
+            Player * player1, Player * player2, 
+            int activePlayerID,
+            std::vector<int> p1Graveyard, std::vector<int> p2Graveyard);
         void addObserver(int n);
         int endTurn();
         bool addMinion(int minion);
