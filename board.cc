@@ -13,6 +13,10 @@ Board::Board(
     activePlayerID(activePlayerID),
     p1Graveyard(p1Graveyard), p2Graveyard(p2Graveyard) {}
 
+int Board::getActiveID() {
+    return activePlayerID;
+}
+
 void Board::addObserver(int n) {
     observers.emplace_back(n);
 }
@@ -25,7 +29,7 @@ int Board::endTurn() {
     if (activePlayerID == player1->getID()) {
         activePlayerID = player2->getID();
     } else {
-        activePlayerID = player2->getID();
+        activePlayerID = player1->getID();
     }
 
     return activePlayerID;
@@ -68,16 +72,16 @@ bool Board::playCard(int i, int p, int t) {
         return false;
     }
 
-    Card& c = activePlayer->getHand()[i];
+    Card* c = activePlayer->getHand()[i - 1];
 
-    if (c.hasATarget() && (p < 0 || t < 0)) {
+    if (c->hasATarget() && (p < 0 || t < 0)) {
         std::cerr << "must provide target for card" << std::endl;
         return false;
     }
 
     bool placed = false;
 
-    cardtype type = c.getCardType();
+    cardtype type = c->getCardType();
 
     if (type == cardtype::Minion) {
         placed = addMinion(0);

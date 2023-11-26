@@ -23,7 +23,7 @@ int Player::getID() const {
     return playerID;
 }
 
-std::vector<Card> Player::getHand() const {
+std::vector<Card*> Player::getHand() const {
     return hand;
 }
 
@@ -31,7 +31,7 @@ int Player::getMagic() const {
     return magic;
 }
 
-static int Player::getHandMax() const {
+int Player::getHandMax() {
     return handMax;
 }
 
