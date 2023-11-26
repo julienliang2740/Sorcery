@@ -27,6 +27,7 @@ class Player {
         static int getHandMax();
         int getHealth() const;
         bool removeCard(int i);
+        bool drawCard();
 };
 
 #endif

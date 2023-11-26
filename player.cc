@@ -47,3 +47,15 @@ bool Player::removeCard(int i) {
 int Player::getHealth() const {
     return health;
 }
+
+bool Player::drawCard() {
+    if (playerDeck.isEmpty()) {
+        std::cout << "Deck is empty. Cannot draw." << std::endl;
+        return false;
+    }
+    else if (hand.size() == handMax) {
+        std::cout << "Hand is full. Cannot draw." << std::endl;
+        return false;
+    }
+    hand.emplace_back(playerDeck.draw());
+}

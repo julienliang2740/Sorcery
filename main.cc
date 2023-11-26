@@ -109,7 +109,8 @@ int main(int argc, char * argv[]) {
         }
         else if (cmd == "draw") { //  INCOMPLETE INCOMPLETE INCOMPLETE
             if (config.testing) {
-                cout << "draw card" << endl; 
+                Player& activePlayer = (activePlayerID == player1.getID()) ? player1 : player2;
+                if (activePlayer.drawCard()) cout << activePlayer.getName() << " drew a card" << endl;
             }
             else {
                 cout << "draw is only available on testing mode" << endl;
