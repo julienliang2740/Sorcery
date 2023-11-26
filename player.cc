@@ -23,7 +23,7 @@ int Player::getID() const {
     return playerID;
 }
 
-std::vector<Card> Player::getHand() const {
+std::vector<Card*> Player::getHand() const {
     return hand;
 }
 
@@ -31,7 +31,7 @@ int Player::getMagic() const {
     return magic;
 }
 
-static int Player::getHandMax() const {
+int Player::getHandMax() {
     return handMax;
 }
 
@@ -46,4 +46,16 @@ bool Player::removeCard(int i) {
 
 int Player::getHealth() const {
     return health;
+}
+
+bool Player::drawCard() {
+    if (playerDeck.isEmpty()) {
+        std::cout << "Deck is empty. Cannot draw." << std::endl;
+        return false;
+    }
+    else if (hand.size() == handMax) {
+        std::cout << "Hand is full. Cannot draw." << std::endl;
+        return false;
+    }
+    hand.emplace_back(playerDeck.draw());
 }

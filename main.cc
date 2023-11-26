@@ -32,13 +32,20 @@ int main(int argc, char * argv[]) {
     cout << "testing mode: " << config.testing << endl;
     cout << "fancy graphics: " << config.graphics << endl;
 
+    Deck tempdeck1(vector<Card*>(), 0);
+    Deck tempdeck2(vector<Card*>(), 0);
+
+    Player player1("", 1, vector<Card*>(), tempdeck1, 0);
+    Player player2("", 2, vector<Card*>(), tempdeck2, 0);
     
+    /*
+    ifstream d1 {config.deck1};
+    ifstream d2 {config.deck2};
+    player1.deck = Deck{d1};
+    player2.deck = Deck{d2};
+    */
 
-    Deck tempdeck1(vector<Card>(), 0);
-    Deck tempdeck2(vector<Card>(), 0);
-
-    Player player1("", 1, vector<Card>(), tempdeck1, 0);
-    Player player2("", 2, vector<Card>(), tempdeck2, 0);
+    Board gameBoard(vector<int>(), vector<int>(), &player1, &player2, 1, vector<int>(), vector<int>());
 
     // assuming that very first line is Player 1's name and second line is Player 2's name
     string cmd;
@@ -47,6 +54,18 @@ int main(int argc, char * argv[]) {
     bool readFromFile = true;
 
     while (true) {
+        // Figuring out whose turn it is
+        int activePlayerID = gameBoard.getActiveID();
+        if (lines_read >= 2) {
+            if (activePlayerID == 1) {
+                cout << "It is the turn of " << player1.getName() << " (Player 1)" << endl;
+            }
+            else {
+                cout << "It is the turn of " << player2.getName() << " (Player 2)" << endl;
+            }
+        }
+
+        // Determining where to read from
         if (config.init_file == "inits/empty.txt") {
             readFromFile = false;
         }
@@ -59,7 +78,7 @@ int main(int argc, char * argv[]) {
             break;
         }
 
-        // Processing Commands
+        // Processing Names
         if (lines_read == 0) {
             player1.assignName(cmd);
             if (cmd != "") lines_read += 1;
@@ -69,6 +88,7 @@ int main(int argc, char * argv[]) {
             if (cmd != "") lines_read += 1;
         }
 
+        // Processing Commands
         if (cmd == "help") {
             ifstream helpfile("help.txt");
             if (helpfile.is_open()) {
@@ -80,14 +100,17 @@ int main(int argc, char * argv[]) {
             }
         }
         else if (cmd == "end") {
-            cout << "end turn" << endl; //  INCOMPLETE INCOMPLETE INCOMPLETE
+            int newPlayerID = gameBoard.endTurn();
+            int previousPlayerID = (newPlayerID % 2) + 1;
+            cout << "Turn ended for player" << previousPlayerID << endl;
         }
         else if (cmd == "quit") {
             break;
         }
         else if (cmd == "draw") { //  INCOMPLETE INCOMPLETE INCOMPLETE
             if (config.testing) {
-                cout << "draw card" << endl; 
+                Player& activePlayer = (activePlayerID == player1.getID()) ? player1 : player2;
+                if (activePlayer.drawCard()) cout << activePlayer.getName() << " drew a card" << endl;
             }
             else {
                 cout << "draw is only available on testing mode" << endl;
@@ -115,9 +138,7 @@ int main(int argc, char * argv[]) {
             else {
                 cin >> i;
                 if (cin.peek() != '\n') cin >> j;
-            }
-            
-            cout << j << endl;
+            }         
             if (j == -1) cout << i << "th minion attacks enemy player" << endl;
             else cout << i << "th minion attacks enemy player's " << j << "th minion" << endl;
         }

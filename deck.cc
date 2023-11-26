@@ -19,6 +19,7 @@ Deck::Deck(std::vector<Card *> theDeck, int cardsNumber) :
 theDeck(theDeck), 
 cardsNumber(cardsNumber) {}
 
+<<<<<<< HEAD
 Deck::~Deck() {
     for (auto card: theDeck) {
         delete card;
@@ -32,6 +33,14 @@ Deck::Deck(std::ifstream& deckFile, int ownerID): theDeck{vector<Card *>()}, car
         ++cardsNumber;
         Card * newCard = new Card(0, cardName, 0, ownerID, cardtype::Minion, "file", false);
         theDeck.emplace_back(newCard);
+=======
+Deck::Deck(std::ifstream& deckFile, int ownerID): theDeck{std::vector<Card *>()}, cardsNumber{0}, ownershipID{ownerID} {
+    std::string cardName;
+
+    while (getline(deckFile, cardName)) {
+        ++cardsNumber;
+        Card * newCard = new Card(0, cardName, ownerID, cardtype::Minion, std::string("file"), false);
+>>>>>>> 61cf385c1db4f62027d21421de927a6b54d81e2c
     }
 }
 
@@ -44,8 +53,8 @@ bool Deck::isEmpty() {
     else return false;
 }
 
-Card Deck::draw() {
-    Card drawnCard = theDeck[0];
+Card* Deck::draw() {
+    Card* drawnCard = theDeck[0];
     theDeck.erase(theDeck.begin());
     cardsNumber -= 1;
     return drawnCard;    

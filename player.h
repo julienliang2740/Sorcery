@@ -22,11 +22,12 @@ class Player {
         std::string getName() const;
         void assignName(std::string newname);
         int getID() const;
-        std::vector<Card> getHand() const; 
+        std::vector<Card*> getHand() const; 
         int getMagic() const;
-        static int getHandMax() const;
+        static int getHandMax();
         int getHealth() const;
         bool removeCard(int i);
+        bool drawCard();
 };
 
 #endif
