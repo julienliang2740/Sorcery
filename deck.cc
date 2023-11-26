@@ -15,11 +15,19 @@
 // obtain a time-based seed:
 unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 
-Deck::Deck(std::vector<Card> theDeck, int cardsNumber) : 
+Deck::Deck(std::vector<Card *> theDeck, int cardsNumber) : 
 theDeck(theDeck), 
 cardsNumber(cardsNumber) {}
 
-int Deck::getNumber() {
+Deck::Deck(ifstream& deckFile): theDeck{vector<Card *>()}, cardsNumber{0} {
+    string cardName;
+
+    while (getline(deckFile, cardName)) {
+        ++cardsNumber;
+    }
+}
+
+int Deck::getNumCards() {
     return cardsNumber;
 }
 
