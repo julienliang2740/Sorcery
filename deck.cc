@@ -25,12 +25,12 @@ Deck::~Deck() {
     }
 }
 
-Deck::Deck(std::ifstream& deckFile, int ownerID): theDeck{vector<Card *>()}, cardsNumber{0}, ownershipID{ownerID} {
-    string cardName;
+Deck::Deck(std::ifstream& deckFile, int ownerID): theDeck{std::vector<Card *>()}, cardsNumber{0}, ownershipID{ownerID} {
+    std::string cardName;
 
     while (getline(deckFile, cardName)) {
         ++cardsNumber;
-        Card * newCard = new Card(0, cardName, 0, ownerID, cardtype::Minion, "file", false);
+        Card * newCard = new Card(0, cardName, ownerID, cardtype::Minion, std::string("file"), false);
         theDeck.emplace_back(newCard);
     }
 }
