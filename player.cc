@@ -11,26 +11,35 @@ hand(initalHand),
 playerDeck(playerDeck),
 magic(initialMagic) {}
 
-std::string Player::getName() {
+std::string Player::getName() const {
     return name;
 }
 
-void Player::assignName(std::string newname) {
+void Player::assignName(std::string newname) const {
     name = newname;
 }
 
-int Player::getID() {
+int Player::getID() const {
     return playerID;
 }
 
-std::vector<Card> Player::getHand() {
+std::vector<Card> Player::getHand() const {
     return hand;
 }
 
-int Player::getMagic() {
+int Player::getMagic() const {
     return magic;
 }
 
-int Player::getHandMax() {
+int Player::getHandMax() const {
     return handMax;
+}
+
+bool Player::removeCard(int i) {
+    if (i < 1 || i > hand.size()) {
+        return false;
+    } else {
+        hand.erase(hand.begin() + (i - 1));
+        return true;
+    }
 }
