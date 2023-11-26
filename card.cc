@@ -33,5 +33,9 @@ std::string Card::getFile() const {
 }
 
 bool Card::hasATarget() const {
-    return hasATarget;
+    return hasTarget;
+}
+
+cardtype Card::getCardType() const {
+    return cardType;
 }

@@ -16,7 +16,8 @@ class Board {
     // ritual * p2Ritual;
     std::vector<int> p1Graveyard, p2Graveyard;
     std::vector<int> observers;
-
+    bool placeMinion(std::vector<int>& minions, int minion);
+    
     public:
         void addObserver(int n);
         int endTurn();

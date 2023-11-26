@@ -22,7 +22,7 @@ class Player {
         std::string getName() const;
         void assignName(std::string newname);
         int getID() const;
-        std::vector<Card> getHand(); 
+        std::vector<Card> getHand() const; 
         int getMagic() const;
         int getHandMax() const;
         int getHealth() const;

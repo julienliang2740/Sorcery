@@ -15,7 +15,7 @@ std::string Player::getName() const {
     return name;
 }
 
-void Player::assignName(std::string newname) const {
+void Player::assignName(std::string newname) {
     name = newname;
 }
 
@@ -42,4 +42,8 @@ bool Player::removeCard(int i) {
         hand.erase(hand.begin() + (i - 1));
         return true;
     }
+}
+
+int Player::getHealth() const {
+    return health;
 }

@@ -22,6 +22,8 @@ class Card {
         int getID() const;
         cardtype getType() const;
         std::string getFile() const;
+        bool hasATarget() const;
+        cardtype getCardType() const;
 };
 
 #endif

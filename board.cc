@@ -22,7 +22,7 @@ int Board::endTurn() {
 }
 
 // EDIT THIS FUNCTION AFTER MINION CLASS IS MADE
-bool placeMinion(vector<int>& minions, int minion) {
+bool Board::placeMinion(std::vector<int>& minions, int minion) {
     if (minions.size() > 4) {
         return false;
     } else {
@@ -67,13 +67,15 @@ bool Board::playCard(int i, int p, int t) {
 
     bool placed = false;
 
-    if (c.cardType == cardtype::Minion) {
+    cardtype type = c.getCardType();
+
+    if (type == cardtype::Minion) {
         placed = addMinion(0);
-    } else if (c.cardType == cardtype::Spell) {
+    } else if (type == cardtype::Spell) {
         return false; // IMPLEMENT
-    } else if (c.cardType == cardtype::Ritual) {
+    } else if (type == cardtype::Ritual) {
         return false; // IMPLEMENT
-    } else if (c.cardType == cardtype::Enchantment) {
+    } else if (type == cardtype::Enchantment) {
         return false; // IMPLEMENT
     }
 
