@@ -59,11 +59,11 @@ int main(int argc, char * argv[]) {
         // Processing Commands
         if (lines_read == 0) {
             player1.assignName(cmd);
-            lines_read += 1;
+            if (cmd != "") lines_read += 1;
         }
         else if (lines_read == 1) {
             player2.assignName(cmd);
-            lines_read += 1;
+            if (cmd != "") lines_read += 1;
         }
 
         if (cmd == "help") {
@@ -92,7 +92,8 @@ int main(int argc, char * argv[]) {
         }
         else if (cmd == "discard") {
             int i = -1;
-            cin >> i;
+            if (readFromFile) initfile >> i; else cin >> i;
+            
             if (config.testing) {
                 cout << "discard " << i << "th card in hand" << endl; //  INCOMPLETE INCOMPLETE INCOMPLETE
             }
@@ -101,36 +102,54 @@ int main(int argc, char * argv[]) {
             }
         }
         else if (cmd == "attack") { //  INCOMPLETE INCOMPLETE INCOMPLETE
-            int i,j = -1;
-            cin >> i;
-
-            if (cin.peek() != '\n') cin >> j;
-
+            int i = -1, j = -1;
+            if (readFromFile) {
+                initfile >> i;
+                if (initfile.peek() != '\r' && initfile.peek() != '\n') {
+                    initfile >> j;
+                }
+            }
+            else {
+                cin >> i;
+                if (cin.peek() != '\n') cin >> j;
+            }
+            
+            cout << j << endl;
             if (j == -1) cout << i << "th minion attacks enemy player" << endl;
-            else cout << i << "th minion attacks enemy player's " << j << "th minion";
+            else cout << i << "th minion attacks enemy player's " << j << "th minion" << endl;
         }
         else if (cmd == "play") { //  INCOMPLETE INCOMPLETE INCOMPLETE
-            int i,p,t = -1;
-            cin >> i;
+            int i = -1, p = -1, t = -1;
+            if (readFromFile) {
+                initfile >> i;
+                if (initfile.peek() != '\r' && initfile.peek() != '\n') initfile >> p >> t;
+            }
+            else {
+                cin >> i;
+                if (cin.peek() != '\n') cin >> p >> t;
+            }
 
-            if (cin.peek() != '\n') cin >> p >> t;
-
-            if (p == -1) cout << "Play" << i << "th card in active player's hand" << endl;
-            else cout << "Play" << i << "th card in active player's hand on card " << t << " owned by player " << p << endl;
+            if (p == -1) cout << "Play " << i << "th card in active player's hand" << endl;
+            else cout << "Play " << i << "th card in active player's hand on card " << t << " owned by player " << p << endl;
         }
         else if (cmd == "use") { //  INCOMPLETE INCOMPLETE INCOMPLETE
-            int i,p,t = -1;
-            cin >> i;
+            int i = -1, p = -1, t = -1;
+            if (readFromFile) {
+                initfile >> i;
+                if (initfile.peek() != '\r' && initfile.peek() != '\n') initfile >> p >> t;
+            }
+            else {
+                cin >> i;
+                if (cin.peek() != '\n') cin >> p >> t;
+            }
 
-            if (cin.peek() != '\n') cin >> p >> t;
-
-            if (p == -1) cout << "Use" << i << "th card in active player's hand" << endl;
-            else cout << "Use" << i << "th card in active player's hand on card " << t << " owned by player " << p << endl;
+            if (p == -1) cout << "Use " << i << "th card in active player's hand" << endl;
+            else cout << "Use " << i << "th card in active player's hand on card " << t << " owned by player " << p << endl;
         }
         else if (cmd == "inspect") { //  INCOMPLETE INCOMPLETE INCOMPLETE
             int i = 0;
-            cin >> i;
-            cout << "Inspecting " << i << "th minion";
+            if (readFromFile) initfile >> i; else cin >> i;
+            cout << "Inspecting " << i << "th minion" << endl;
         }
         else if (cmd == "hand") { //  INCOMPLETE INCOMPLETE INCOMPLETE
             cout << "*Displaying active player's hand*" << endl;
