@@ -51,7 +51,7 @@ bool Board::addMinion(int minion) {
 
 bool Board::playCard(int i, int p, int t) {
 
-    Player* activePlayer = (activePlayerID == player1.getID()) ? player1 : player2;
+    Player* activePlayer = (activePlayerID == player1->getID()) ? player1 : player2;
 
     if (i < 1 || i > activePlayer->getHand().size()) {
         std::cerr << "no such card exists" << std::endl;
@@ -88,9 +88,9 @@ int Board::checkWinState() {
     int p1_lost = -1;
     int p1_won = 1;
     int stillPlaying = 0;
-    if (player1.getHealth() < 1) {
+    if (player1->getHealth() < 1) {
         return p1_lost;
-    } else if (player2.getHealth() < 1) {
+    } else if (player2->getHealth() < 1) {
         return p1_won;
     } else {
         return stillPlaying;
