@@ -14,6 +14,7 @@
 
 // obtain a time-based seed:
 unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+std::default_random_engine engine(seed);
 
 Deck::Deck(std::vector<Card *> theDeck, int cardsNumber) : 
 theDeck(theDeck), 
@@ -59,7 +60,7 @@ Card* Deck::draw() {
 }
 
 void Deck::shuffle() {
-    std::shuffle (theDeck.begin(), theDeck.end(), std::default_random_engine(seed));
+    std::shuffle (theDeck.begin(), theDeck.end(), engine);
 }
 
 bool Deck::addCardFront(Card *theCard) {

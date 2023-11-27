@@ -38,6 +38,11 @@ int main(int argc, char * argv[]) {
     Player player1(string(""), 1, vector<Card*>(), new Deck{d1, 1}, 0);
     Player player2(string(""), 2, vector<Card*>(), new Deck{d2, 2}, 0);
 
+    if (!config.testing) {
+        player1.shuffle();
+        player2.shuffle();
+    }
+
     std::cout << "player 1 has this many cards: " << player1.playerDeck->getNumCards() << std::endl;
     std::cout << "player 2 has this many cards: " << player2.playerDeck->getNumCards() << std::endl;
 
@@ -82,8 +87,10 @@ int main(int argc, char * argv[]) {
                 cout << "It is now the turn of " << ((activePlayerID == player1.getID()) ? player1.getName() : player2.getName()) << endl;
                 
                 if (!config.testing) {
-                    // gain 1 magic
-                    player1.drawCard();
+                    for (int i = 0; i < Player::getHandMax(); ++i) {
+                        player1.drawCard();
+                        player2.drawCard();
+                    }
                 }
             }
         }

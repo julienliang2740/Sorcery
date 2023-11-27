@@ -18,6 +18,10 @@ Player::~Player() {
     delete playerDeck;
 }
 
+void Player::shuffle() {
+    playerDeck->shuffle();
+}
+
 std::string Player::getName() const {
     return name;
 }

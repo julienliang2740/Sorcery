@@ -30,6 +30,7 @@ class Player {
         int getHealth() const;
         bool removeCard(int i);
         bool drawCard();
+        void shuffle();
 };
 
 #endif
