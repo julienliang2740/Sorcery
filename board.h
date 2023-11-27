@@ -6,6 +6,7 @@
 #include <vector>
 #include "player.h"
 #include "minioncomponent.h"
+#include "minion.h"
 
 class Board {
     public:

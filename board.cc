@@ -12,10 +12,7 @@ Board::Board(
     p1Minions{p1Minions}, p2Minions{p2Minions},
     player1{player1}, player2{player2},
     activePlayerID{activePlayerID},
-    p1Graveyard{p1Graveyard}, p2Graveyard{p2Graveyard} {
-        std::cout << "player 1 deck has " << player1->playerDeck->getNumCards() << " cards" << std:: endl;
-        std::cout << "player 2 deck has " << player2->playerDeck->getNumCards() << " cards" << std:: endl;
-    }
+    p1Graveyard{p1Graveyard}, p2Graveyard{p2Graveyard} {}
 
 int Board::getActiveID() {
     return activePlayerID;
@@ -88,26 +85,24 @@ bool Board::playCard(int i, int p, int t) {
     cardtype type = c->getCardType();
 
     if (type == cardtype::Minion) {
-        if (c->getName() == "Air Elemental") {
-            Minion* newMinion = Minion::makeAirElemental();
-            placed = addMinion(newMinion);
-            if (placed) {
-                delete c;
-                activePlayer->getHand.erase(i - 1); // actually this is NOT how erase works, but uh just keep this for now
-            } else {
-                delete newMinion;
-            }
-        } else if (c->getName() == "Earth Elemental") {
-            Minion* newMinion = Minion::makeEarthElemental();
-            placed = addMinion(newMinion);
-            if (placed) {
-                delete c;
-                activePlayer->getHand.erase(i - 1); // actually this is NOT how erase works, but uh just keep this for now
-            } else {
-                delete newMinion;
-            }
+
+        std::string name = c->getName();
+        
+        Minion* newMinion = (name == "Air Elemental") ? Minion::makeAirElemental(activePlayerID)
+                            : ((name == "Earth Elemental") ? Minion::makeEarthElemental(activePlayerID)
+                            : ((name == "Bone Golem") ? Minion::makeBoneGolem(activePlayerID)
+                            : ((name == "Novice Pyromancer") ? Minion::makeNovicePyromancer(activePlayerID)
+                            : ((name == "Fire Elemental") ? Minion::makeFireElemental(activePlayerID)
+                            : ((name == "Potion Seller") ? Minion::makePotionSeller(activePlayerID)
+                            : ((name == "Apprentice Summoner") ? Minion::makeAppSummoner(activePlayerID)
+                            : Minion::makeMsSummoner(activePlayerID)))))));
+        
+        placed = addMinion(newMinion);
+        
+        if (!placed) {
+            delete newMinion;
         }
-        // THEN MAKE ANOTHER THING FOR EVERY FUCKING MINION HOLY SHIT
+
     } else if (type == cardtype::Spell) {
         return false; // IMPLEMENT
     } else if (type == cardtype::Ritual) {
@@ -118,6 +113,7 @@ bool Board::playCard(int i, int p, int t) {
 
     if (placed) {
         activePlayer->removeCard(i);
+        delete c;
     }
 
     return placed;
