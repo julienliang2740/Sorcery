@@ -19,6 +19,6 @@ class MinionComponent: public Card {
         // virtual void attackPlayer() = 0;
         // virtual int getAbilityCost() = 0;
         // virtual bool attackMinion() = 0;
-}
+};
 
 #endif

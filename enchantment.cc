@@ -1,9 +1,9 @@
 #include "enchantment.h"
 
-Enchantment::Enchantment(int cost, std::string name, int ownershipID, cardtype cardType, std::string displayFile, MinionComponent* next):
-    MinionComponent{cost, name, ownershipID, cardtype::Enchantment, displayfile, false}, next{next} {}
+Enchantment::Enchantment(int cost, std::string name, int ownershipID, std::string displayFile, MinionComponent* next):
+    MinionComponent{cost, name, ownershipID, cardtype::Enchantment, displayFile, false}, next{next} {}
 
-Enchantment::~Enchantment {
+Enchantment::~Enchantment() {
     delete next;
 }
 

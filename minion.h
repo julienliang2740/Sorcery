@@ -20,10 +20,10 @@ class Minion: public MinionComponent {
         int getTotalDamage() const override;
         void beAttacked(int n) override;
         void attackMinion(MinionComponent* other) override;
-        static Minion* makeAirElemental(int ownershipID);
-        static Minion* makeEarthElemental(int ownershipID);
+        static MinionComponent* makeAirElemental(int ownershipID);
+        static MinionComponent* makeEarthElemental(int ownershipID);
         void reset();
         // static Minion* makeBoneGolem(int ownershipID);
-}
+};
 
 #endif

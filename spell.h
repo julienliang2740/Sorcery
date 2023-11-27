@@ -19,10 +19,10 @@ class Spell : public Card {
 
 class Blizzard : public Spell {
     void massAbility();
-}
+};
 
 class Banish : public Spell {
     void targetAbility(Card target);
-}
+};
 
 #endif

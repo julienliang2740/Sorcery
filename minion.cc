@@ -22,17 +22,17 @@ void Minion::beAttacked(int n) {
     totalDamage +=n;
 }
 
-void attackMinion(MinionComponent* other) {
-    other.beAttacked(attack);
-    beAttacked(other.getAttack());
+void Minion::attackMinion(MinionComponent* other) {
+    other->beAttacked(attack);
+    beAttacked(other->getAttack());
 }
 
-Minion* Minion::makeAirElemental(int ownershipID) {
+MinionComponent* Minion::makeAirElemental(int ownershipID) {
     Minion* m = new Minion{0, "Air Elemental", ownershipID, "individual_cards/airelemental.txt", 1, 1};
     return m;
 }
 
-Minion* Minion::makeEarthElemental(int ownershipID) {
+MinionComponent* Minion::makeEarthElemental(int ownershipID) {
     Minion* m = new Minion{3, "Earth Elemental", ownershipID, "individual_cards/earthelemental.txt", 4, 4};
     return m;
 }
