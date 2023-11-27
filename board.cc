@@ -4,10 +4,10 @@
 #include "board.h"
 
 Board::Board(
-    std::vector<int> p1Minions, std::vector<int> p2Minions, 
+    std::vector<MinionComponent*> p1Minions, std::vector<MinionComponent*> p2Minions, 
     Player* player1, Player* player2, 
     int activePlayerID,
-    std::vector<int> p1Graveyard, std::vector<int> p2Graveyard) :
+    std::vector<Minion*> p1Graveyard, std::vector<Minion*> p2Graveyard) :
 
     p1Minions{p1Minions}, p2Minions{p2Minions},
     player1{player1}, player2{player2},
@@ -40,7 +40,7 @@ int Board::endTurn() {
 }
 
 // EDIT THIS FUNCTION AFTER MINION CLASS IS MADE
-bool Board::placeMinion(std::vector<int>& minions, int minion) {
+bool Board::placeMinion(std::vector<MinionComponent*>& minions, Minion* minion) {
     if (minions.size() > 4) {
         return false;
     } else {
@@ -49,7 +49,7 @@ bool Board::placeMinion(std::vector<int>& minions, int minion) {
     }
 }
 
-bool Board::addMinion(int minion) {
+bool Board::addMinion(Minion* minion) {
     bool placed = false;
 
     if (activePlayerID == player1->getID()) {
@@ -88,7 +88,7 @@ bool Board::playCard(int i, int p, int t) {
     cardtype type = c->getCardType();
 
     if (type == cardtype::Minion) {
-        placed = addMinion(0);
+        placed = addMinion();
     } else if (type == cardtype::Spell) {
         return false; // IMPLEMENT
     } else if (type == cardtype::Ritual) {
