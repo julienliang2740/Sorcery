@@ -23,6 +23,7 @@ class Minion: public MinionComponent {
         static MinionComponent* makeAirElemental(int ownershipID);
         static MinionComponent* makeEarthElemental(int ownershipID);
         void reset();
+        Minion* returnSelf() const;
         // static Minion* makeBoneGolem(int ownershipID);
 };
 

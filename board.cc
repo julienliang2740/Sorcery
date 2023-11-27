@@ -88,7 +88,26 @@ bool Board::playCard(int i, int p, int t) {
     cardtype type = c->getCardType();
 
     if (type == cardtype::Minion) {
-        placed = addMinion();
+        if (c->getName() == "Air Elemental") {
+            Minion* newMinion = Minion::makeAirElemental();
+            placed = addMinion(newMinion);
+            if (placed) {
+                delete c;
+                activePlayer->getHand.erase(i - 1); // actually this is NOT how erase works, but uh just keep this for now
+            } else {
+                delete newMinion;
+            }
+        } else if (c->getName() == "Earth Elemental") {
+            Minion* newMinion = Minion::makeEarthElemental();
+            placed = addMinion(newMinion);
+            if (placed) {
+                delete c;
+                activePlayer->getHand.erase(i - 1); // actually this is NOT how erase works, but uh just keep this for now
+            } else {
+                delete newMinion;
+            }
+        }
+        // THEN MAKE ANOTHER THING FOR EVERY FUCKING MINION HOLY SHIT
     } else if (type == cardtype::Spell) {
         return false; // IMPLEMENT
     } else if (type == cardtype::Ritual) {

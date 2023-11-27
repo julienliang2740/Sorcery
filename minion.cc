@@ -27,6 +27,10 @@ void Minion::attackMinion(MinionComponent* other) {
     beAttacked(other->getAttack());
 }
 
+Minion* Minion::returnSelf() {
+    return this;
+}
+
 MinionComponent* Minion::makeAirElemental(int ownershipID) {
     Minion* m = new Minion{0, "Air Elemental", ownershipID, "individual_cards/airelemental.txt", 1, 1};
     return m;
