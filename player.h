@@ -31,6 +31,8 @@ class Player {
         bool removeCard(int i);
         bool drawCard();
         void shuffle();
+        void addMagic(int change);
+        void addHealth(int change);
 };
 
 #endif

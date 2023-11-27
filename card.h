@@ -8,12 +8,13 @@
 enum cardtype {Minion, Enchantment, Ritual, Spell};
 
 class Card {
-    int cost;
-    std::string name;
-    int ownershipID;
-    cardtype cardType;
-    std::string displayFile;
-    bool hasTarget = false;
+    protected:
+        int cost;
+        std::string name;
+        int ownershipID;
+        cardtype cardType;
+        std::string displayFile;
+        bool hasTarget = false;
 
     public:
         Card(int cost, std::string name, int ownershipID, cardtype cardType, std::string displayFile, bool hasTarget);

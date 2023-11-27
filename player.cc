@@ -18,10 +18,6 @@ Player::~Player() {
     delete playerDeck;
 }
 
-void Player::shuffle() {
-    playerDeck->shuffle();
-}
-
 std::string Player::getName() const {
     return name;
 }
@@ -46,6 +42,10 @@ int Player::getHandMax() {
     return handMax;
 }
 
+int Player::getHealth() const {
+    return health;
+}
+
 bool Player::removeCard(int i) {
     if (i < 1 || i > hand.size()) {
         return false;
@@ -53,10 +53,6 @@ bool Player::removeCard(int i) {
         hand.erase(hand.begin() + (i - 1));
         return true;
     }
-}
-
-int Player::getHealth() const {
-    return health;
 }
 
 bool Player::drawCard() {
@@ -70,4 +66,18 @@ bool Player::drawCard() {
         return false;
     }
     hand.emplace_back(playerDeck->draw());
+}
+
+void Player::shuffle() {
+    playerDeck->shuffle();
+}
+
+void Player::addMagic(int change) {
+    magic += change;
+    std::cout << "Player " << playerID << " (" << name << ") now has " << magic << "magic" << std::endl; 
+}
+
+void Player::addHealth(int change) {
+    health += change;
+    std::cout << "Player " << playerID << " (" << name << ") now has " << health << "health" << std::endl;
 }
