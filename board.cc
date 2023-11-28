@@ -86,11 +86,18 @@ bool Board::playCard(int i, int p, int t) {
     bool placed = false;
 
     cardtype type = c->getCardType();
+    std::string name = c->getName();
 
     if (type == cardtype::M) {
-
-        std::string name = c->getName();
-        
+        std::cout << "minion name: " << name << std::endl;
+        std::cout << "name is equal to Air Elemental: " << (name == "Air Elemental") << std::endl;
+        std::cout << "name is equal to Earth Elemental: " << (name == "Earth Elemental") << std::endl;
+        std::cout << "name is equal to Bone Golem: " << (name == "Bone Golem") << std::endl;
+        std::cout << "name is equal to Novice Pyromancer: " << (name == "Novice Pyromancer") << std::endl;
+        std::cout << "name is equal to Fire Elemental: " << (name == "Fire Elemental") << std::endl;
+        std::cout << "name is equal to Potion Seller: " << (name == "Potion Seller") << std::endl;
+        std::cout << "name is equal to Apprentice Summoner: " << (name == "Apprentice Summoner") << std::endl;
+        std::cout << "name is equal to Master Summoner: " << (name == "Master Summoner") << std::endl;
         Minion* newMinion = (name == "Air Elemental") ? Minion::makeAirElemental(activePlayerID)
                             : ((name == "Earth Elemental") ? Minion::makeEarthElemental(activePlayerID)
                             : ((name == "Bone Golem") ? Minion::makeBoneGolem(activePlayerID)
@@ -99,18 +106,42 @@ bool Board::playCard(int i, int p, int t) {
                             : ((name == "Potion Seller") ? Minion::makePotionSeller(activePlayerID)
                             : ((name == "Apprentice Summoner") ? Minion::makeAppSummoner(activePlayerID)
                             : Minion::makeMsSummoner(activePlayerID)))))));
-        
+
         placed = addMinion(newMinion);
         
         if (!placed) {
             delete newMinion;
         }
+    } 
 
-    } else if (type == cardtype::S) {
+    else if (type == cardtype::S) {
+        if (name == "Banish") {
+            moveMinionToGraveyard(p, t);
+        }
+        else if (name == "Unsummon") { //wip
+            std::cout << "Unsummon is currently under development" << std::endl;
+        }
+        else if (name == "Recharge") {
+            std::cout << "Recharge is currently under development" << std::endl;
+        }
+        else if (name == "Disenchant") { //wip
+            std::cout << "Disenchant is currently under development" << std::endl;
+        }
+        else if (name == "Raise Dead") { //wip
+            std::cout << "Disenchant is currently under development" << std::endl;
+        }
+        else if (name == "Blizzard") {
+            for (MinionComponent* victim : p1Minions) victim->beAttacked(2);
+            for (MinionComponent* victim : p1Minions) victim->beAttacked(2);
+        }
+        else std::cout << "bruga spells isnt getting picked properly" << std::endl;
+    } 
+
+    else if (type == cardtype::R) {
         return false; // IMPLEMENT
-    } else if (type == cardtype::R) {
-        return false; // IMPLEMENT
-    } else if (type == cardtype::E) {
+    } 
+    
+    else if (type == cardtype::E) {
         return false; // IMPLEMENT
     }
 
