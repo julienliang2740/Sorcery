@@ -42,6 +42,7 @@ void Minion::setDefense(int n) {
     defense = n;
 }
 
+/*
 // static functions to make default minions
 
 Minion* Minion::makeAirElemental(int ownershipID) {
@@ -83,3 +84,4 @@ Minion* Minion::makePotionSeller(int ownershipID) {
     Minion* m = new Minion{2, "Potion Seller", ownershipID, "individual_cards/mastersummoner.txt", 1, 3};
     return m;
 }
+*/

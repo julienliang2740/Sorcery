@@ -7,7 +7,8 @@ Board::Board(
     std::vector<MinionComponent*> p1Minions, std::vector<MinionComponent*> p2Minions, 
     Player* player1, Player* player2, 
     int activePlayerID,
-    std::vector<Minion*> p1Graveyard, std::vector<Minion*> p2Graveyard) :
+    //std::vector<Minion*> p1Graveyard, std::vector<Minion*> p2Graveyard) :
+    std::vector<int> p1Graveyard, std::vector<int> p2Graveyard) :
 
     p1Minions{p1Minions}, p2Minions{p2Minions},
     player1{player1}, player2{player2},
@@ -36,6 +37,7 @@ int Board::endTurn() {
     return activePlayerID;
 }
 
+/*
 // EDIT THIS FUNCTION AFTER MINION CLASS IS MADE
 bool Board::placeMinion(std::vector<MinionComponent*>& minions, Minion* minion) {
     if (minions.size() > 4) {
@@ -45,6 +47,7 @@ bool Board::placeMinion(std::vector<MinionComponent*>& minions, Minion* minion) 
         return true;
     }
 }
+
 
 bool Board::addMinion(Minion* minion) {
     bool placed = false;
@@ -63,6 +66,7 @@ bool Board::addMinion(Minion* minion) {
 
     return placed;
 }
+*/
 
 bool Board::playCard(int i, int p, int t) {
 
@@ -87,7 +91,7 @@ bool Board::playCard(int i, int p, int t) {
     if (type == cardtype::Minion) {
 
         std::string name = c->getName();
-        
+        /*
         Minion* newMinion = (name == "Air Elemental") ? Minion::makeAirElemental(activePlayerID)
                             : ((name == "Earth Elemental") ? Minion::makeEarthElemental(activePlayerID)
                             : ((name == "Bone Golem") ? Minion::makeBoneGolem(activePlayerID)
@@ -102,6 +106,8 @@ bool Board::playCard(int i, int p, int t) {
         if (!placed) {
             delete newMinion;
         }
+        */
+        return false;
 
     } else if (type == cardtype::Spell) {
         return false; // IMPLEMENT
