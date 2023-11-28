@@ -112,6 +112,7 @@ bool Board::playCard(int i, int p, int t) {
         placed = addMinion(newMinion);
         */
 
+        /*
         Minion* newMinion = (name == "Air Elemental") ? Minion::makeAirElemental(activePlayerID)
                             : ((name == "Earth Elemental") ? Minion::makeEarthElemental(activePlayerID)
                             : ((name == "Bone Golem") ? Minion::makeBoneGolem(activePlayerID)
@@ -120,12 +121,11 @@ bool Board::playCard(int i, int p, int t) {
                             : ((name == "Potion Seller") ? Minion::makePotionSeller(activePlayerID)
                             : ((name == "Apprentice Summoner") ? Minion::makeAppSummoner(activePlayerID)
                             : Minion::makeMsSummoner(activePlayerID)))))));
+        */
+
+        Minion* newMinion = static_cast<Minion*>(c);
 
         placed = addMinion(newMinion);
-        
-        if (!placed) {
-            delete newMinion;
-        }
     } 
 
     else if (type == cardtype::S) {
@@ -161,7 +161,6 @@ bool Board::playCard(int i, int p, int t) {
 
     if (placed) {
         activePlayer->removeCard(i);
-        delete c;
     }
 
     return placed;
