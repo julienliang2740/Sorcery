@@ -18,6 +18,7 @@ class Minion: public MinionComponent {
         int getDefense() const override;
         int getAttack() const override;
         int getTotalDamage() const override;
+        std::string getMinionName() const override;
         void beAttacked(int n) override;
         void attackMinion(MinionComponent* other) override;
         // static Minion* makeAirElemental(int ownershipID);

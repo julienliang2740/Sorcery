@@ -1,12 +1,16 @@
 #include "minion.h"
 
 Minion::Minion(int cost, std::string name, int ownershipID, std::string displayFile, int defense, int attack): 
-    MinionComponent{cost, name, ownershipID, cardtype::Minion, displayFile, false}, defense{defense},
+    MinionComponent{cost, name, ownershipID, cardtype::Minion, displayFile, false, nullptr}, defense{defense},
     attack{attack}, totalDamage{0} {}
 
 Minion::~Minion() {
     // delete actAbility;
     // delete tAbility; // uncomment when abilities are implemented.
+}
+
+std::string Minion::getMinionName() const {
+    return name;
 }
 
 int Minion::getDefense() const {
