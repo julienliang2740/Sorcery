@@ -26,12 +26,41 @@ Deck::~Deck() {
     }
 }
 
+Minion* Deck::makeMinionFromName(std::string name, int playerID) {
+    Minion* newMinion = (name == "Air Elemental") ? Minion::makeAirElemental(activePlayerID)
+                            : ((name == "Earth Elemental") ? Minion::makeEarthElemental(activePlayerID)
+                            : ((name == "Bone Golem") ? Minion::makeBoneGolem(activePlayerID)
+                            : ((name == "Novice Pyromancer") ? Minion::makeNovicePyromancer(activePlayerID)
+                            : ((name == "Fire Elemental") ? Minion::makeFireElemental(activePlayerID)
+                            : ((name == "Potion Seller") ? Minion::makePotionSeller(activePlayerID)
+                            : ((name == "Apprentice Summoner") ? Minion::makeAppSummoner(activePlayerID)
+                            : Minion::makeMsSummoner(activePlayerID)))))));
+    return newMinion;
+}
+
+bool Deck::nameIsMinion(std::string name) {
+    return (name == "Air Elemental") || (name == "Earth Elemental") || (name == "Fire Elemental") || (name == "Bone Golem")
+            || (name == "Novice Pyromancer") || (name == "Potion Seller") || (name == "Apprentice Summoner") || (name == "Master Summoner");
+}
+
+bool Deck::nameIsSpell(std::string name) {
+    return (name == "Banish") || (name == "Unsummon") || (name == "Recharge") || (name == "Disenchant")
+            || (name == "Raise Dead") || (name == "Blizzard");
+}
+
+Spell* Deck::makeSpellFromName(std::string name, int playerID) {
+    Spell* newSpell = nullptr; // IMPLEMENT
+    return newSpell;
+}
+
 Deck::Deck(std::ifstream& deckFile, int ownerID): theDeck{std::vector<Card *>()}, cardsNumber{0}, ownershipID{ownerID} {
     std::string cardName;
 
     while (getline(deckFile, cardName)) {
         ++cardsNumber;
-        Card * newCard = new Card(0, cardName, ownerID, cardtype::M, std::string("file"), false);
+        Card * newCard = (nameIsMinion(cardName)) ? makeMinionFromName(cardName, ownershipID)
+                        : ((nameIsSpell(cardName)) ? makeSpellFromName(cardName, ownershipID)
+                        : new Card(0, cardName, ownerID, cardtype::M, std::string("file"), false));
         theDeck.emplace_back(newCard);
     }
 }

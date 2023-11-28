@@ -78,8 +78,15 @@ bool Board::playCard(int i, int p, int t) {
 
     Card* c = activePlayer->getHand()[i - 1];
 
-    if (c->hasATarget() && (p < 0 || t < 0)) {
+    if (c->hasATarget() && (((p != 1) && (p != 2)) || t < 0)) {
         std::cerr << "must provide target for card" << std::endl;
+        return false;
+    }
+
+    vector<MinionComponent*>& targetMinions = (p == player1->getID()) ? p1Minions : p2Minions;
+
+    if (targetMinions.size() < t) {
+        std::cerr << "invalid target minion" << std::endl;
         return false;
     }
 
@@ -139,10 +146,19 @@ bool Board::playCard(int i, int p, int t) {
             std::cout << "Recharge is currently under development" << std::endl;
         }
         else if (name == "Disenchant") { //wip
-            std::cout << "Disenchant is currently under development" << std::endl;
+
+            if (targetMinions[t - 1]->getCardType() != cardtype::E) {
+                std::cerr << "minion is not enchanted - cannot disenchant" << std::endl;
+                return false;
+            }
+
+            MinionComponent* temp = targetMinions[t - 1];
+            targetMinions[t - 1] = (targetMinions[t - 1])->getNext();
+            delete temp;
+            placed = true;
         }
         else if (name == "Raise Dead") { //wip
-            std::cout << "Disenchant is currently under development" << std::endl;
+            std::cout << "Raise Dead is currently under development" << std::endl;
         }
         else if (name == "Blizzard") {
             for (MinionComponent* victim : p1Minions) victim->beAttacked(2);
@@ -156,7 +172,11 @@ bool Board::playCard(int i, int p, int t) {
     } 
     
     else if (type == cardtype::E) {
-        return false; // IMPLEMENT
+        MinionComponent* temp = targetMinions[t - 1];
+        Enchantment* newEnchantment = static_cast<Enchantment*>(c);
+        newEnchantment->setNext(temp);
+        targetMinions[t - 1] = newEnchantment;
+        placed = true;
     }
 
     if (placed) {

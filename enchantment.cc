@@ -25,6 +25,10 @@ actAbility Enchantment::getActivatedAbility() const {
     return next->getActivatedAbility();
 }
 
+void Enchantment::setNext(MinionComponent* m) {
+    next = m;
+}
+
 void Enchantment::beAttacked(int n) {
     next->beAttacked(n);
 }

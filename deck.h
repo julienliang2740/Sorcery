@@ -6,11 +6,15 @@
 #include <vector>
 #include <fstream>
 #include "card.h"
+#include "minion.h"
 
 class Deck {
     std::vector<Card *> theDeck;
     int cardsNumber;
     int ownershipID;
+
+    bool nameIsMinion(std::string name);
+    Minion* makeMinionFromName(std::string name, int playerID);
 
     public:
         Deck(std::vector<Card *> theDeck, int cardsNumber);
