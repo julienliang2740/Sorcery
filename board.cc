@@ -158,7 +158,21 @@ bool Board::playCard(int i, int p, int t) {
             placed = true;
         }
         else if (name == "Raise Dead") { //wip
-            std::cout << "Raise Dead is currently under development" << std::endl;
+            
+            vector<MinionComponent*> ownMinions = (c->getID() == player1.getID()) ? p1Minions : p2Minions;
+            if (ownMinions.size() > 4) {
+                std::cerr "minions are at capacity. Cannot raise dead" << std::endl;
+            }
+
+            vector<Minion*>& graveyard = (c->getID() == player1.getID()) ? p1Graveyard : p2Graveyard;
+            if (graveyard.empty()) {
+                std::cerr "no minions in graveyard to revive" << std::endl;
+            }
+
+            Minion* m = graveyard.back();
+            graveyard.pop_back();
+            ownMinions.emplace_back(m);
+            placed = true;
         }
         else if (name == "Blizzard") {
             for (MinionComponent* victim : p1Minions) victim->beAttacked(2);
