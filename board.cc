@@ -78,7 +78,7 @@ bool Board::playCard(int i, int p, int t) {
 
     Card* c = activePlayer->getHand()[i - 1];
 
-    if (c->hasATarget() && (((p != 1) && (p != 2)) || t < 0)) {
+    if (c->hasATarget() && (((p != 1) && (p != 2)) || t < 1)) {
         std::cerr << "must provide target for card" << std::endl;
         return false;
     }
@@ -140,7 +140,16 @@ bool Board::playCard(int i, int p, int t) {
             moveMinionToGraveyard(p, t);
         }
         else if (name == "Unsummon") { //wip
-            std::cout << "Unsummon is currently under development" << std::endl;
+            Player* targetPlayer = (p == player1->getID()) ? player1 : player2;
+            if ((targetPlayer != activePlayer) && (targetPlayer->getHand.size() >= Player::getHandMax())) {
+                std::cerr << "cannot unsummon. Opponent's hand is full."
+                return false;
+            }
+
+            activePlayer->removeCard(i);
+            Minion* m = deleteEnchantments(targetPlayer->getID(), t);
+            targetMinions.erase(targetMinions.begin() + (t - 1));
+            targetPlayer->addCardToHand(m);
         }
         else if (name == "Recharge") {
             std::cout << "Recharge is currently under development" << std::endl;
@@ -221,13 +230,12 @@ Minion* Board::deleteEnchantments(int ownershipID, int minion) {
         delete temp;
     }
 
-    Minion* theMinion = new Minion{cur}; // copies over the contents of cur into a new minion.
+    // Minion* theMinion = new Minion{cur}; // copies over the contents of cur into a new minion.
     // this is because we want the return type to be a Minion*, not a MinionComponent*
-    // JK FIX THIS. USE STATIC CASTING PLEASE
+    // JK FIX THIS. USE STATIC CASTING PLEASE FIX THIS FIX THIS FIX THIS FIX THIS
 
-    // Minion* theMinion = static_cast<Minion*>(cur);
+    Minion* theMinion = static_cast<Minion*>(cur);
     minions[minion - 1] = theMinion;
-    delete cur;
     return theMinion;
 }
 

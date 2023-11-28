@@ -38,7 +38,7 @@ int Player::getMagic() const {
     return magic;
 }
 
-int Player::getHandMax() {
+int Player::getHandMax() const {
     return handMax;
 }
 
@@ -55,6 +55,16 @@ bool Player::removeCard(int i) {
     }
 }
 
+bool Player::addCardToHand(Card* c) {
+    if (hand.size() >= handMax) {
+        std::cerr << "hand is full, cannot add card" << std::endl;
+        return false;
+    }
+
+    hand.emplace_back(c);
+    return true;
+}
+
 bool Player::drawCard() {
     if (playerDeck->isEmpty()) {
         std::cout << "Deck is empty. Cannot draw." << std::endl;
@@ -64,7 +74,7 @@ bool Player::drawCard() {
         std::cout << "Hand is full. Cannot draw." << std::endl;
         return false;
     }
-    hand.emplace_back(playerDeck->draw());
+    addCardToHand(playerDeck->draw());
     return true;
 }
 
