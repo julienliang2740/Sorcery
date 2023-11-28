@@ -16,6 +16,8 @@ class Deck {
     bool nameIsMinion(std::string name);
     Minion* makeMinionFromName(std::string name, int playerID);
 
+    Spell* makeSpellFromName(std::string name, int playerID)
+
     public:
         Deck(std::vector<Card *> theDeck, int cardsNumber);
         Deck(std::ifstream& deckFile, int ownerID);
