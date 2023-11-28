@@ -18,29 +18,22 @@ std::default_random_engine engine(seed);
 
 Deck::Deck(std::vector<Card *> theDeck, int cardsNumber) : 
 theDeck(theDeck), 
-cardsNumber(cardsNumber) { std::cout << "calling deck ctor" << std::endl;}
+cardsNumber(cardsNumber) {}
 
 Deck::~Deck() {
-    std::cout << "calling deck destructor" << std::endl;
     for (auto card: theDeck) {
-        if (card != nullptr) std::cout << "deleting a card" << std::endl;
-        else std::cout << "deleting a nullptr" << std::endl;
         delete card;
     }
 }
 
 Deck::Deck(std::ifstream& deckFile, int ownerID): theDeck{std::vector<Card *>()}, cardsNumber{0}, ownershipID{ownerID} {
-    std::cout << "deck ctor" << std::endl;
     std::string cardName;
 
     while (getline(deckFile, cardName)) {
         ++cardsNumber;
         Card * newCard = new Card(0, cardName, ownerID, cardtype::M, std::string("file"), false);
         theDeck.emplace_back(newCard);
-        std::cout << "made a new card" << std::endl;
     }
-
-    std::cout << "cards number: " << cardsNumber << std::endl;
 }
 
 int Deck::getNumCards() const {

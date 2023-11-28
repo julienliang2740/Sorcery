@@ -56,7 +56,6 @@ bool Player::removeCard(int i) {
 }
 
 bool Player::drawCard() {
-    std::cout << "deck size: " << playerDeck->getNumCards() << std::endl;
     if (playerDeck->isEmpty()) {
         std::cout << "Deck is empty. Cannot draw." << std::endl;
         return false;

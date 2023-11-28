@@ -44,14 +44,8 @@ int main(int argc, char * argv[]) {
         player2.shuffle();
     }
 
-    std::cout << "player 1 has this many cards: " << player1.playerDeck->getNumCards() << std::endl;
-    std::cout << "player 2 has this many cards: " << player2.playerDeck->getNumCards() << std::endl;
-
     Board gameBoard(vector<MinionComponent*>(), vector<MinionComponent*>(), &player1, &player2, 1, vector<Minion*>(), vector<Minion*>());
     
-    std::cout << "player 1 has this many cards after board is initialized: " << player1.playerDeck->getNumCards() << std::endl;
-    std::cout << "player 2 has this many cards after board is initialized: " << player2.playerDeck->getNumCards() << std::endl;
-
     // assuming that very first line is Player 1's name and second line is Player 2's name
     string cmd;
     ifstream initfile(config.init_file);
