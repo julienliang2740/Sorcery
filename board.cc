@@ -201,6 +201,10 @@ bool Board::moveMinionToGraveyard(int ownershipID, int minion) {
     return true;
 }
 
+bool Board::useActivatedAbility(int minionUser, int targetPlayerID, int targetMinion) {
+    return false;
+}
+
 bool Board::attackMinion(int curMinion, int target) {
     std::vector<MinionComponent*>& curMinions = (activePlayerID == player1->getID()) ? p1Minions : p2Minions;
     std::vector<MinionComponent*>& targetMinions = (curMinions == p1Minions) ? p2Minions : p1Minions;

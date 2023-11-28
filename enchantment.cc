@@ -21,6 +21,10 @@ std::string Enchantment::getMinionName() const {
     return next->getMinionName();
 }
 
+actAbility Enchantment::getActivatedAbility() const {
+    return next->getActivatedAbility();
+}
+
 void Enchantment::beAttacked(int n) {
     next->beAttacked(n);
 }
