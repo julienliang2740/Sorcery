@@ -96,42 +96,7 @@ bool Board::playCard(int i, int p, int t) {
     std::string name = c->getName();
 
     if (type == cardtype::M) {
-        std::cout << "minion name: " << name << std::endl;
-        std::cout << "name is equal to Air Elemental: " << (name.compare("Air Elemental") == 0) << std::endl;
-        std::cout << "name is equal to Earth Elemental: " << (name.compare("Earth Elemental") == 0) << std::endl;
-        std::cout << "name is equal to Bone Golem: " << (name.compare("Bone Golem") == 0) << std::endl;
-        std::cout << "name is equal to Novice Pyromancer: " << (name.compare("Novice Pyromancer") == 0) << std::endl;
-        std::cout << "name is equal to Fire Elemental: " << (name.compare("Fire Elemental") == 0) << std::endl;
-        std::cout << "name is equal to Potion Seller: " << (name.compare("Potion Seller") == 0) << std::endl;
-        std::cout << "name is equal to Apprentice Summoner: " << (name.compare("Apprentice Summoner") == 0) << std::endl;
-        std::cout << "name is equal to Master Summoner: " << (name.compare("Master Summoner") == 0) << std::endl;
-        // for now this works, but when potion seller and bone golem and damage is done, this does NOT work.
-        /*
-        Minion* newMinion = (name == "Air Elemental") ? Minion::makeAirElemental(activePlayerID)
-                            : ((name == "Earth Elemental") ? Minion::makeEarthElemental(activePlayerID)
-                            : ((name == "Bone Golem") ? Minion::makeBoneGolem(activePlayerID)
-                            : ((name == "Novice Pyromancer") ? Minion::makeNovicePyromancer(activePlayerID)
-                            : ((name == "Fire Elemental") ? Minion::makeFireElemental(activePlayerID)
-                            : ((name == "Potion Seller") ? Minion::makePotionSeller(activePlayerID)
-                            : ((name == "Apprentice Summoner") ? Minion::makeAppSummoner(activePlayerID)
-                            : Minion::makeMsSummoner(activePlayerID)))))));
-
-        placed = addMinion(newMinion);
-        */
-
-        /*
-        Minion* newMinion = (name == "Air Elemental") ? Minion::makeAirElemental(activePlayerID)
-                            : ((name == "Earth Elemental") ? Minion::makeEarthElemental(activePlayerID)
-                            : ((name == "Bone Golem") ? Minion::makeBoneGolem(activePlayerID)
-                            : ((name == "Novice Pyromancer") ? Minion::makeNovicePyromancer(activePlayerID)
-                            : ((name == "Fire Elemental") ? Minion::makeFireElemental(activePlayerID)
-                            : ((name == "Potion Seller") ? Minion::makePotionSeller(activePlayerID)
-                            : ((name == "Apprentice Summoner") ? Minion::makeAppSummoner(activePlayerID)
-                            : Minion::makeMsSummoner(activePlayerID)))))));
-        */
-
         Minion* newMinion = static_cast<Minion*>(c);
-
         placed = addMinion(newMinion);
     } 
 
