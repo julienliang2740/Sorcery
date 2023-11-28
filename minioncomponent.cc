@@ -5,6 +5,10 @@ MinionComponent::MinionComponent(int cost, std::string name, int ownershipID, ca
 
 MinionComponent::~MinionComponent() {}
 
+MinionComponent* MinionComponent::getNext() const {
+    return next;
+}
+
 MinionComponent* MinionComponent::Iterator::operator*() const {
     return cur;
 }

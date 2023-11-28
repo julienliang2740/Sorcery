@@ -125,32 +125,29 @@ bool Board::playCard(int i, int p, int t) {
 Minion* Board::deleteEnchantments(int ownershipID, int minion) {
     if (ownershipID != 1 && ownershipID != 2) {
         std::cerr << "invalid player ID" << std::endl;
-        return false;
+        return nullptr;
     }
 
-    vector<MinionComponent*>& minions = (activePlayerID == player1.getID()) ? p1Minions : p2Minions;
+    std::vector<MinionComponent*>& minions = (activePlayerID == player1->getID()) ? p1Minions : p2Minions;
 
     if (minion > minions.size()) {
         std::cerr << "invalid minion ID" << std::endl;
-        return false;
+        return nullptr;
     }
 
     MinionComponent* cur = minions[minion - 1];
 
-    if (cur->getType() == cardtype::M) {
-        // no enchantments to delete
-        return cur;
+    while (cur->getType() != cardtype::M) {
+        MinionComponent* temp = cur;
+        cur = cur->getNext();
+        delete temp;
     }
 
-    MinionComponent* temp = cur->next;
-
-    for (auto i: cur) {
-        
-        if ((*i)->getCardType() == cardtype::M) {
-            Minion* m = new Minion{*i};
-            return m;
-        }
-    }
+    Minion* theMinion = new Minion{cur}; // copies over the contents of cur into a new minion.
+    // this is because we want the return type to be a Minion*, not a MinionComponent*
+    minions[minion - 1] = theMinion;
+    delete cur;
+    return theMinion;
 }
 
 bool Board::moveMinionToGraveyard(int ownershipID, int minion) {
@@ -159,19 +156,23 @@ bool Board::moveMinionToGraveyard(int ownershipID, int minion) {
         return false;
     }
 
-    vector<MinionComponent*>& minions = (activePlayerID == player1.getID()) ? p1Minions : p2Minions;
+    std::vector<MinionComponent*>& minions = (activePlayerID == player1->getID()) ? p1Minions : p2Minions;
+    std::vector<Minion*>& graveyard = (activePlayerID == player1->getID()) ? p1Graveyard : p2Graveyard;
 
     if (minion > minions.size()) {
         std::cerr << "invalid minion ID" << std::endl;
         return false;
     }
 
-    
+    Minion* m = deleteEnchantments(ownershipID, minion);
+    minions.erase(minions.begin() + (minion - 1));
+    graveyard.emplace_back(m);
+    return true;
 }
 
 bool Board::attackMinion(int curMinion, int target) {
-    vector<MinionComponent*>& curMinions = (activePlayerID == player1.getID()) ? p1Minions : p2minions;
-    vector<MinionComponent*>& targetMinions = (curMinions == p1Minions) ? p2Minions : p1Minions;
+    std::vector<MinionComponent*>& curMinions = (activePlayerID == player1->getID()) ? p1Minions : p2Minions;
+    std::vector<MinionComponent*>& targetMinions = (curMinions == p1Minions) ? p2Minions : p1Minions;
 
     if (curMinion > curMinions.size() || curMinion < 1) {
         std::cerr << "you don't have that minion!" << std::endl;
@@ -183,8 +184,8 @@ bool Board::attackMinion(int curMinion, int target) {
         return false;
     }
 
-    MinionComponent* attacker = curMinions[i - 1];
-    MinionComponent* attacked = targetMinions[i - 1];
+    MinionComponent* attacker = curMinions[curMinion - 1];
+    MinionComponent* attacked = targetMinions[target - 1];
 
     attacker->attackMinion(attacked);
 

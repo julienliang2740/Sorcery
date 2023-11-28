@@ -23,6 +23,7 @@ class MinionComponent: public Card {
 
         MinionComponent(int cost, std::string name, int ownershipID, cardtype cardType, std::string displayFile, bool hasTarget, MinionComponent* next);
         ~MinionComponent() override;
+        MinionComponent* getNext() const;
         virtual int getDefense() const = 0;
         virtual int getAttack() const = 0;
         virtual int getTotalDamage() const = 0;

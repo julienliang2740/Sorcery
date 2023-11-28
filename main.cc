@@ -171,8 +171,10 @@ int main(int argc, char * argv[]) {
                 if (cin.peek() != '\n') cin >> p >> t;
             }
 
-            if (p == -1) cout << "Play " << i << "th card in active player's hand" << endl;
-            else cout << "Play " << i << "th card in active player's hand on card " << t << " owned by player " << p << endl;
+            bool placed = gameBoard.playCard(i, p, t);
+            if (!placed) {
+                std::cerr << "cannot place card" << std::endl;
+            }
         }
         else if (cmd == "use") { //  INCOMPLETE INCOMPLETE INCOMPLETE
             int i = -1, p = -1, t = -1;
@@ -199,7 +201,14 @@ int main(int argc, char * argv[]) {
             }
         }
         else if (cmd == "board") { //  INCOMPLETE INCOMPLETE INCOMPLETE
-            cout << "*Displaying the board*" << endl;
+            cout << "p1 minions: " << endl;
+            for (auto m: gameBoard.p1Minions) {
+                cout << m->getMinionName() << endl;
+            }
+            cout << "p2 minions: " << endl;
+            for (auto m: gameBoard.p2Minions) {
+                cout << m->getMinionName() << endl;
+            }
         }
         //////////////////////////////////////////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////////////////////////

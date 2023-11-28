@@ -5,7 +5,7 @@ Minion::Minion(int cost, std::string name, int ownershipID, std::string displayF
     attack{attack}, totalDamage{totalDamage} {}
 
 Minion::Minion(MinionComponent* other):
-    MinionComponent{other->getCost(), other->getName(), other->getOwnershipID(), cardtype::M, other->getFile(), false, nullptr},
+    MinionComponent{other->getCost(), other->getName(), other->getID(), cardtype::M, other->getFile(), false, nullptr},
     defense{other->getDefense()}, attack{other->getAttack()}, totalDamage{other->getTotalDamage()} {}
 
 Minion::~Minion() {
