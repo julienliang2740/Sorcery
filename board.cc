@@ -123,6 +123,19 @@ bool Board::playCard(int i, int p, int t) {
 }
 
 bool Board::attackMinion(int curMinion, int target) {
+    curMinions = (activePlayerID == player1.getID()) ? p1Minions : p2minions;
+    targetMinions = (curMinions == p1Minions) ? p2Minions : p1Minions;
+
+    if (curMinion > curMinions.size() || curMinion < 1) {
+        std::cerr << "you don't have that minion!" << std::endl;
+        return false;
+    }
+
+    if (target > targetMinions.size() || target < 1) {
+        std::cerr << "your opponent doesn't have that minion!" << std::endl;
+        return false;
+    }
+
     
 }
 
