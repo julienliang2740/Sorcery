@@ -38,6 +38,16 @@ Minion* Deck::makeMinionFromName(std::string name, int PlayerID) {
     return newMinion;
 }
 
+Spell* Deck::makeSpellFromName(std::string name, int playerID) {
+    Spell* newSpell = ((name == "Banish") || (name == "Banish\r")) ? Spell::makeBanish(playerID)
+                        : (((name == "Unsummon") || (name == "Unsummon\r")) ? Spell::makeUnsummon(playerID)
+                        : (((name == "Recharge") || (name == "Recharge\r")) ? Spell::makeRecharge(playerID)
+                        : (((name == "Disenchant") || (name == "Disenchant\r")) ? Spell::makeDisenchant(playerID)
+                        : (((name == "Raise Dead") || (name == "Raise Dead\r")) ? Spell::makeRaiseDead(playerID)
+                        : Spell::makeBlizzard(playerID)))));
+    return newSpell;
+}
+
 bool Deck::nameIsMinion(std::string name) {
     return (name == "Air Elemental") || (name == "Earth Elemental") || (name == "Fire Elemental") || (name == "Bone Golem") || (name == "Novice Pyromancer") || (name == "Potion Seller") || (name == "Apprentice Summoner") || (name == "Master Summoner")
             || (name == "Air Elemental\r") || (name == "Earth Elemental\r") || (name == "Fire Elemental\r") || (name == "Bone Golem\r") || (name == "Novice Pyromancer\r") || (name == "Potion Seller\r") || (name == "Apprentice Summoner\r") || (name == "Master Summoner\r");

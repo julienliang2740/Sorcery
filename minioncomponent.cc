@@ -24,9 +24,8 @@ bool MinionComponent::Iterator::operator!=(const MinionComponent::Iterator& othe
 }
 
 MinionComponent::Iterator MinionComponent::begin() const {
-    return Iterator{next};
-} // uhhh this only begins at the next one, so when you loop through the enchantments make sure to
-// do whatever to the first enchantment first. I know this is spaghetti code I'm sorry
+    return Iterator{const_cast<MinionComponent*>(this)};
+}
 
 MinionComponent::Iterator MinionComponent::end() const {
     return Iterator{nullptr};
