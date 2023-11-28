@@ -47,7 +47,7 @@ int main(int argc, char * argv[]) {
     std::cout << "player 1 has this many cards: " << player1.playerDeck->getNumCards() << std::endl;
     std::cout << "player 2 has this many cards: " << player2.playerDeck->getNumCards() << std::endl;
 
-    Board gameBoard(vector<MinionComponent*>(), vector<MinionComponent*>(), &player1, &player2, 1, vector<int>(), vector<int>());
+    Board gameBoard(vector<MinionComponent*>(), vector<MinionComponent*>(), &player1, &player2, 1, vector<Minion*>(), vector<Minion*>());
     
     std::cout << "player 1 has this many cards after board is initialized: " << player1.playerDeck->getNumCards() << std::endl;
     std::cout << "player 2 has this many cards after board is initialized: " << player2.playerDeck->getNumCards() << std::endl;

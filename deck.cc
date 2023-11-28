@@ -35,7 +35,7 @@ Deck::Deck(std::ifstream& deckFile, int ownerID): theDeck{std::vector<Card *>()}
 
     while (getline(deckFile, cardName)) {
         ++cardsNumber;
-        Card * newCard = new Card(0, cardName, ownerID, cardtype::Minion, std::string("file"), false);
+        Card * newCard = new Card(0, cardName, ownerID, cardtype::M, std::string("file"), false);
         theDeck.emplace_back(newCard);
         std::cout << "made a new card" << std::endl;
     }

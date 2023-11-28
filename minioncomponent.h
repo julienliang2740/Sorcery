@@ -22,7 +22,7 @@ class MinionComponent: public Card {
         Iterator end() const;
 
         MinionComponent(int cost, std::string name, int ownershipID, cardtype cardType, std::string displayFile, bool hasTarget, MinionComponent* next);
-        ~MinionComponent();
+        ~MinionComponent() override;
         virtual int getDefense() const = 0;
         virtual int getAttack() const = 0;
         virtual int getTotalDamage() const = 0;

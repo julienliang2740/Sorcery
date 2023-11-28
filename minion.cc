@@ -1,7 +1,7 @@
 #include "minion.h"
 
 Minion::Minion(int cost, std::string name, int ownershipID, std::string displayFile, int defense, int attack): 
-    MinionComponent{cost, name, ownershipID, cardtype::Minion, displayFile, false, nullptr}, defense{defense},
+    MinionComponent{cost, name, ownershipID, cardtype::M, displayFile, false, nullptr}, defense{defense},
     attack{attack}, totalDamage{0} {}
 
 Minion::~Minion() {
@@ -46,7 +46,7 @@ void Minion::setDefense(int n) {
     defense = n;
 }
 
-/*
+
 // static functions to make default minions
 
 Minion* Minion::makeAirElemental(int ownershipID) {
@@ -88,4 +88,3 @@ Minion* Minion::makePotionSeller(int ownershipID) {
     Minion* m = new Minion{2, "Potion Seller", ownershipID, "individual_cards/mastersummoner.txt", 1, 3};
     return m;
 }
-*/

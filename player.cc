@@ -66,6 +66,7 @@ bool Player::drawCard() {
         return false;
     }
     hand.emplace_back(playerDeck->draw());
+    return true;
 }
 
 void Player::shuffle() {

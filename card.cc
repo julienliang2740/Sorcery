@@ -12,6 +12,8 @@ cardType{cardType},
 displayFile{displayFile},
 hasTarget{hasTarget} {}
 
+Card::~Card() {}
+
 int Card::getCost() const {
     return cost;
 }

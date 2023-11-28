@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-enum cardtype {Minion, Enchantment, Ritual, Spell};
+enum cardtype {M, E, R, S};
 
 class Card {
     protected:
@@ -18,6 +18,7 @@ class Card {
 
     public:
         Card(int cost, std::string name, int ownershipID, cardtype cardType, std::string displayFile, bool hasTarget);
+        virtual ~Card();
         int getCost() const;
         std::string getName() const;
         int getID() const;

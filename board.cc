@@ -7,8 +7,7 @@ Board::Board(
     std::vector<MinionComponent*> p1Minions, std::vector<MinionComponent*> p2Minions, 
     Player* player1, Player* player2, 
     int activePlayerID,
-    //std::vector<Minion*> p1Graveyard, std::vector<Minion*> p2Graveyard) :
-    std::vector<int> p1Graveyard, std::vector<int> p2Graveyard) :
+    std::vector<Minion*> p1Graveyard, std::vector<Minion*> p2Graveyard) :
 
     p1Minions{p1Minions}, p2Minions{p2Minions},
     player1{player1}, player2{player2},
@@ -37,7 +36,7 @@ int Board::endTurn() {
     return activePlayerID;
 }
 
-/*
+
 // EDIT THIS FUNCTION AFTER MINION CLASS IS MADE
 bool Board::placeMinion(std::vector<MinionComponent*>& minions, Minion* minion) {
     if (minions.size() > 4) {
@@ -66,7 +65,7 @@ bool Board::addMinion(Minion* minion) {
 
     return placed;
 }
-*/
+
 
 bool Board::playCard(int i, int p, int t) {
 
@@ -88,10 +87,10 @@ bool Board::playCard(int i, int p, int t) {
 
     cardtype type = c->getCardType();
 
-    if (type == cardtype::Minion) {
+    if (type == cardtype::M) {
 
         std::string name = c->getName();
-        /*
+        
         Minion* newMinion = (name == "Air Elemental") ? Minion::makeAirElemental(activePlayerID)
                             : ((name == "Earth Elemental") ? Minion::makeEarthElemental(activePlayerID)
                             : ((name == "Bone Golem") ? Minion::makeBoneGolem(activePlayerID)
@@ -106,14 +105,12 @@ bool Board::playCard(int i, int p, int t) {
         if (!placed) {
             delete newMinion;
         }
-        */
-        return false;
 
-    } else if (type == cardtype::Spell) {
+    } else if (type == cardtype::S) {
         return false; // IMPLEMENT
-    } else if (type == cardtype::Ritual) {
+    } else if (type == cardtype::R) {
         return false; // IMPLEMENT
-    } else if (type == cardtype::Enchantment) {
+    } else if (type == cardtype::E) {
         return false; // IMPLEMENT
     }
 
@@ -123,6 +120,10 @@ bool Board::playCard(int i, int p, int t) {
     }
 
     return placed;
+}
+
+bool Board::attackMinion(int curMinion, int target) {
+    
 }
 
 int Board::checkWinState() {

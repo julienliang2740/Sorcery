@@ -21,17 +21,16 @@ class Minion: public MinionComponent {
         std::string getMinionName() const override;
         void beAttacked(int n) override;
         void attackMinion(MinionComponent* other) override;
-        // static Minion* makeAirElemental(int ownershipID);
-        // static Minion* makeEarthElemental(int ownershipID);
-        // static Minion* makeFireElemental(int ownershipID);
-        // static Minion* makeBoneGolem(int ownershipID);
-        // static Minion* makeNovicePyromancer(int ownershipID);
-        // static Minion* makeAppSummoner(int ownershipID);
-        // static Minion* makeMsSummoner(int ownershipID);
-        // static Minion* makePotionSeller(int ownershipID);
+        static Minion* makeAirElemental(int ownershipID);
+        static Minion* makeEarthElemental(int ownershipID);
+        static Minion* makeFireElemental(int ownershipID);
+        static Minion* makeBoneGolem(int ownershipID);
+        static Minion* makeNovicePyromancer(int ownershipID);
+        static Minion* makeAppSummoner(int ownershipID);
+        static Minion* makeMsSummoner(int ownershipID);
+        static Minion* makePotionSeller(int ownershipID);
         void reset();
         void setDefense(int n);
-        // static Minion* makeBoneGolem(int ownershipID);
 };
 
 #endif
