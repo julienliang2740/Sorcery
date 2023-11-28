@@ -10,7 +10,7 @@ class Observer {
  public:
     Observer(Board* b) = default;
     virtual void notify() = 0;  // c is the Cell that called the notify method
-    virtual triggerType subType() = 0;
+    virtual triggerType subType() const = 0;
     virtual ~Observer() = default;
 };
 
