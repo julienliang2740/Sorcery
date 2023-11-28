@@ -35,6 +35,7 @@ class Board {
         bool playCard(int i, int p = -1, int t = -1);
         int checkWinState();
         bool attackMinion(int curMinion, int target);
+        bool moveMinionToGraveyard(int ownershipID, int minion);
         Board();
 
         

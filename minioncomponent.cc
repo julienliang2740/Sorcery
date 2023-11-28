@@ -3,10 +3,10 @@
 MinionComponent::MinionComponent(int cost, std::string name, int ownershipID, cardtype cardType, std::string displayFile, bool hasTarget, MinionComponent* next):
     Card{cost, name, ownershipID, cardType, displayFile, hasTarget}, next{next} {}
 
-MinionComponent::~MinionComponent() {delete next;}
+MinionComponent::~MinionComponent() {}
 
-std::string MinionComponent::Iterator::operator*() const {
-    return cur->getName();
+MinionComponent* MinionComponent::Iterator::operator*() const {
+    return cur;
 }
 
 MinionComponent::Iterator::Iterator( MinionComponent* cur): cur{cur} {}

@@ -122,9 +122,56 @@ bool Board::playCard(int i, int p, int t) {
     return placed;
 }
 
+Minion* Board::deleteEnchantments(int ownershipID, int minion) {
+    if (ownershipID != 1 && ownershipID != 2) {
+        std::cerr << "invalid player ID" << std::endl;
+        return false;
+    }
+
+    vector<MinionComponent*>& minions = (activePlayerID == player1.getID()) ? p1Minions : p2Minions;
+
+    if (minion > minions.size()) {
+        std::cerr << "invalid minion ID" << std::endl;
+        return false;
+    }
+
+    MinionComponent* cur = minions[minion - 1];
+
+    if (cur->getType() == cardtype::M) {
+        // no enchantments to delete
+        return cur;
+    }
+
+    MinionComponent* temp = cur->next;
+
+    for (auto i: cur) {
+        
+        if ((*i)->getCardType() == cardtype::M) {
+            Minion* m = new Minion{*i};
+            return m;
+        }
+    }
+}
+
+bool Board::moveMinionToGraveyard(int ownershipID, int minion) {
+    if (ownershipID != 1 && ownershipID != 2) {
+        std::cerr << "invalid player ID" << std::endl;
+        return false;
+    }
+
+    vector<MinionComponent*>& minions = (activePlayerID == player1.getID()) ? p1Minions : p2Minions;
+
+    if (minion > minions.size()) {
+        std::cerr << "invalid minion ID" << std::endl;
+        return false;
+    }
+
+    
+}
+
 bool Board::attackMinion(int curMinion, int target) {
-    curMinions = (activePlayerID == player1.getID()) ? p1Minions : p2minions;
-    targetMinions = (curMinions == p1Minions) ? p2Minions : p1Minions;
+    vector<MinionComponent*>& curMinions = (activePlayerID == player1.getID()) ? p1Minions : p2minions;
+    vector<MinionComponent*>& targetMinions = (curMinions == p1Minions) ? p2Minions : p1Minions;
 
     if (curMinion > curMinions.size() || curMinion < 1) {
         std::cerr << "you don't have that minion!" << std::endl;
@@ -136,7 +183,20 @@ bool Board::attackMinion(int curMinion, int target) {
         return false;
     }
 
-    
+    MinionComponent* attacker = curMinions[i - 1];
+    MinionComponent* attacked = targetMinions[i - 1];
+
+    attacker->attackMinion(attacked);
+
+    if (attacker->getDefense() - attacker->getTotalDamage() < 1) {
+        moveMinionToGraveyard(activePlayerID, curMinion);
+    }
+
+    if (attacked->getDefense() - attacked->getTotalDamage() < 1) {
+        moveMinionToGraveyard(1 + (activePlayerID % 2), target);
+    }
+
+    return true;
 }
 
 int Board::checkWinState() {

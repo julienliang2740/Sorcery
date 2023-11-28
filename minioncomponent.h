@@ -12,7 +12,7 @@ class MinionComponent: public Card {
             Iterator( MinionComponent* cur);
             public:
                 Iterator operator++();
-                std::string operator*() const;
+                MinionComponent* operator*() const;
                 bool operator!=(const Iterator& other) const;
 
                 friend class MinionComponent;
