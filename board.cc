@@ -223,6 +223,9 @@ Minion* Board::deleteEnchantments(int ownershipID, int minion) {
 
     Minion* theMinion = new Minion{cur}; // copies over the contents of cur into a new minion.
     // this is because we want the return type to be a Minion*, not a MinionComponent*
+    // JK FIX THIS. USE STATIC CASTING PLEASE
+
+    // Minion* theMinion = static_cast<Minion*>(cur);
     minions[minion - 1] = theMinion;
     delete cur;
     return theMinion;
