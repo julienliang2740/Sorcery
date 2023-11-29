@@ -203,13 +203,16 @@ int main(int argc, char * argv[]) {
                 continue;
             }
 
-            /*
+            
             vector<string> lines(11, "");
             for (auto card: activePlayer.getHand()) {
                 ifstream cardFile{card->getFile()};
                 string line;
                 for (int i = 0; i < 11; ++i) {
                     getline(cardFile, line);
+                    if (line.length() > 0 && (line[line.length() - 1] == '\r')) {
+                        line = line.substr(0, line.length() - 1);
+                    }
                     lines[i] += line;
                 }
 
@@ -222,8 +225,8 @@ int main(int argc, char * argv[]) {
             for (int i = 0; i < 11; ++i) {
                 cout << lines[i] << endl;
             }
-            */
-
+            
+            /*
             string line;
             for (int i = 0; i < 12; ++i) {
                 for (auto card: activePlayer.getHand()) {
@@ -231,10 +234,14 @@ int main(int argc, char * argv[]) {
                     for (int j = 0; j < i; ++j) {
                         getline(cardFile, line);
                     }
+                    if (line.length() > 0 && (line[line.length() - 1] == '\r')) {
+                        line = line.substr(0, line.length() - 1);
+                    }
                     cout << line;
                 }
                 cout << endl;
             }
+            */
 
             /*
             for (int i = 1; i < 12; ++i) {
