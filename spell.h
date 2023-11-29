@@ -10,6 +10,6 @@ class Spell: public Card {
         static Spell* makeDisenchant(int ownershipID);
         static Spell* makeRaiseDead(int ownershipID);
         static Spell* makeBlizzard(int ownershipID);
-}
+};
 
 #endif

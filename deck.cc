@@ -48,6 +48,16 @@ Spell* Deck::makeSpellFromName(std::string name, int playerID) {
     return newSpell;
 }
 
+Enchantment* Deck::makeEnchantmentFromName(std::string name, int playerID) {
+    Enchantment* newEnchantment = ((name == "Giant Strength") || (name == "Giant Strength\r")) ? ...
+                                    : (((name == "Enrage") || (name == "Enrage\r")) ? ...
+                                    : (((name == "Haste") || (name == "Haste\r")) ? ...
+                                    : (((name == "Magic Fatigue") || (name == "Magic Fatigue\r")) ? ...
+                                    : )))
+    ...
+    return newEnchantment;
+}
+
 bool Deck::nameIsMinion(std::string name) {
     return (name == "Air Elemental") || (name == "Earth Elemental") || (name == "Fire Elemental") || (name == "Bone Golem") || (name == "Novice Pyromancer") || (name == "Potion Seller") || (name == "Apprentice Summoner") || (name == "Master Summoner")
             || (name == "Air Elemental\r") || (name == "Earth Elemental\r") || (name == "Fire Elemental\r") || (name == "Bone Golem\r") || (name == "Novice Pyromancer\r") || (name == "Potion Seller\r") || (name == "Apprentice Summoner\r") || (name == "Master Summoner\r");
@@ -58,6 +68,10 @@ bool Deck::nameIsSpell(std::string name) {
             || (name == "Banish\r") || (name == "Unsummon\r") || (name == "Recharge\r") || (name == "Disenchant\r") || (name == "Raise Dead\r") || (name == "Blizzard\r");
 }
 
+bool Deck::nameIsEnchantment(std::string name) {
+    return (name == "Giant Strength") || (name == "Enrage") || (name == "Haste") || (name == "Magic Fatigue") || (name == "Silence")
+            || (name == "Giant Strength\r") || (name == "Enrage\r") || (name == "Haste\r") || (name == "Magic Fatigue\r") || (name == "Silence\r");
+}
 
 Deck::Deck(std::ifstream& deckFile, int ownerID): theDeck{std::vector<Card *>()}, cardsNumber{0}, ownershipID{ownerID} {
     std::string cardName;

@@ -38,7 +38,7 @@ int Player::getMagic() const {
     return magic;
 }
 
-int Player::getHandMax() const {
+int Player::getHandMax() {
     return handMax;
 }
 

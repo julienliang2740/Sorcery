@@ -3,7 +3,7 @@
 
 #include "card.h"
 
-enum class actAbility{ none, pyro, asumm, msumm };
+enum class actAbility{ none, pyro, asumm, msumm, silenced };
 
 class MinionComponent: public Card {
     protected:
@@ -33,6 +33,7 @@ class MinionComponent: public Card {
         virtual void beAttacked(int n) = 0;
         virtual void attackMinion(MinionComponent* m) = 0;
         virtual std::string getMinionName() const = 0;
+        virtual bool abilityNeedsTarget() const = 0;
 
         // UNCOMMENT THESE WHEN YOU IMPLEMENT THEM
         // virtual int getNumActions() = 0;

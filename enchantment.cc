@@ -37,3 +37,7 @@ void Enchantment::attackMinion(MinionComponent* m) {
     m->beAttacked(getAttack());
     beAttacked(m->getAttack());
 }
+
+bool abilityHasTarget() const {
+    return next->abilityHasTarget();
+}

@@ -7,16 +7,22 @@
 #include <fstream>
 #include "card.h"
 #include "minion.h"
+#include "spell.h"
+#include "enchantment.h"
 
 class Deck {
     std::vector<Card *> theDeck;
     int cardsNumber;
     int ownershipID;
 
-    bool nameIsMinion(std::string name);
     Minion* makeMinionFromName(std::string name, int playerID);
+    bool nameIsMinion(std::string name);
 
-    Spell* makeSpellFromName(std::string name, int playerID)
+    Spell* makeSpellFromName(std::string name, int playerID);
+    bool nameIsSpell(std::string name);
+
+    Enchantment* makeEnchantmentFromName(std::string name, int playerID);
+    bool nameIsEnchantment(std::string name);
 
     public:
         Deck(std::vector<Card *> theDeck, int cardsNumber);
