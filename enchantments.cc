@@ -1,5 +1,25 @@
 #include "enchantments.h"
 
+int GiantStrength::getAttack() const {
+    return 2 + next->getAttack();
+}
+
+int GiantStrength::getDefense() const {
+    return 2 + next->getDefense();
+}
+
+int Enrage::getAttack() const {
+    return 2 * next->getAttack();
+}
+
+int Enrage::getDefense() const {
+    return 2 * next->getDefense();
+}
+
+actAbility Silence::getActivatedAbility() const {
+    return actAbility::silenced;
+}
+
 GiantStrength::GiantStrength(int ownershipID):
     Enchantment(1, "Giant Strength", ownershipID, "individual_cards/giantstrength.txt", nullptr) {}
 

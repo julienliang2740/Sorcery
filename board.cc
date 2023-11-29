@@ -85,6 +85,8 @@ bool Board::playCard(int i, int p, int t) {
     std::vector<MinionComponent*>& targetMinions = (p == player1->getID()) ? p1Minions : p2Minions;
 
     if (targetMinions.size() < t) {
+        std::cerr << "target minions size: " << targetMinions.size() << std::endl;
+        std::cerr << "provided t-value: " << t << std::endl;
         std::cerr << "invalid target minion" << std::endl;
         return false;
     }
