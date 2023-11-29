@@ -151,8 +151,14 @@ int main(int argc, char * argv[]) {
                 cin >> i;
                 if (cin.peek() != '\n') cin >> j;
             }         
-            if (j == -1) cout << i << "th minion attacks enemy player" << endl;
-            else cout << i << "th minion attacks enemy player's " << j << "th minion" << endl;
+            if (j == -1) {
+                cout << i << "th minion attacks enemy player" << endl;
+                gameBoard.attackPlayer(i);
+                cout << "player 1's health: " << player1.getHealth() << endl;
+                cout << "player 2's health: " << player2.getHealth() << endl;
+            } else {
+                cout << i << "th minion attacks enemy player's " << j << "th minion" << endl;
+            }
         }
         else if (cmd == "play") { //  INCOMPLETE INCOMPLETE INCOMPLETE
             int i = -1, p = -1, t = -1;

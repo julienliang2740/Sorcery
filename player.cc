@@ -9,7 +9,7 @@ name(newname),
 playerID(playerID), 
 hand(initalHand),
 playerDeck(playerDeck),
-magic(initialMagic) {}
+magic(initialMagic), health(20) {}
 
 Player::~Player() {
     for (auto card: hand) {
