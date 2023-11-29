@@ -84,21 +84,21 @@ bool Board::playCard(int i, int p, int t) {
 
     std::vector<MinionComponent*>& targetMinions = (p == player1->getID()) ? p1Minions : p2Minions;
 
-    if (targetMinions.size() < t) {
+    if (static_cast<int>(targetMinions.size()) < t) {
         std::cerr << "target minions size: " << targetMinions.size() << std::endl;
         std::cerr << "provided t-value: " << t << std::endl;
         std::cerr << "invalid target minion" << std::endl;
         return false;
     }
 
-    bool placed = false;
+    bool wasplaced = false;
 
     cardtype type = c->getCardType();
     std::string name = c->getName();
 
     if (type == cardtype::M) {
         Minion* newMinion = static_cast<Minion*>(c);
-        placed = addMinion(newMinion);
+        wasplaced = addMinion(newMinion);
     } 
 
     else if (type == cardtype::S) {
@@ -130,7 +130,7 @@ bool Board::playCard(int i, int p, int t) {
             MinionComponent* temp = targetMinions[t - 1];
             targetMinions[t - 1] = (targetMinions[t - 1])->getNext();
             delete temp;
-            placed = true;
+            wasplaced = true;
         }
         else if (name == "Raise Dead") { //wip
             
@@ -147,7 +147,7 @@ bool Board::playCard(int i, int p, int t) {
             Minion* m = graveyard.back();
             graveyard.pop_back();
             ownMinions.emplace_back(m);
-            placed = true;
+            wasplaced = true;
         }
         else if (name == "Blizzard") {
             for (MinionComponent* victim : p1Minions) victim->beAttacked(2);
@@ -165,14 +165,14 @@ bool Board::playCard(int i, int p, int t) {
         Enchantment* newEnchantment = static_cast<Enchantment*>(c);
         newEnchantment->setNext(temp);
         targetMinions[t - 1] = newEnchantment;
-        placed = true;
+        wasplaced = true;
     }
 
-    if (placed) {
+    if (wasplaced) {
         activePlayer->removeCard(i);
     }
 
-    return placed;
+    return wasplaced;
 }
 
 Minion* Board::deleteEnchantments(int ownershipID, int minion) {

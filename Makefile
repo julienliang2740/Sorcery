@@ -1,4 +1,4 @@
-CXX = clang++ -std=c++20
+CXX = g++-11 -std=c++20
 CXXFLAGS = -Wall -g -MMD
 LIBFLAGS = -lX11
 SOURCES = $(wildcard *.cc)
