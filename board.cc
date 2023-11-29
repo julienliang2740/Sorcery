@@ -97,6 +97,7 @@ bool Board::playCard(int i, int p, int t) {
     std::string name = c->getName();
 
     if (type == cardtype::M) {
+        std::cout << "placing a minion" << std::endl;
         Minion* newMinion = static_cast<Minion*>(c);
         wasplaced = addMinion(newMinion);
     } 
