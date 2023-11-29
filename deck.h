@@ -21,7 +21,7 @@ class Deck {
     Spell* makeSpellFromName(std::string name, int playerID);
     bool nameIsSpell(std::string name);
 
-    Enchantment* makeEnchantmentFromName(std::string name, int playerID);
+    //Enchantment* makeEnchantmentFromName(std::string name, int playerID); UNCOMMENT ONCE MAKE ENCHANTMENT FUNCTIONS COME OUT
     bool nameIsEnchantment(std::string name);
 
     public:

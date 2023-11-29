@@ -105,7 +105,7 @@ bool Board::playCard(int i, int p, int t) {
         }
         else if (name == "Unsummon") { //wip
             Player* targetPlayer = (p == player1->getID()) ? player1 : player2;
-            if ((targetPlayer != activePlayer) && (targetPlayer->getHand.size() >= Player::getHandMax())) {
+            if ((targetPlayer != activePlayer) && (targetPlayer->getHand().size() >= Player::getHandMax())) {
                 std::cerr << "cannot unsummon. Opponent's hand is full.";
                 return false;
             }
@@ -134,12 +134,12 @@ bool Board::playCard(int i, int p, int t) {
             
             std::vector<MinionComponent*> ownMinions = (c->getID() == player1->getID()) ? p1Minions : p2Minions;
             if (ownMinions.size() > 4) {
-                std::cerr "minions are at capacity. Cannot raise dead" << std::endl;
+                std::cerr << "minions are at capacity. Cannot raise dead" << std::endl;
             }
 
             std::vector<Minion*>& graveyard = (c->getID() == player1->getID()) ? p1Graveyard : p2Graveyard;
             if (graveyard.empty()) {
-                std::cerr "no minions in graveyard to revive" << std::endl;
+                std::cerr << "no minions in graveyard to revive" << std::endl;
             }
 
             Minion* m = graveyard.back();
@@ -228,31 +228,31 @@ bool Board::useActivatedAbility(int i, int p, int t) {
     Player* activePlayer = (activePlayerID == player1->getID()) ? player1 : player2;
 
     if (activePlayerID == 1) {
-        if (i < 1 || i > activePlayer->p1Minions.size()) {
+        if (i < 1 || i > p1Minions.size()) {
             std::cerr << "no such card exists" << std::endl;
             return false;
         }
     }
     else {
-        if (i < 1 || i > activePlayer->p2Minions.size()) {
+        if (i < 1 || i > p2Minions.size()) {
             std::cerr << "no such card exists" << std::endl;
             return false;
         }
     }
 
-    minioncomponent* theminion = (activePlayerID == player1->getID()) ? static_cast<minioncomponent>(&p1Minions[i - 1]) : static_cast<minioncomponent>(&p2Minions[i - 1])
+    MinionComponent* theminion = (activePlayerID == player1->getID()) ? p1Minions[i - 1] : p2Minions[i - 1];
+    std::string name = theminion->getName();
+    // ^def has to be miniontype
 
-    if (c->abilityNeedsTarget()) {
+    if (theminion->abilityNeedsTarget()) {
         if (((p != 1) && (p != 2)) || t < 1) {
             std::cerr << "must provide target for minion" << std::endl;
-            return false
+            return false;
         }
-        std::string name = theminion->getName();
-        // ^def has to be miniontype
         
-        minioncomponent* thetarget = (p == player1->getID()) ? static_cast<minioncomponent>(&p1Minions[i - 1]) : static_cast<minioncomponent>(&p2Minions[i - 1])
+        MinionComponent* thetarget = (p == player1->getID()) ? p1Minions[i - 1] : p2Minions[i - 1];
 
-        if (name == " Novice Pyromancer") {
+        if (name == "Novice Pyromancer") {
             thetarget->beAttacked(1);
         }
         else std::cout << "bruga minion not picked properly" << std::endl;
@@ -271,7 +271,7 @@ bool Board::useActivatedAbility(int i, int p, int t) {
                     std::cout << "board full, not summoning air elemental" << std::endl;
                 }
                 else {
-                    Minion* toAdd = makeAirElemental(activePlayerID);
+                    Minion* toAdd = Minion::makeAirElemental(activePlayerID);
                     addMinion(toAdd);
                 }
             }
@@ -280,7 +280,7 @@ bool Board::useActivatedAbility(int i, int p, int t) {
                     std::cout << "board full, not summoning air elemental" << std::endl;
                 }
                 else {
-                    Minion* toAdd = makeAirElemental(activePlayerID);
+                    Minion* toAdd = Minion::makeAirElemental(activePlayerID);
                     addMinion(toAdd);
                 }
             }
@@ -292,7 +292,7 @@ bool Board::useActivatedAbility(int i, int p, int t) {
                         std::cout << "board full, not summoning air elemental number " << k+1 << std::endl;
                     }
                     else {
-                        Minion* toAdd = makeAirElemental(activePlayerID);
+                        Minion* toAdd = Minion::makeAirElemental(activePlayerID);
                         addMinion(toAdd);
                     }
                 }
@@ -303,7 +303,7 @@ bool Board::useActivatedAbility(int i, int p, int t) {
                         std::cout << "board full, not summoning air elemental number " << k+1 << std::endl;
                     }
                     else {
-                        Minion* toAdd = makeAirElemental(activePlayerID);
+                        Minion* toAdd = Minion::makeAirElemental(activePlayerID);
                         addMinion(toAdd);
                     }
                 }

@@ -48,6 +48,7 @@ Spell* Deck::makeSpellFromName(std::string name, int playerID) {
     return newSpell;
 }
 
+/*
 Enchantment* Deck::makeEnchantmentFromName(std::string name, int playerID) {
     Enchantment* newEnchantment = ((name == "Giant Strength") || (name == "Giant Strength\r")) ? ...
                                     : (((name == "Enrage") || (name == "Enrage\r")) ? ...
@@ -57,6 +58,7 @@ Enchantment* Deck::makeEnchantmentFromName(std::string name, int playerID) {
     ...
     return newEnchantment;
 }
+*/
 
 bool Deck::nameIsMinion(std::string name) {
     return (name == "Air Elemental") || (name == "Earth Elemental") || (name == "Fire Elemental") || (name == "Bone Golem") || (name == "Novice Pyromancer") || (name == "Potion Seller") || (name == "Apprentice Summoner") || (name == "Master Summoner")
