@@ -196,9 +196,25 @@ int main(int argc, char * argv[]) {
             cout << "Inspecting " << i << "th minion" << endl;
         }
         else if (cmd == "hand") { //  INCOMPLETE INCOMPLETE INCOMPLETE
+            string line;
+            for (int i = 0; i < 12; ++i) {
+                for (auto card: activePlayer.getHand()) {
+                    ifstream cardFile{card->getFile()};
+                    for (int j = 0; j < i; ++j) {
+                        getline(cardFile, line);
+                    }
+                    cout << line;
+                }
+                cout << endl;
+            }
+
+            // SPECIAL CASE: IF THE CARDTYPE IS MINION THEN
+            // YOU NEED TO PRINT ITS DEFENSE - TOTALDAMAGE INSTEAD OF DEFENSE
+            /*
             for (auto card: activePlayer.getHand()) {
                 cout << card->getName() << endl;
             }
+            */
         }
         else if (cmd == "board") { //  INCOMPLETE INCOMPLETE INCOMPLETE
             cout << "p1 minions: " << endl;
