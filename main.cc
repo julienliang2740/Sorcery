@@ -197,13 +197,13 @@ int main(int argc, char * argv[]) {
             cout << "Inspecting " << i << ((i == 1) ? "st" : ((i == 2) ? "nd" : ((i == 3) ? "rd" : "th"))) << "minion" << endl;
         }
         else if (cmd == "hand") { //  INCOMPLETE INCOMPLETE INCOMPLETE
-            string line;
 
             if (activePlayer.getHand().empty()) {
                 cout << "hand is empty" << endl;
                 continue;
             }
 
+            /*
             vector<string> lines(11, "");
             for (auto card: activePlayer.getHand()) {
                 ifstream cardFile{card->getFile()};
@@ -221,6 +221,19 @@ int main(int argc, char * argv[]) {
 
             for (int i = 0; i < 11; ++i) {
                 cout << lines[i] << endl;
+            }
+            */
+
+            string line;
+            for (int i = 0; i < 12; ++i) {
+                for (auto card: activePlayer.getHand()) {
+                    ifstream cardFile{card->getFile()};
+                    for (int j = 0; j < i; ++j) {
+                        getline(cardFile, line);
+                    }
+                    cout << line;
+                }
+                cout << endl;
             }
 
             /*
