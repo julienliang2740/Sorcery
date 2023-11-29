@@ -29,6 +29,6 @@ Spell* Spell::makeRaiseDead(int ownershipID) {
 }
 
 Spell* Spell::makeBlizzard(int ownershipID) {
-    Spell* newSpell = new Spell{1, "Raise Dead", ownershipID, "individual_cards/blizzard.txt", false};
+    Spell* newSpell = new Spell{1, "Blizzard", ownershipID, "individual_cards/blizzard.txt", false};
     return newSpell;
 }

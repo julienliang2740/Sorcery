@@ -133,7 +133,8 @@ int main(int argc, char * argv[]) {
             if (readFromFile) initfile >> i; else cin >> i;
             
             if (config.testing) {
-                cout << "discard " << i << "th card in hand" << endl; //  INCOMPLETE INCOMPLETE INCOMPLETE
+                cout << "discard " << i << ((i == 1) ? "st " : ((i == 2) ? "nd " : ((i == 3) ? "rd " : "th "))) << "card in hand" << endl;
+                if (!activePlayer.removeCard(i)) cout << "could not discard card";
             }
             else {
                 cout << "discard is only available on testing mode" << endl;
@@ -193,28 +194,58 @@ int main(int argc, char * argv[]) {
         else if (cmd == "inspect") { //  INCOMPLETE INCOMPLETE INCOMPLETE
             int i = 0;
             if (readFromFile) initfile >> i; else cin >> i;
-            cout << "Inspecting " << i << "th minion" << endl;
+            cout << "Inspecting " << i << ((i == 1) ? "st" : ((i == 2) ? "nd" : ((i == 3) ? "rd" : "th"))) << "minion" << endl;
         }
         else if (cmd == "hand") { //  INCOMPLETE INCOMPLETE INCOMPLETE
             string line;
-            for (int i = 0; i < 12; ++i) {
+
+            if (activePlayer.getHand().empty()) {
+                cout << "hand is empty" << endl;
+                continue;
+            }
+
+            vector<string> lines(11, "");
+            for (auto card: activePlayer.getHand()) {
+                ifstream cardFile{card->getFile()};
+                string line;
+                for (int i = 0; i < 11; ++i) {
+                    getline(cardFile, line);
+                    lines[i] += line;
+                }
+
+                if (cardFile.fail()) {
+                    std::cerr << "Error reading file: " << card->getFile() << std::endl;
+                    // Handle the error as needed
+                }
+            }
+
+            for (int i = 0; i < 11; ++i) {
+                cout << lines[i] << endl;
+            }
+
+            /*
+            for (int i = 1; i < 12; ++i) {
+                
                 for (auto card: activePlayer.getHand()) {
                     ifstream cardFile{card->getFile()};
+                    cardFile.seekg(0, ios::beg);
                     for (int j = 0; j < i; ++j) {
                         getline(cardFile, line);
                     }
                     cout << line;
+                    cardFile.close();
                 }
                 cout << endl;
             }
+            */
 
             // SPECIAL CASE: IF THE CARDTYPE IS MINION THEN
             // YOU NEED TO PRINT ITS DEFENSE - TOTALDAMAGE INSTEAD OF DEFENSE
-            /*
+            
             for (auto card: activePlayer.getHand()) {
                 cout << card->getName() << endl;
             }
-            */
+            
         }
         else if (cmd == "board") { //  INCOMPLETE INCOMPLETE INCOMPLETE
             cout << "p1 minions: " << endl;
