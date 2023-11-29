@@ -48,17 +48,25 @@ Spell* Deck::makeSpellFromName(std::string name, int playerID) {
     return newSpell;
 }
 
-/*
+
 Enchantment* Deck::makeEnchantmentFromName(std::string name, int playerID) {
-    Enchantment* newEnchantment = ((name == "Giant Strength") || (name == "Giant Strength\r")) ? ...
-                                    : (((name == "Enrage") || (name == "Enrage\r")) ? ...
-                                    : (((name == "Haste") || (name == "Haste\r")) ? ...
-                                    : (((name == "Magic Fatigue") || (name == "Magic Fatigue\r")) ? ...
-                                    : )))
-    ...
+    Enchantment* newEnchantment = nullptr;
+
+    if ((name == "Giant Strength") || (name == "Giant Strength\r")) {
+        newEnchantment = new GiantStrength(playerID);
+    } else if ((name == "Enrage") || (name == "Enrage\r")) {
+        newEnchantment = new Enrage(playerID);
+    } else if ((name == "Haste") || (name == "Haste\r")) {
+        newEnchantment = new Haste(playerID);
+    } else if ((name == "Magic Fatigue") || (name == "Magic Fatigue\r")) {
+        newEnchantment = new MagicFatigue(playerID);
+    } else {
+        newEnchantment = new Silence(playerID);
+    }
+
     return newEnchantment;
 }
-*/
+
 
 bool Deck::nameIsMinion(std::string name) {
     return (name == "Air Elemental") || (name == "Earth Elemental") || (name == "Fire Elemental") || (name == "Bone Golem") || (name == "Novice Pyromancer") || (name == "Potion Seller") || (name == "Apprentice Summoner") || (name == "Master Summoner")

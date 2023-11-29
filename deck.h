@@ -9,6 +9,7 @@
 #include "minion.h"
 #include "spell.h"
 #include "enchantment.h"
+#include "enchantments.h"
 
 class Deck {
     std::vector<Card *> theDeck;
@@ -21,7 +22,7 @@ class Deck {
     Spell* makeSpellFromName(std::string name, int playerID);
     bool nameIsSpell(std::string name);
 
-    //Enchantment* makeEnchantmentFromName(std::string name, int playerID); UNCOMMENT ONCE MAKE ENCHANTMENT FUNCTIONS COME OUT
+    Enchantment* makeEnchantmentFromName(std::string name, int playerID);
     bool nameIsEnchantment(std::string name);
 
     public:

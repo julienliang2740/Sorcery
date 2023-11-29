@@ -1,11 +1,7 @@
 #include "spell.h"
 
-Card::Card(int cost, std::string name, int ownershipID, cardtype cardType, std::string displayFile, bool hasTarget) : 
-
-Spell::Spell(int cost, std::string name, int ownershipID, std::string displayFile, bool hasTarget) :
+Spell::Spell(int cost, std::string name, int ownershipID, std::string displayFile, bool hasTarget) noexcept :
     Card{cost, name, ownershipID, cardtype::S, displayFile, hasTarget} {}
-
-Spell::Spell() {}
 
 Spell* Spell::makeBanish(int ownershipID) {
     Spell* newSpell = new Spell{2, "Banish", ownershipID, "individual_cards/banish.txt", true};

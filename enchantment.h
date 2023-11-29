@@ -14,8 +14,8 @@ class Enchantment: public MinionComponent {
         std::string getMinionName() const override;
         actAbility getActivatedAbility() const override;
         void beAttacked(int n) override;
-        void attackMinion(MinionComponent* m);
-        bool abilityHasTarget() const;
+        void attackMinion(MinionComponent* m) override;
+        bool abilityNeedsTarget() const override;
 };
 
 #endif
