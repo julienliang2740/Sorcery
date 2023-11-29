@@ -36,6 +36,24 @@ int Board::endTurn() {
     return activePlayerID;
 }
 
+Player* Board::getActivePlayer() {
+    return (activePlayerID == player1->getID()) ? player1 : player2;
+}
+
+void Board::attackPlayer(int minion) {
+    Player* activePlayer = getActivePlayer();
+    std::vector<MinionComponent*> ownMinions = (activePlayerID == player1->getID()) ? p1Minions : p2Minions;
+    
+    if (static_cast<int>(ownMinions.size()) < minion || minion < 1) {
+        std::cerr << "invalid minion" << std::endl;
+        return;
+    }
+
+    Player* victim = (activePlayer == player1) ? player2 : player1;
+
+    victim->addHealth(-(ownMinions[minion - 1]->getAttack()));
+}
+
 
 // EDIT THIS FUNCTION AFTER MINION CLASS IS MADE
 bool Board::placeMinion(std::vector<MinionComponent*>& minions, Minion* minion) {
@@ -68,7 +86,7 @@ bool Board::addMinion(Minion* minion) {
 
 bool Board::playCard(int i, int p, int t) {
 
-    Player* activePlayer = (activePlayerID == player1->getID()) ? player1 : player2;
+    Player* activePlayer = getActivePlayer();
 
     if (i < 1 || i > activePlayer->getHand().size()) {
         std::cerr << "no such card exists" << std::endl;
@@ -228,7 +246,7 @@ bool Board::moveMinionToGraveyard(int ownershipID, int minion) {
 
 bool Board::useActivatedAbility(int i, int p, int t) {
     
-    Player* activePlayer = (activePlayerID == player1->getID()) ? player1 : player2;
+    Player* activePlayer = getActivePlayer();
 
     if (activePlayerID == 1) {
         if (i < 1 || i > p1Minions.size()) {

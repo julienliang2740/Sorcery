@@ -39,6 +39,8 @@ class Board {
         bool attackMinion(int curMinion, int target);
         bool useActivatedAbility(int minionUser, int targetPlayerID = -1, int targetMinion = -1);
         Board();
+        Player* getActivePlayer();
+        void attackPlayer(int minion);
 
         
 };
