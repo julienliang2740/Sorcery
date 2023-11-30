@@ -1,8 +1,8 @@
 #include "minion.h"
 
-Minion::Minion(int cost, std::string name, int ownershipID, std::string displayFile, int defense, int attack, int totalDamage, actAbility aAbility, bool needsTarget, minionHasAbility abilityOfMinion): 
+Minion::Minion(int cost, std::string name, int ownershipID, std::string displayFile, int defense, int attack, int totalDamage, actAbility aAbility, bool needsTarget, minionHasAbility abilityOfMinion, int abilityCost): 
     MinionComponent{cost, name, ownershipID, cardtype::M, displayFile, false, nullptr}, defense{defense},
-    attack{attack}, totalDamage{totalDamage}, aAbility{aAbility}, needsTarget{needsTarget}, abilityOfMinion{abilityOfMinion} {}
+    attack{attack}, totalDamage{totalDamage}, aAbility{aAbility}, needsTarget{needsTarget}, abilityOfMinion{abilityOfMinion}, abilityCost{abilityCost} {}
 
 Minion::Minion(MinionComponent* other):
     MinionComponent{other->getCost(), other->getName(), other->getID(), cardtype::M, other->getFile(), false, nullptr},
@@ -50,7 +50,6 @@ void Minion::setDefense(int n) {
     if (n < 1) {
         return;
     }
-
     defense = n;
 }
 
@@ -58,42 +57,42 @@ void Minion::setDefense(int n) {
 // static functions to make default minions
 
 Minion* Minion::makeAirElemental(int ownershipID) {
-    Minion* m = new Minion{0, "Air Elemental", ownershipID, "individual_cards/airelemental.txt", 1, 1, 0, actAbility::none, false, minionHasAbility::hasnoability};
+    Minion* m = new Minion{0, "Air Elemental", ownershipID, "individual_cards/airelemental.txt", 1, 1, 0, actAbility::none, false, minionHasAbility::hasnoability, 0};
     return m;
 }
 
 Minion* Minion::makeEarthElemental(int ownershipID) {
-    Minion* m = new Minion{3, "Earth Elemental", ownershipID, "individual_cards/earthelemental.txt", 4, 4, 0, actAbility::none, false, minionHasAbility::hasnoability};
+    Minion* m = new Minion{3, "Earth Elemental", ownershipID, "individual_cards/earthelemental.txt", 4, 4, 0, actAbility::none, false, minionHasAbility::hasnoability, 0};
     return m;
 }
 
 Minion* Minion::makeFireElemental(int ownershipID) {
-    Minion* m = new Minion{2, "Fire Elemental", ownershipID, "individual_cards/fireelemental.txt", 2, 2, 0, actAbility::none, false, minionHasAbility::hastriggeredability};
+    Minion* m = new Minion{2, "Fire Elemental", ownershipID, "individual_cards/fireelemental.txt", 2, 2, 0, actAbility::none, false, minionHasAbility::hastriggeredability, 0};
     return m;
 }
 
 Minion* Minion::makeBoneGolem(int ownershipID) {
-    Minion* m = new Minion{2, "Bone Golem", ownershipID, "individual_cards/bonegolem.txt", 1, 3, 0, actAbility::none, false, minionHasAbility::hastriggeredability};
+    Minion* m = new Minion{2, "Bone Golem", ownershipID, "individual_cards/bonegolem.txt", 1, 3, 0, actAbility::none, false, minionHasAbility::hastriggeredability, 0};
     return m;
 }
 
 Minion* Minion::makeNovicePyromancer(int ownershipID) {
-    Minion* m = new Minion{1, "Novice Pyromancer", ownershipID, "individual_cards/novicepyromancer.txt", 0, 1, 0, actAbility::pyro, true, minionHasAbility::hasactivatedability};
+    Minion* m = new Minion{1, "Novice Pyromancer", ownershipID, "individual_cards/novicepyromancer.txt", 0, 1, 0, actAbility::pyro, true, minionHasAbility::hasactivatedability, 1};
     return m;
 }
 
 Minion* Minion::makeAppSummoner(int ownershipID) {
-    Minion* m = new Minion{1, "Apprentice Summoner", ownershipID, "individual_cards/apprenticesummoner.txt", 1, 1, 0, actAbility::asumm, false, minionHasAbility::hasactivatedability};
+    Minion* m = new Minion{1, "Apprentice Summoner", ownershipID, "individual_cards/apprenticesummoner.txt", 1, 1, 0, actAbility::asumm, false, minionHasAbility::hasactivatedability, 1};
     return m;
 }
 
 Minion* Minion::makeMsSummoner(int ownershipID) {
-    Minion* m = new Minion{3, "Master Summoner", ownershipID, "individual_cards/mastersummoner.txt", 2, 3, 0, actAbility::msumm, false, minionHasAbility::hasactivatedability};
+    Minion* m = new Minion{3, "Master Summoner", ownershipID, "individual_cards/mastersummoner.txt", 2, 3, 0, actAbility::msumm, false, minionHasAbility::hasactivatedability,2};
     return m;
 }
 
 Minion* Minion::makePotionSeller(int ownershipID) {
-    Minion* m = new Minion{2, "Potion Seller", ownershipID, "individual_cards/potionseller.txt", 1, 3, 0, actAbility::none, false, minionHasAbility::hastriggeredability};
+    Minion* m = new Minion{2, "Potion Seller", ownershipID, "individual_cards/potionseller.txt", 1, 3, 0, actAbility::none, false, minionHasAbility::hastriggeredability, 0};
     return m;
 }
 
@@ -102,5 +101,13 @@ bool Minion::abilityNeedsTarget() const {
 }
 
 minionHasAbility Minion::getHasAbility() const {
-    return abilityOfMinion;
+   return abilityOfMinion;
+}
+
+int Minion::getAbilityCost() const {
+    return abilityCost;
+}
+
+std::string getMinionDescription() const {
+    return description;
 }

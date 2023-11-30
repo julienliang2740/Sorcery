@@ -31,7 +31,7 @@ class MagicFatigue: public Enchantment {
     public:
         MagicFatigue(int ownerID);
         Enchantment* makeMagicFatigue(int ownerID);
-        // int getAbilityCost() const override; // uncomment when ability currency is implemented
+        int getAbilityCost() const override;
 };
 
 class Silence: public Enchantment {

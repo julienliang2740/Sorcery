@@ -1,7 +1,7 @@
 #include "minioncomponent.h"
 
-MinionComponent::MinionComponent(int cost, std::string name, int ownershipID, cardtype cardType, std::string displayFile, bool hasTarget, MinionComponent* next):
-    Card{cost, name, ownershipID, cardType, displayFile, hasTarget}, next{next} {}
+MinionComponent::MinionComponent(int cost, std::string name, int ownershipID, cardtype cardType, bool hasTarget, MinionComponent* next):
+    Card{cost, name, ownershipID, cardType, hasTarget}, next{next} {}
 
 MinionComponent::~MinionComponent() {}
 

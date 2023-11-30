@@ -20,6 +20,10 @@ actAbility Silence::getActivatedAbility() const {
     return actAbility::silenced;
 }
 
+int MagicFatigue::getAbilityCost() const {
+    return 2 + next->getAbilityCost();
+}
+
 GiantStrength::GiantStrength(int ownershipID):
     Enchantment(1, "Giant Strength", ownershipID, "individual_cards/giantstrength.txt", nullptr, true, "") {}
 

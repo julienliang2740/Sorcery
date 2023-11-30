@@ -10,24 +10,22 @@
 #include "enchantment.h"
 #include "spell.h"
 #include "board.h"
-
-enum class triggerType{ BeginTurn, EndTurn, MinionEnters, MinionLeaves, All };
+#include "observer.h"
 
 class textDisplay: public Observer {
-    static int row_length = 5;
-    ostream& out;
-    card_template_t topRow = {CARD_TEMPLATE_BORDER, CARD_TEMPLATE_EMPTY, PLAYER_1_TEMPLATE, CARD_TEMPLATE_EMPTY, CARD_TEMPLATE_BORDER};
-    card_template_t bottomRow = {CARD_TEMPLATE_BORDER, CARD_TEMPLATE_EMPTY, PLAYER_2_TEMPLATE, CARD_TEMPLATE_EMPTY, CARD_TEMPLATE_BORDER};
+    static const int row_length = 5;
+    card_template_t topRow[5] = {CARD_TEMPLATE_BORDER, CARD_TEMPLATE_EMPTY, PLAYER_1_TEMPLATE, CARD_TEMPLATE_EMPTY, CARD_TEMPLATE_BORDER};
+    card_template_t bottomRow[5] = {CARD_TEMPLATE_BORDER, CARD_TEMPLATE_EMPTY, PLAYER_2_TEMPLATE, CARD_TEMPLATE_EMPTY, CARD_TEMPLATE_BORDER};
     card_template_t p1minions[5] = {CARD_TEMPLATE_BORDER, CARD_TEMPLATE_BORDER, CARD_TEMPLATE_BORDER, CARD_TEMPLATE_BORDER, CARD_TEMPLATE_BORDER};
     card_template_t p2minions[5] = {CARD_TEMPLATE_BORDER, CARD_TEMPLATE_BORDER, CARD_TEMPLATE_BORDER, CARD_TEMPLATE_BORDER, CARD_TEMPLATE_BORDER};
     public:
-        textDisplay(const Board& b, ostream& out);
+        textDisplay(const Board& b);
         ~textDisplay();
         void notify(int player, int whichCard) override;
         triggerType subType() const override;
         void printBoard() const;
-        static int getRowLength() const;
+        static int getRowLength();
         // minion inspecting will just happen in main. so that this object doesn't take as much memory
-}
+};
 
 #endif

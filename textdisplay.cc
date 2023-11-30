@@ -10,7 +10,7 @@ card_template_t display_minion(MinionComponent* m) {
     }
 }
 
-textDisplay::textDisplay(const Board& b, ostream& out): b{b}, out{out} {
+textDisplay::textDisplay(const Board& b): b{b} {
     // setting player cards
     topRow[2] = display_player_card(1, b.player1->getName(), b.player1->getHealth(), b.player1->getMagic());
     bottomRow[2] = display_player_card(2, b.player2->getName(), b.player2->getHealth(), b.player2->getMagic());
@@ -18,7 +18,7 @@ textDisplay::textDisplay(const Board& b, ostream& out): b{b}, out{out} {
     // setting rituals. Will be done later
 
     if (!b.p1Graveyard.empty()) {
-        Minion* lastMinion = p1Graveyard[p1Graveyard.size() - 1];
+        Minion* lastMinion = b.p1Graveyard[p1Graveyard.size() - 1];
         topRow[row_length - 1] = display_minion(lastMinion);
     }
 
@@ -46,7 +46,7 @@ textDisplay::textDisplay(const Board& b, ostream& out): b{b}, out{out} {
 
 textDisplay::~textDisplay() {}
 
-void printRow(card_template_t (row&)[5], ostream& out) {
+void printRow(card_template_t (row&)[5]) {
 
     std::string rowLines[11];
 
@@ -57,23 +57,23 @@ void printRow(card_template_t (row&)[5], ostream& out) {
     }
 
     for (int i = 0; i < 11; ++i) {
-        out << rowLines[i] << endl;
+        std::cout << rowLines[i] << std::endl;
     }
 }
 
 void textDisplay::printBoard() const {
 
-    out << CENTRE_GRAPHIC[0] << endl;
+    std::cout << CENTRE_GRAPHIC[0] << std::endl;
 
-    printRow(topRow, out);
-    printRow(p1minions, out);
+    printRow(topRow);
+    printRow(p1minions);
     for (auto line: CENTRE_GRAPHIC) {
-        out << line << endl;
+        std::cout << line << std::endl;
     }
-    printRow(p2minions, out);
-    printRow(bottomRow, out);
+    printRow(p2minions);
+    printRow(bottomRow);
 
-    out << CENTRE_GRAPHIC[0] << endl;
+    std::cout << CENTRE_GRAPHIC[0] << std::endl;
 
     /*
     std::string rowLines[11];
@@ -180,6 +180,6 @@ triggerType textDisplay::subType() const {
     return triggerType::All;
 }
 
-int textDisplay::getRowLength() const {
+int textDisplay::getRowLength() {
     return row_length;
 }

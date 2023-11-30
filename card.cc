@@ -4,13 +4,13 @@
 
 #include "card.h"
 
-Card::Card(int cost, std::string name, int ownershipID, cardtype cardType, std::string displayFile, bool hasTarget) : 
+Card::Card(int cost, std::string name, int ownershipID, cardtype cardType, bool hasTarget, std::string description) : 
 cost{cost},
 name{name},
 ownershipID{ownershipID},
 cardType{cardType},
-displayFile{displayFile},
-hasTarget{hasTarget} {}
+hasTarget{hasTarget},
+description{description} {}
 
 Card::~Card() {}
 
@@ -30,14 +30,14 @@ cardtype Card::getType() const {
     return cardType;
 }
 
-std::string Card::getFile() const {
-    return displayFile;
-}
-
 bool Card::hasATarget() const {
     return hasTarget;
 }
 
 cardtype Card::getCardType() const {
     return cardType;
+}
+
+std::string Card::getCardDescription() const {
+    return description;
 }

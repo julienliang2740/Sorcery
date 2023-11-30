@@ -5,7 +5,7 @@
 
 class Spell: public Card {
     public:
-        Spell(int cost, std::string name, int ownershipID, std::string displayFile, bool hasTarget) noexcept;
+        Spell(int cost, std::string name, int ownershipID, bool hasTarget, std::string description) noexcept;
         static Spell* makeBanish(int ownershipID);
         static Spell* makeUnsummon(int ownershipID);
         static Spell* makeRecharge(int ownershipID);

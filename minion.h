@@ -14,10 +14,11 @@ class Minion: public MinionComponent {
     actAbility aAbility;
     bool needsTarget;
     minionHasAbility abilityOfMinion;
+    int abilityCost;
     // triggeredAbility* tAbility; // or maybe a unique ptr if you don't wanna deal with memory management
     // int abilityCost;
     public:
-        Minion(int cost, std::string name, int ownershipID, std::string displayFile, int defense, int attack, int totalDamage, actAbility aAbility, bool needsTarget, minionHasAbility abilityOfMinion);
+        Minion(int cost, std::string name, int ownershipID, std::string displayFile, int defense, int attack, int totalDamage, actAbility aAbility, bool needsTarget, minionHasAbility abilityOfMinion, int abilityCost);
         Minion(MinionComponent* other);
         ~Minion();
         int getDefense() const override;
@@ -39,6 +40,8 @@ class Minion: public MinionComponent {
         void setDefense(int n);
         bool abilityNeedsTarget() const override;
         minionHasAbility getHasAbility() const override;
+        int getAbilityCost() const override;
+        std::string getMinionDescription() const override;
 };
 
 #endif

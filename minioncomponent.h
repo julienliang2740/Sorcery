@@ -24,7 +24,7 @@ class MinionComponent: public Card {
         Iterator begin() const;
         Iterator end() const;
 
-        MinionComponent(int cost, std::string name, int ownershipID, cardtype cardType, std::string displayFile, bool hasTarget, MinionComponent* next);
+        MinionComponent(int cost, std::string name, int ownershipID, cardtype cardType, bool hasTarget, MinionComponent* next);
         ~MinionComponent() override;
         MinionComponent* getNext() const;
         virtual int getDefense() const = 0;
@@ -36,7 +36,9 @@ class MinionComponent: public Card {
         virtual std::string getMinionName() const = 0;
         virtual bool abilityNeedsTarget() const = 0;
         virtual minionHasAbility getHasAbility() const = 0;
-        
+        virtual int getAbilityCost() const = 0;
+        virtual std::string getMinionDescription() const = 0;
+
         // UNCOMMENT THESE WHEN YOU IMPLEMENT THEM
         // virtual int getNumActions() = 0;
         // virtual void doActivatedAbility() = 0;

@@ -13,19 +13,19 @@ class Card {
         std::string name;
         int ownershipID;
         cardtype cardType;
-        std::string displayFile;
         bool hasTarget = false;
+        std::string description;
 
     public:
-        Card(int cost, std::string name, int ownershipID, cardtype cardType, std::string displayFile, bool hasTarget);
+        Card(int cost, std::string name, int ownershipID, cardtype cardType, bool hasTarget, std::string description);
         virtual ~Card();
         int getCost() const;
         std::string getName() const;
         int getID() const;
         cardtype getType() const;
-        std::string getFile() const;
         bool hasATarget() const;
         cardtype getCardType() const;
+        std::string getCardDescription() const;
 };
 
 #endif

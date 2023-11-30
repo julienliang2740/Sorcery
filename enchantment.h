@@ -5,9 +5,8 @@
 
 class Enchantment: public MinionComponent {
     bool hasStats;
-    std::string abilityDescription;
     public:
-        Enchantment(int cost, std::string name, int ownershipID, std::string displayFile, MinionComponent* next, bool hasStats, std::string abilityDescription);
+        Enchantment(int cost, std::string name, int ownershipID, MinionComponent* next, bool hasStats);
         ~Enchantment();
         int getDefense() const override;
         int getAttack() const override;
@@ -20,7 +19,8 @@ class Enchantment: public MinionComponent {
         bool abilityNeedsTarget() const override;
         minionHasAbility getHasAbility() const override;
         bool getHasStats() const;
-        std::string getAbilityDesc() const;
+        int getAbilityCost() const;
+        std::string getMinionDescription() const override;
 };
 
 #endif

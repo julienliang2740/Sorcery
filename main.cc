@@ -226,39 +226,6 @@ int main(int argc, char * argv[]) {
                 cout << lines[i] << endl;
             }
             
-            /*
-            string line;
-            for (int i = 0; i < 12; ++i) {
-                for (auto card: activePlayer.getHand()) {
-                    ifstream cardFile{card->getFile()};
-                    for (int j = 0; j < i; ++j) {
-                        getline(cardFile, line);
-                    }
-                    if (line.length() > 0 && (line[line.length() - 1] == '\r')) {
-                        line = line.substr(0, line.length() - 1);
-                    }
-                    cout << line;
-                }
-                cout << endl;
-            }
-            */
-
-            /*
-            for (int i = 1; i < 12; ++i) {
-                
-                for (auto card: activePlayer.getHand()) {
-                    ifstream cardFile{card->getFile()};
-                    cardFile.seekg(0, ios::beg);
-                    for (int j = 0; j < i; ++j) {
-                        getline(cardFile, line);
-                    }
-                    cout << line;
-                    cardFile.close();
-                }
-                cout << endl;
-            }
-            */
-
             // SPECIAL CASE: IF THE CARDTYPE IS MINION THEN
             // YOU NEED TO PRINT ITS DEFENSE - TOTALDAMAGE INSTEAD OF DEFENSE
             

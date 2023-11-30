@@ -1,7 +1,7 @@
 #include "enchantment.h"
 
-Enchantment::Enchantment(int cost, std::string name, int ownershipID, std::string displayFile, MinionComponent* next, bool hasStats, std::string abilityDescription):
-    MinionComponent{cost, name, ownershipID, cardtype::E, displayFile, false, next}, hasStats{hasStats}, abilityDescription{abilityDescription} {}
+Enchantment::Enchantment(int cost, std::string name, int ownershipID, MinionComponent* next, bool hasStats):
+    MinionComponent{cost, name, ownershipID, cardtype::E, false, next}, hasStats{hasStats} {}
 
 Enchantment::~Enchantment() {}
 
@@ -50,6 +50,10 @@ bool Enchantment::getHasStats() const {
     return hasStats;
 }
 
-std::string Enchantment::getAbilityDesc() const {
-    return abilityDescription;
+int Enchantment::getAbilityCost() const {
+    return next->getAbilityCost();
+}
+
+std::string getMinionDescription() const {
+    return next->getMinionDescription();
 }
