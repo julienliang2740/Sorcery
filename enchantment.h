@@ -4,10 +4,10 @@
 #include "minioncomponent.h"
 
 class Enchantment: public MinionComponent {
-    enchantmentHasStats hasStats;
+    bool hasStats;
     std::string abilityDescription;
     public:
-        Enchantment(int cost, std::string name, int ownershipID, std::string displayFile, MinionComponent* next);
+        Enchantment(int cost, std::string name, int ownershipID, std::string displayFile, MinionComponent* next, bool hasStats, std::string abilityDescription);
         ~Enchantment();
         int getDefense() const override;
         int getAttack() const override;
@@ -19,7 +19,7 @@ class Enchantment: public MinionComponent {
         void attackMinion(MinionComponent* m) override;
         bool abilityNeedsTarget() const override;
         minionHasAbility getHasAbility() const override;
-        enchantmentHasStats getHasStats() const override;
+        bool getHasStats() const;
         std::string getAbilityDesc() const;
 };
 

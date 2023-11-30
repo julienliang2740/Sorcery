@@ -1,8 +1,8 @@
 #include "minion.h"
 
-Minion::Minion(int cost, std::string name, int ownershipID, std::string displayFile, int defense, int attack, int totalDamage, actAbility aAbility, bool needsTarget): 
+Minion::Minion(int cost, std::string name, int ownershipID, std::string displayFile, int defense, int attack, int totalDamage, actAbility aAbility, bool needsTarget, minionHasAbility abilityOfMinion): 
     MinionComponent{cost, name, ownershipID, cardtype::M, displayFile, false, nullptr}, defense{defense},
-    attack{attack}, totalDamage{totalDamage}, aAbility{aAbility}, needsTarget{needsTarget} {}
+    attack{attack}, totalDamage{totalDamage}, aAbility{aAbility}, needsTarget{needsTarget}, abilityOfMinion{abilityOfMinion} {}
 
 Minion::Minion(MinionComponent* other):
     MinionComponent{other->getCost(), other->getName(), other->getID(), cardtype::M, other->getFile(), false, nullptr},
@@ -58,7 +58,7 @@ void Minion::setDefense(int n) {
 // static functions to make default minions
 
 Minion* Minion::makeAirElemental(int ownershipID) {
-    Minion* m = new Minion{0, "Air Elemental", ownershipID, "individual_cards/airelemental.txt", 1, 1, 0, actAbility::none, false}, minionHasAbility::hasnoability;
+    Minion* m = new Minion{0, "Air Elemental", ownershipID, "individual_cards/airelemental.txt", 1, 1, 0, actAbility::none, false, minionHasAbility::hasnoability};
     return m;
 }
 
