@@ -4,6 +4,7 @@
 #include "minioncomponent.h"
 
 class Enchantment: public MinionComponent {
+    enchantmentHasStats hasStats;
     public:
         Enchantment(int cost, std::string name, int ownershipID, std::string displayFile, MinionComponent* next);
         ~Enchantment();
@@ -17,6 +18,8 @@ class Enchantment: public MinionComponent {
         void attackMinion(MinionComponent* m) override;
         bool abilityNeedsTarget() const override;
         minionHasAbility getHasAbility() const override;
+        enchantmentHasStats getHasStats() const override;
+        std::string getAbilityDesc() const override;
         enchantmentHasStats getHasStats() const override;
 };
 

@@ -42,6 +42,14 @@ bool Enchantment::abilityNeedsTarget() const {
     return next->abilityNeedsTarget();
 }
 
-minionHasAbility getHasAbility()
+minionHasAbility Enchantment::getHasAbility() const {
+    return next->getHasAbility();
+}
 
-enchantmentHasStats getHasStats()
+enchantmentHasStats Enchantment::getHasStats() const {
+    return hasStats;
+}
+
+std::string Enchantment::getAbilityDesc() const {
+    return next->getAbilityDesc();
+}

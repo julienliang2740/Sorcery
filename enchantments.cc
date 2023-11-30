@@ -33,4 +33,8 @@ MagicFatigue::MagicFatigue(int ownershipID):
     Enchantment(0, "Magic Fatigue", ownershipID, "individual_cards/magicfatigue.txt", nullptr) {}
 
 Silence::Silence(int ownershipID):
-    Enchantment(1, "Silence", ownershipID, "individual_cards/silence.txt", nullptr) {}
+    Enchantment(1, "Silence", ownershipID, "individual_cards/silence.txt", nullptr) {}\
+
+actAbility Silence::getActivatedAbility() const {
+    return minionHasAbility::hasnoability;
+}

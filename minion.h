@@ -13,6 +13,7 @@ class Minion: public MinionComponent {
     // int actions;
     actAbility aAbility;
     bool needsTarget;
+    minionHasAbility abilityOfMinion;
     // triggeredAbility* tAbility; // or maybe a unique ptr if you don't wanna deal with memory management
     // int abilityCost;
     public:
