@@ -41,3 +41,7 @@ void Enchantment::attackMinion(MinionComponent* m) {
 bool Enchantment::abilityNeedsTarget() const {
     return next->abilityNeedsTarget();
 }
+
+minionHasAbility getHasAbility()
+
+enchantmentHasStats getHasStats()

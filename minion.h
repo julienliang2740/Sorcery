@@ -3,6 +3,8 @@
 
 #include "minioncomponent.h"
 
+
+
 class Minion: public MinionComponent {
     //friend class Spell;
     int defense;
@@ -35,6 +37,7 @@ class Minion: public MinionComponent {
         void reset();
         void setDefense(int n);
         bool abilityNeedsTarget() const override;
+        minionHasAbility getHasAbility() const override;
 };
 
 #endif

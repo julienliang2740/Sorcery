@@ -16,6 +16,8 @@ class Enchantment: public MinionComponent {
         void beAttacked(int n) override;
         void attackMinion(MinionComponent* m) override;
         bool abilityNeedsTarget() const override;
+        minionHasAbility getHasAbility() const override;
+        enchantmentHasStats getHasStats() const override;
 };
 
 #endif

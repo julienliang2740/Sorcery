@@ -4,6 +4,8 @@
 #include "card.h"
 
 enum class actAbility{ none, pyro, asumm, msumm, silenced };
+enum class minionHasAbility { hasnoability, hasactivatedability, hastriggeredability };
+enum class enchantmentHasStats { gotstats, nostats };
 
 class MinionComponent: public Card {
     protected:
@@ -34,6 +36,8 @@ class MinionComponent: public Card {
         virtual void attackMinion(MinionComponent* m) = 0;
         virtual std::string getMinionName() const = 0;
         virtual bool abilityNeedsTarget() const = 0;
+        virtual minionHasAbility getHasAbility() const = 0;
+        virtual enchantmentHasStats getHasStats() const = 0;
 
         // UNCOMMENT THESE WHEN YOU IMPLEMENT THEM
         // virtual int getNumActions() = 0;
