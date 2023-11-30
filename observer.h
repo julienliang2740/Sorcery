@@ -7,6 +7,7 @@ enum class triggerType{ BeginTurn, EndTurn, MinionEnters, MinionLeaves, All };
 
 class Observer {
     Board& b;
+    triggerType subtype;
  public:
     Observer(Board& b);
     virtual void notify(int player, int whichCard) = 0;  // c is the Cell that called the notify method
