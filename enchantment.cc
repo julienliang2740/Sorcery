@@ -51,5 +51,5 @@ enchantmentHasStats Enchantment::getHasStats() const {
 }
 
 std::string Enchantment::getAbilityDesc() const {
-    return next->getAbilityDesc();
+    return abilityDescription;
 }
