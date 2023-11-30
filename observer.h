@@ -6,10 +6,10 @@
 enum class triggerType{ BeginTurn, EndTurn, MinionEnters, MinionLeaves, All };
 
 class Observer {
-    Board* b;
+    Board& b;
  public:
-    Observer(Board* b) = default;
-    virtual void notify() = 0;  // c is the Cell that called the notify method
+    Observer(Board& b) = default;
+    virtual void notify(int player, int whichCard) = 0;  // c is the Cell that called the notify method
     virtual triggerType subType() const = 0;
     virtual ~Observer() = default;
 };
