@@ -74,6 +74,7 @@ bool Player::drawCard() {
         std::cout << "Hand is full. Cannot draw." << std::endl;
         return false;
     }
+<<<<<<< Updated upstream
     addCardToHand(playerDeck->draw());
     return true;
 }
@@ -90,4 +91,11 @@ void Player::addMagic(int change) {
 void Player::addHealth(int change) {
     health += change;
     std::cout << "Player " << playerID << " (" << name << ") now has " << health << "health" << std::endl;
+=======
+    hand.emplace_back(playerDeck.draw());
+}
+
+void Player::setDeck(Deck&& d) {
+    playerDeck = d;
+>>>>>>> Stashed changes
 }

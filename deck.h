@@ -36,7 +36,11 @@ class Deck {
         bool addCardFront(Card *theCard); // returns true if succesfully added
         bool addCardBack(Card *theCard); // returns true if succesfully added
         ~Deck();
+<<<<<<< Updated upstream
         Deck& operator=(Deck&& other) noexcept;
+=======
+        // Deck& operator=(Deck&& other); // move assignment
+>>>>>>> Stashed changes
 };
 
 #endif

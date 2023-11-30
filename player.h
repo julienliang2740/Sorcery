@@ -31,9 +31,13 @@ class Player {
         int getHealth() const;
         bool removeCard(int i);
         bool drawCard();
+<<<<<<< Updated upstream
         void shuffle();
         void addMagic(int change);
         void addHealth(int change);
+=======
+        void setDeck(Deck&& d);
+>>>>>>> Stashed changes
 };
 
 #endif
