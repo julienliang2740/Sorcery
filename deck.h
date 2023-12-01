@@ -36,7 +36,7 @@ class Deck {
         bool addCardFront(Card *theCard); // returns true if succesfully added
         bool addCardBack(Card *theCard); // returns true if succesfully added
         ~Deck();
-        // Deck& operator=(Deck&& other); // move assignment
+        Deck& operator=(Deck&& other) noexcept;
 };
 
 #endif

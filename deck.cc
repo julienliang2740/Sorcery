@@ -85,7 +85,6 @@ bool Deck::nameIsEnchantment(std::string name) {
 
 Deck::Deck(std::ifstream& deckFile, int ownerID): theDeck{std::vector<Card *>()}, cardsNumber{0}, ownershipID{ownerID} {
     std::string cardName;
-    std::cout << "calling deck ctor" << std::endl;
 
     while (getline(deckFile, cardName)) {
         ++cardsNumber;
@@ -93,13 +92,8 @@ Deck::Deck(std::ifstream& deckFile, int ownerID): theDeck{std::vector<Card *>()}
                         : ((nameIsSpell(cardName)) ? makeSpellFromName(cardName, ownershipID)
                         : ((nameIsEnchantment(cardName)) ? makeEnchantmentFromName(cardName, ownershipID)
                         : new Card(0, cardName, ownerID, cardtype::R, std::string("file"), false)));
-        std::cout << "allocating and adding a new card!" << std::endl;
-        Card * newCard = new Card(0, cardName, ownerID, cardtype::Minion, std::string("file"), false);
         theDeck.emplace_back(newCard);
     }
-
-    if (theDeck.empty()) std::cout << "deck is empty, exiting ctor" << std::endl;
-    else std::cout << "deck has " << theDeck.size() << " cards" << std::endl;
 }
 
 int Deck::getNumCards() const {
@@ -107,7 +101,8 @@ int Deck::getNumCards() const {
 }
 
 bool Deck::isEmpty() {
-    return (theDeck.empty());
+    if (theDeck.empty()) return true;
+    else return false;
 }
 
 Card* Deck::draw() {
@@ -142,8 +137,6 @@ bool Deck::addCardBack(Card *theCard) {
         return false;
     }
 }
-/*
-Deck& Deck::operator=(Deck&& other) {
 
 Deck& Deck::operator=(Deck&& other) noexcept {
     std::cout << "move assignment operator" << std::endl;
@@ -166,14 +159,3 @@ Deck& Deck::operator=(Deck&& other) noexcept {
     }
     return *this;
 }
-    if (this == &other) {
-        return *this;
-    }
-
-    theDeck = std::move(other.theDeck);
-
-    std::swap(cardsNumber, other.cardsNumber);
-    std::swap(ownershipID, other.ownershipID);
-    return *this;
-}
-*/
