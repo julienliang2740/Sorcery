@@ -24,7 +24,7 @@ class MinionComponent: public Card {
         Iterator begin() const;
         Iterator end() const;
 
-        MinionComponent(int cost, std::string name, int ownershipID, cardtype cardType, bool hasTarget, MinionComponent* next);
+        MinionComponent(int cost, std::string name, int ownershipID, cardtype cardType, bool hasTarget, MinionComponent* next, std::string description);
         ~MinionComponent() override;
         MinionComponent* getNext() const;
         virtual int getDefense() const = 0;

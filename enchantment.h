@@ -6,7 +6,7 @@
 class Enchantment: public MinionComponent {
     bool hasStats;
     public:
-        Enchantment(int cost, std::string name, int ownershipID, MinionComponent* next, bool hasStats);
+        Enchantment(int cost, std::string name, int ownershipID, MinionComponent* next, bool hasStats, std::string description);
         ~Enchantment();
         int getDefense() const override;
         int getAttack() const override;

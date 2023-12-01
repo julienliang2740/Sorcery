@@ -34,7 +34,6 @@ class Player {
         void shuffle();
         void addMagic(int change);
         void addHealth(int change);
-        void setDeck(Deck&& d);
 };
 
 #endif

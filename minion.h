@@ -18,7 +18,7 @@ class Minion: public MinionComponent {
     // triggeredAbility* tAbility; // or maybe a unique ptr if you don't wanna deal with memory management
     // int abilityCost;
     public:
-        Minion(int cost, std::string name, int ownershipID, std::string displayFile, int defense, int attack, int totalDamage, actAbility aAbility, bool needsTarget, minionHasAbility abilityOfMinion, int abilityCost);
+        Minion(int cost, std::string name, int ownershipID, int defense, int attack, int totalDamage, actAbility aAbility, bool needsTarget, minionHasAbility abilityOfMinion, int abilityCost, std::string description);
         Minion(MinionComponent* other);
         ~Minion();
         int getDefense() const override;

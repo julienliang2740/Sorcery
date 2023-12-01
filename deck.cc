@@ -91,7 +91,7 @@ Deck::Deck(std::ifstream& deckFile, int ownerID): theDeck{std::vector<Card *>()}
         Card * newCard = (nameIsMinion(cardName)) ? makeMinionFromName(cardName, ownershipID)
                         : ((nameIsSpell(cardName)) ? makeSpellFromName(cardName, ownershipID)
                         : ((nameIsEnchantment(cardName)) ? makeEnchantmentFromName(cardName, ownershipID)
-                        : new Card(0, cardName, ownerID, cardtype::R, std::string("file"), false)));
+                        : new Card(0, cardName, ownerID, cardtype::R, false, "default - nothing")));
         theDeck.emplace_back(newCard);
     }
 }

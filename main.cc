@@ -202,8 +202,11 @@ int main(int argc, char * argv[]) {
                 cout << "hand is empty" << endl;
                 continue;
             }
-
             
+            for (auto card: activePlayer.getHand()) {
+                cout << card->getName() << endl;
+            }
+            /*
             vector<string> lines(11, "");
             for (auto card: activePlayer.getHand()) {
                 ifstream cardFile{card->getFile()};
@@ -232,6 +235,7 @@ int main(int argc, char * argv[]) {
             for (auto card: activePlayer.getHand()) {
                 cout << card->getName() << endl;
             }
+            */
             
         }
         else if (cmd == "board") { //  INCOMPLETE INCOMPLETE INCOMPLETE

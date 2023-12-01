@@ -2,6 +2,6 @@
 
 Observer::Observer(Board& b, triggerType t) : b(b), subtype(t) {}
 
-triggerType subType() const {
+triggerType Observer::subType() const {
     return subtype;
 }
