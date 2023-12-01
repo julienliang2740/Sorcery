@@ -89,15 +89,12 @@ Deck::Deck(std::ifstream& deckFile, int ownerID): theDeck{std::vector<Card *>()}
 
     while (getline(deckFile, cardName)) {
         ++cardsNumber;
-<<<<<<< Updated upstream
         Card * newCard = (nameIsMinion(cardName)) ? makeMinionFromName(cardName, ownershipID)
                         : ((nameIsSpell(cardName)) ? makeSpellFromName(cardName, ownershipID)
                         : ((nameIsEnchantment(cardName)) ? makeEnchantmentFromName(cardName, ownershipID)
                         : new Card(0, cardName, ownerID, cardtype::R, std::string("file"), false)));
-=======
         std::cout << "allocating and adding a new card!" << std::endl;
         Card * newCard = new Card(0, cardName, ownerID, cardtype::Minion, std::string("file"), false);
->>>>>>> Stashed changes
         theDeck.emplace_back(newCard);
     }
 
@@ -148,7 +145,6 @@ bool Deck::addCardBack(Card *theCard) {
 /*
 Deck& Deck::operator=(Deck&& other) {
 
-<<<<<<< Updated upstream
 Deck& Deck::operator=(Deck&& other) noexcept {
     std::cout << "move assignment operator" << std::endl;
     if (this != &other) {
@@ -170,7 +166,6 @@ Deck& Deck::operator=(Deck&& other) noexcept {
     }
     return *this;
 }
-=======
     if (this == &other) {
         return *this;
     }
@@ -182,4 +177,3 @@ Deck& Deck::operator=(Deck&& other) noexcept {
     return *this;
 }
 */
->>>>>>> Stashed changes

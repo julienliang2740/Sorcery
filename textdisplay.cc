@@ -10,7 +10,7 @@ card_template_t display_minion(MinionComponent* m) {
     }
 }
 
-textDisplay::textDisplay(const Board& b): b{b} {
+textDisplay::textDisplay(const Board& b): Observer{b, triggerType::All} {
     // setting player cards
     topRow[2] = display_player_card(1, b.player1->getName(), b.player1->getHealth(), b.player1->getMagic());
     bottomRow[2] = display_player_card(2, b.player2->getName(), b.player2->getHealth(), b.player2->getMagic());
@@ -174,10 +174,6 @@ void textDisplay::notify(int player, int whichCard) {
         }
 
     }
-}
-
-triggerType textDisplay::subType() const {
-    return triggerType::All;
 }
 
 int textDisplay::getRowLength() {

@@ -33,22 +33,8 @@ int main(int argc, char * argv[]) {
     cout << "testing mode: " << config.testing << endl;
     cout << "fancy graphics: " << config.graphics << endl;
 
-<<<<<<< Updated upstream
     ifstream d1 {config.deck1};
     ifstream d2 {config.deck2};
-=======
-    Deck tempdeck1(vector<Card*>(), 0);
-    Deck tempdeck2(vector<Card*>(), 0);
-
-    Player player1("", 1, vector<Card*>(), tempdeck1, 0);
-    Player player2("", 2, vector<Card*>(), tempdeck2, 0);
-    
-    ifstream d1 {config.deck1};
-    ifstream d2 {config.deck2};
-
-    player1.setDeck(std::move(Deck{d1, player1.getID()})); // NEED A MOVE ASSIGNMENT OPERATOR MAYBE
-    player2.setDeck(std::move(Deck{d2, player2.getID()}));
->>>>>>> Stashed changes
 
     Player player1(string(""), 1, vector<Card*>(), new Deck{d1, 1}, 0);
     Player player2(string(""), 2, vector<Card*>(), new Deck{d2, 2}, 0);
