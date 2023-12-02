@@ -10,6 +10,8 @@
 #include "spell.h"
 #include "enchantment.h"
 #include "enchantments.h"
+#include "ritual.h"
+#include "rituals.h"
 
 class Deck {
     std::vector<Card *> theDeck;
@@ -24,6 +26,9 @@ class Deck {
 
     Enchantment* makeEnchantmentFromName(std::string name, int playerID);
     bool nameIsEnchantment(std::string name);
+
+    Ritual* makeRitualFromName(std::string name, int playerID);
+    bool nameisRitual(std::string name);
 
     public:
         Deck(std::vector<Card *> theDeck, int cardsNumber);

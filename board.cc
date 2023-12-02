@@ -23,14 +23,16 @@ void Board::addObserver(int n) {
 }
 
 int Board::endTurn() {
-    for (auto p: observers) {
-        // LOOP THROUGH OBSERVERS AND NOTIFY THEM
-    }
-
     if (activePlayerID == player1->getID()) {
         activePlayerID = player2->getID();
     } else {
         activePlayerID = player1->getID();
+    }
+
+    for (auto observer: observers) {
+        if (observer->subType() == triggerType::EndTurn) {
+            observer->notify(0, 0);
+        }
     }
 
     return activePlayerID;

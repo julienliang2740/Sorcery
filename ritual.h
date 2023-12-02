@@ -11,8 +11,8 @@ class Ritual: public Card, public Observer {
     bool onState;
 
     public:
-        Ritual(int cost, std::string name, int ownershipID, std::string description, Board& b,
-                int charges, int activationCost, int observerLocation);
+        Ritual(int cost, std::string name, int ownershipID, std::string description, Board* b, triggerType subtype,
+                int charges, int activationCost);
         ~Ritual();
         int getCharges() const;
         int getActivationCost() const;

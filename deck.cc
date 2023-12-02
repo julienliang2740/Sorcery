@@ -26,15 +26,15 @@ Deck::~Deck() {
     }
 }
 
-Minion* Deck::makeMinionFromName(std::string name, int PlayerID) {
-    Minion* newMinion = ((name == "Air Elemental") || (name == "Air Elemental\r")) ? Minion::makeAirElemental(PlayerID)
-                            : (((name == "Earth Elemental") || (name == "Earth Elemental\r")) ? Minion::makeEarthElemental(PlayerID)
-                            : (((name == "Bone Golem") || (name == "Bone Golem\r")) ? Minion::makeBoneGolem(PlayerID)
-                            : (((name == "Novice Pyromancer") || (name == "Novice Pyromancer\r")) ? Minion::makeNovicePyromancer(PlayerID)
-                            : (((name == "Fire Elemental") || (name == "Fire Elemental\r")) ? Minion::makeFireElemental(PlayerID)
-                            : (((name == "Potion Seller") || (name == "Potion Seller\r")) ? Minion::makePotionSeller(PlayerID)
-                            : (((name == "Apprentice Summoner") || (name == "Apprentice Summoner\r")) ? Minion::makeAppSummoner(PlayerID)
-                            : Minion::makeMsSummoner(PlayerID)))))));
+Minion* Deck::makeMinionFromName(std::string name, int playerID) {
+    Minion* newMinion = ((name == "Air Elemental") || (name == "Air Elemental\r")) ? Minion::makeAirElemental(playerID)
+                            : (((name == "Earth Elemental") || (name == "Earth Elemental\r")) ? Minion::makeEarthElemental(playerID)
+                            : (((name == "Bone Golem") || (name == "Bone Golem\r")) ? Minion::makeBoneGolem(playerID)
+                            : (((name == "Novice Pyromancer") || (name == "Novice Pyromancer\r")) ? Minion::makeNovicePyromancer(playerID)
+                            : (((name == "Fire Elemental") || (name == "Fire Elemental\r")) ? Minion::makeFireElemental(playerID)
+                            : (((name == "Potion Seller") || (name == "Potion Seller\r")) ? Minion::makePotionSeller(playerID)
+                            : (((name == "Apprentice Summoner") || (name == "Apprentice Summoner\r")) ? Minion::makeAppSummoner(playerID)
+                            : Minion::makeMsSummoner(playerID)))))));
     return newMinion;
 }
 
@@ -48,10 +48,8 @@ Spell* Deck::makeSpellFromName(std::string name, int playerID) {
     return newSpell;
 }
 
-
 Enchantment* Deck::makeEnchantmentFromName(std::string name, int playerID) {
     Enchantment* newEnchantment = nullptr;
-
     if ((name == "Giant Strength") || (name == "Giant Strength\r")) {
         newEnchantment = new GiantStrength(playerID);
     } else if ((name == "Enrage") || (name == "Enrage\r")) {
@@ -63,10 +61,19 @@ Enchantment* Deck::makeEnchantmentFromName(std::string name, int playerID) {
     } else {
         newEnchantment = new Silence(playerID);
     }
-
     return newEnchantment;
 }
 
+Ritual* Deck::makeRitualFromName(std::string name, int playerID) {
+    Ritual* newRitual = nullptr;
+    if ((name == "Dark Ritual") || (name == "Dark Ritual\r")) {
+        newRitual = new DarkRitual(playerID);
+    } else if ((name == "Aura of Power") || (name == "Aura of Power\r")) {
+        newRitual = new AuraOfPower(playerID);
+    } else {
+        newRitual = new Standstill(playerID)
+    }
+}
 
 bool Deck::nameIsMinion(std::string name) {
     return (name == "Air Elemental") || (name == "Earth Elemental") || (name == "Fire Elemental") || (name == "Bone Golem") || (name == "Novice Pyromancer") || (name == "Potion Seller") || (name == "Apprentice Summoner") || (name == "Master Summoner")
@@ -81,6 +88,11 @@ bool Deck::nameIsSpell(std::string name) {
 bool Deck::nameIsEnchantment(std::string name) {
     return (name == "Giant Strength") || (name == "Enrage") || (name == "Haste") || (name == "Magic Fatigue") || (name == "Silence")
             || (name == "Giant Strength\r") || (name == "Enrage\r") || (name == "Haste\r") || (name == "Magic Fatigue\r") || (name == "Silence\r");
+}
+
+bool Deck::nameisRitual(std::string name) {
+    return (name == "Dark Ritual") || (name == "Dark Ritual\r") || (name == "Aura of Power") || (name == "Aura of Power\r")
+            || (name == "Standstill") || (name == "Standstill\r")
 }
 
 Deck::Deck(std::ifstream& deckFile, int ownerID): theDeck{std::vector<Card *>()}, cardsNumber{0}, ownershipID{ownerID} {

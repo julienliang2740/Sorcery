@@ -6,7 +6,7 @@
 enum class triggerType{ BeginTurn, EndTurn, MinionEnters, MinionLeaves, All };
 
 class Observer {
-    Board& b;
+    Board *b;
     triggerType subtype;
  public:
     Observer(Board& b, triggerType subtype);

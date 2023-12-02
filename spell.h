@@ -1,4 +1,4 @@
-    #ifndef __SPELL__
+#ifndef __SPELL__
 #define __SPELL__
 #include "card.h"
 #include <string>

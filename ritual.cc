@@ -1,9 +1,9 @@
 #include "ritual.h"
 
-Ritual::Ritual(int cost, std::string name, int ownershipID, std::string description, Board& b,
-               triggerType subtype, int charges, int activationCost):
-    Card{cost, name, ownershipID, cardtype::R, false, description}, Observer{b}, 
-    charges{charges}, activationCost{activationCost}, onState{false} {}
+Ritual::Ritual(int cost, std::string name, int ownershipID, std::string description, Board* b,
+               triggerType subtype, int charges):
+    Card{cost, name, ownershipID, cardtype::R, false, description}, Observer{b, subtype}, 
+    charges{charges}, onState{false} {}
 
 Ritual::~Ritual() {}
 
