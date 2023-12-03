@@ -247,6 +247,7 @@ int main(int argc, char * argv[]) {
             cout << "p1 minions: " << endl;
             for (auto m: gameBoard.p1Minions) {
                 cout << m->getMinionName() << endl;
+                cout << m->getName() << endl;
             }
             cout << "p2 minions: " << endl;
             for (auto m: gameBoard.p2Minions) {
