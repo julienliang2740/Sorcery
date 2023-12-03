@@ -3,9 +3,9 @@
 #include "ritual.h"
 
 Ritual::Ritual(int cost, std::string name, int ownershipID, std::string description, Board* b,
-               triggerType subtype, int charges):
+               triggerType subtype, int charges, int activationCost):
     Card{cost, name, ownershipID, cardtype::R, false, description}, Observer{b, subtype}, 
-    charges{charges}, onState{false} {}
+    charges{charges}, activationCost{activationCost}, onState{false} {}
 
 Ritual::~Ritual() {}
 
@@ -33,4 +33,3 @@ void Ritual::toggleOn() {
     onState = true;
 }
 
-void 

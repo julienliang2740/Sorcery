@@ -1,7 +1,7 @@
 #include "spell.h"
 
 Spell::Spell(int cost, std::string name, int ownershipID, bool hasTarget, std::string description) noexcept :
-    Card{cost, name, ownershipID, cardtype::S, displayFile, hasTarget, description} {}
+    Card{cost, name, ownershipID, cardtype::S, hasTarget, description} {}
 
 Spell* Spell::makeBanish(int ownershipID) {
     Spell* newSpell = new Spell{2, "Banish", ownershipID, true, "Destroy target minion or ritual"};

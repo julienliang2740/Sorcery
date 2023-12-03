@@ -1,10 +1,12 @@
 #include "rituals.h"
+#include "minion.h"
+#include "board.h"
 
 DarkRitual::DarkRitual(int ownerID, Board* b):
     Ritual{0, "Dark Ritual", ownerID, "At the start of your turn, gain 1 magic", b,
-            triggerType::BeginTurn, 5, 1}
+            triggerType::BeginTurn, 5, 1} {}
 
-DarkRitual::notify(int player, int whichCard) {
+void DarkRitual::notify(int player, int whichCard) {
     if (player == 1) {
         b->player1->addHealth(1);
     }
@@ -15,17 +17,17 @@ DarkRitual::notify(int player, int whichCard) {
 
 AuraOfPower::AuraOfPower(int ownerID, Board* b):
     Ritual{1, "Aura of Power", ownerID, "Whenever a minion enters play under your control, it gains +1/+1", b, 
-            triggerType::MinionEnters, 4, 1}
+            triggerType::MinionEnters, 4, 1} {}
 
-AuraOfPower::notify(int player, int whichCard) {
+void AuraOfPower::notify(int player, int whichCard) {
     if (player == ownershipID) {
         if (onState) {
             if (ownershipID == b->player1->getID()) {
-                Minion* m = static_cast(b->p1Minions[whichCard -1]); // "just trust me bro"
+                Minion* m = static_cast<Minion*>(b->p1Minions[whichCard -1]); // "just trust me bro"
                 m->modDefense(1);
                 m->modAttack(1);
             } else {
-                Minion* m = static_cast(b->p2Minions[whichCard - 1]);
+                Minion* m = static_cast<Minion*>(b->p2Minions[whichCard - 1]);
                 m->modDefense(1);
                 m->modAttack(1);
             }
@@ -35,8 +37,8 @@ AuraOfPower::notify(int player, int whichCard) {
 
 Standstill::Standstill(int ownerID, Board* b):
     Ritual{3, "Standstill", ownerID, "Whenever a minion enters play, destroy it", b, 
-            triggerType::MinionEnters, 4, 2}
+            triggerType::MinionEnters, 4, 2} {}
 
-Standstill::notify(int player, int whichCard) {
+void Standstill::notify(int player, int whichCard) {
     b->destroyMinion(player, whichCard);
 }

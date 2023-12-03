@@ -5,7 +5,6 @@
 #include <string>
 #include <vector>
 #include <fstream>
-#include "card.h"
 #include "minion.h"
 #include "spell.h"
 #include "enchantment.h"

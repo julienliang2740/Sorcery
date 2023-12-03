@@ -71,7 +71,7 @@ Ritual* Deck::makeRitualFromName(std::string name, int playerID) {
     } else if ((name == "Aura of Power") || (name == "Aura of Power\r")) {
         newRitual = new AuraOfPower(playerID, nullptr);
     } else {
-        newRitual = new Standstill(playerID, nullptr)
+        newRitual = new Standstill(playerID, nullptr);
     }
 }
 
@@ -92,7 +92,7 @@ bool Deck::nameIsEnchantment(std::string name) {
 
 bool Deck::nameisRitual(std::string name) {
     return (name == "Dark Ritual") || (name == "Dark Ritual\r") || (name == "Aura of Power") || (name == "Aura of Power\r")
-            || (name == "Standstill") || (name == "Standstill\r")
+            || (name == "Standstill") || (name == "Standstill\r");
 }
 
 Deck::Deck(std::ifstream& deckFile, int ownerID): theDeck{std::vector<Card *>()}, cardsNumber{0}, ownershipID{ownerID} {

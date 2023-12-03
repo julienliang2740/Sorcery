@@ -2,18 +2,15 @@
 #define __RITUAL__
 
 #include "card.h"
-#include "board.h"
 #include "observer.h"
 #include <string>
-
-class Board;
-
-enum class triggerType;
 
 class Ritual: public Card, public Observer {
     int charges;
     int activationCost;
-    bool onState;
+    
+    protected:
+        bool onState;
 
     public:
         Ritual(int cost, std::string name, int ownershipID, std::string description, Board* b, triggerType subtype,
@@ -23,8 +20,8 @@ class Ritual: public Card, public Observer {
         void addCharges(int n);
         int getActivationCost() const;
         bool getOnState() const;
-        void toggleOff() const;
-        void toggleOn() const;
+        void toggleOff();
+        void toggleOn();
         void setBoard(Board* b);
 };
 

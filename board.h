@@ -7,7 +7,7 @@
 #include "player.h"
 #include "minioncomponent.h"
 #include "minion.h"
-#include "observer.h"
+#include "enchantment.h"
 
 class Observer;
 
@@ -18,8 +18,11 @@ class Board {
         std::vector<MinionComponent*> p1Minions;
         std::vector<MinionComponent*> p2Minions;
         int activePlayerID;
-        // ritual * p1Ritual; WILL UNCOMMENT ONCE RITUALS ARE IMPLEMENTED
-        // ritual * p2Ritual;
+
+        // Delinquent code:
+        Ritual * p1Ritual;
+        Ritual * p2Ritual;
+
         std::vector<Minion*> p1Graveyard, p2Graveyard;
         std::vector<Observer*> observers;
         

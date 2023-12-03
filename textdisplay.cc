@@ -4,38 +4,38 @@ card_template_t display_minion(MinionComponent* m) {
     if (m->getHasAbility() == minionHasAbility::hasnoability) {
         return display_minion_no_ability(m->getMinionName(), m->getCost(), m->getAttack(), m->getDefense());
     } else if (m->getHasAbility() == minionHasAbility::hasactivatedability) {
-        return display_minion_activated_ability(m->getMinionName(), m->getCost(), m->getAttack(), m->getDefense(), m->getAbilityCost(), m->getAbilityDesc());
+        return display_minion_activated_ability(m->getMinionName(), m->getCost(), m->getAttack(), m->getDefense(), m->getAbilityCost(), m->getMinionDescription());
     } else {
-        return display_minion_triggered_ability(m->getMinionName(), m->getCost(), m->getAttack(), m->getDefense(), m->getAbilityDesc());
+        return display_minion_triggered_ability(m->getMinionName(), m->getCost(), m->getAttack(), m->getDefense(), m->getMinionDescription());
     }
 }
 
-textDisplay::textDisplay(const Board& b): Observer{b, triggerType::All} {
+textDisplay::textDisplay(Board* b): Observer{b, triggerType::All} {
     // setting player cards
-    topRow[2] = display_player_card(1, b.player1->getName(), b.player1->getHealth(), b.player1->getMagic());
-    bottomRow[2] = display_player_card(2, b.player2->getName(), b.player2->getHealth(), b.player2->getMagic());
+    topRow[2] = display_player_card(1, b->player1->getName(), b->player1->getHealth(), b->player1->getMagic());
+    bottomRow[2] = display_player_card(2, b->player2->getName(), b->player2->getHealth(), b->player2->getMagic());
 
-    if (!b.p1Graveyard.empty()) {
-        Minion* lastMinion = b.p1Graveyard[p1Graveyard.size() - 1];
+    if (!b->p1Graveyard.empty()) {
+        Minion* lastMinion = b->p1Graveyard[b->p1Graveyard.size() - 1];
         topRow[row_length - 1] = display_minion(lastMinion);
     }
 
-    if (!b.p2Graveyard.empty()) {
-        Minion* lastMinion = p1Graveyard[p1Graveyard.size() - 1];
+    if (!b->p2Graveyard.empty()) {
+        Minion* lastMinion = b->p1Graveyard[b->p1Graveyard.size() - 1];
         bottomRow[row_length - 1] = display_minion(lastMinion);
     }
 
-    if (!b.p1Minions.empty()) {
+    if (!b->p1Minions.empty()) {
         int i = 0;
-        for (auto minion: b.p1Minions) {
+        for (auto minion: b->p1Minions) {
             p1minions[i] = display_minion(minion);
             ++i;
         }
     }
 
-    if (!b.p2Minions.empty()) {
+    if (!b->p2Minions.empty()) {
         int i = 0;
-        for (auto minion: b.p2Minions) {
+        for (auto minion: b->p2Minions) {
             p2minions[i] = display_minion(minion);
             ++i;
         }
@@ -44,7 +44,8 @@ textDisplay::textDisplay(const Board& b): Observer{b, triggerType::All} {
 
 textDisplay::~textDisplay() {}
 
-void printRow(card_template_t (row&)[5]) {
+/*
+void printRow(card_template_t row[]) {
 
     std::string rowLines[11];
 
@@ -58,18 +59,72 @@ void printRow(card_template_t (row&)[5]) {
         std::cout << rowLines[i] << std::endl;
     }
 }
+*/
 
 void textDisplay::printBoard() const {
 
     std::cout << CENTRE_GRAPHIC[0] << std::endl;
 
-    printRow(topRow);
-    printRow(p1minions);
+    std::string rowLines[11] = {EXTERNAL_BORDER_CHAR_UP_DOWN, EXTERNAL_BORDER_CHAR_UP_DOWN, EXTERNAL_BORDER_CHAR_UP_DOWN, EXTERNAL_BORDER_CHAR_UP_DOWN, EXTERNAL_BORDER_CHAR_UP_DOWN,
+                                EXTERNAL_BORDER_CHAR_UP_DOWN, EXTERNAL_BORDER_CHAR_UP_DOWN, EXTERNAL_BORDER_CHAR_UP_DOWN, EXTERNAL_BORDER_CHAR_UP_DOWN, EXTERNAL_BORDER_CHAR_UP_DOWN,
+                                EXTERNAL_BORDER_CHAR_UP_DOWN};
+
+    for (int i = 0; i < 5; ++i) {
+        for (int j = 0; j < 11; ++j) {
+            rowLines[j] += topRow[i][j];
+            if (i == 4) rowLines[j] += EXTERNAL_BORDER_CHAR_UP_DOWN;
+        }
+    }
+
+    for (int i = 0; i < 11; ++i) {
+        std::cout << rowLines[i] << std::endl;
+        rowLines[i] = EXTERNAL_BORDER_CHAR_UP_DOWN;
+    }
+
+    for (int i = 0; i < 5; ++i) {
+        for (int j = 0; j < 11; ++j) {
+            rowLines[j] += p1minions[i][j];
+            if (i == 4) rowLines[j] += EXTERNAL_BORDER_CHAR_UP_DOWN;
+        }
+    }
+
+    for (int i = 0; i < 11; ++i) {
+        std::cout << rowLines[i] << std::endl;
+        rowLines[i] = EXTERNAL_BORDER_CHAR_UP_DOWN;
+    }
+
+    // printRow(topRow);
+    // printRow(p1minions);
     for (auto line: CENTRE_GRAPHIC) {
         std::cout << line << std::endl;
     }
-    printRow(p2minions);
-    printRow(bottomRow);
+    // printRow(p2minions);
+    // printRow(bottomRow);
+
+    for (int i = 0; i < 5; ++i) {
+        for (int j = 0; j < 11; ++j) {
+            rowLines[j] += p2minions[i][j];
+            if (i == 4) {
+                rowLines[j] += EXTERNAL_BORDER_CHAR_UP_DOWN;
+            }
+        }
+    }
+
+    for (int i = 0; i < 11; ++i) {
+        std::cout << rowLines[i] << std::endl;
+        rowLines[i] = EXTERNAL_BORDER_CHAR_UP_DOWN;
+    }
+
+    for (int i = 0; i < 5; ++i) {
+        for (int j = 0; j < 11; ++j) {
+            rowLines[j] += bottomRow[i][j];
+            if (i == 4) rowLines[j] += EXTERNAL_BORDER_CHAR_UP_DOWN;
+        }
+    }
+
+    for (int i = 0; i < 11; ++i) {
+        std::cout << rowLines[i] << std::endl;
+    }
 
     std::cout << CENTRE_GRAPHIC[0] << std::endl;
 
@@ -85,25 +140,25 @@ void textDisplay::notify(int player, int whichCard) {
         // stuff
     } else if (whichCard == playerCard) {
 
-        if (player == b.player1->getID()) {
-            topRow[2] = display_player_card(b.player1->getID(), b.player1->getName(), b.player1->getMagic(), b.player1->getHealth());
+        if (player == b->player1->getID()) {
+            topRow[2] = display_player_card(b->player1->getID(), b->player1->getName(), b->player1->getMagic(), b->player1->getHealth());
         } else {
-            bottomRow[2] = display_player_card(b.player2->getID(), b.player2->getName(), b.player2->getMagic(), b.player2->getHealth());
+            bottomRow[2] = display_player_card(b->player2->getID(), b->player2->getName(), b->player2->getMagic(), b->player2->getHealth());
         }
         
     } else if (whichCard == graveyardCard) {
 
-        vector<Minion*>& graveyard = (player == b.player1->getID()) ? b.p1Graveyard : b.p2Graveyard;
+        std::vector<Minion*>& graveyard = (player == b->player1->getID()) ? b->p1Graveyard : b->p2Graveyard;
 
-        if (graveyard.empty) {
-            if (player == b.player1->getID()) {
+        if (graveyard.empty()) {
+            if (player == b->player1->getID()) {
                 topRow[4] = CARD_TEMPLATE_EMPTY;
             } else {
                 bottomRow[4] = CARD_TEMPLATE_EMPTY;
             }
         } else {
             Minion* m = graveyard[graveyard.size() - 1];
-            if (player == b.player1->getID()) {
+            if (player == b->player1->getID()) {
                 topRow[4] = display_minion(m);
             } else {
                 bottomRow[4] = display_minion(m);
@@ -113,10 +168,10 @@ void textDisplay::notify(int player, int whichCard) {
     } else {
 
         int minionIndex = whichCard - 1;
-        vector<MinionComponent*>& minions = ((player == b.player1->getID()) ? b.p1Minions : b.p2Minions);
+        std::vector<MinionComponent*>& minions = ((player == b->player1->getID()) ? b->p1Minions : b->p2Minions);
         card_template_t newcard = display_minion(minions[minionIndex]);
 
-        if (player == b.player1.getID()) {
+        if (player == b->player1->getID()) {
             p1minions[minionIndex] = newcard;
         } else {
             p2minions[minionIndex] = newcard;

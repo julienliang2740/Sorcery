@@ -4,7 +4,9 @@
 
 #include "player.h"
 #include "board.h"
+#include "deck.h"
 #include "minioncomponent.h"
+#include "textdisplay.h"
 
 using namespace std;
 
@@ -45,6 +47,9 @@ int main(int argc, char * argv[]) {
     }
 
     Board gameBoard(vector<MinionComponent*>(), vector<MinionComponent*>(), &player1, &player2, 1, vector<Minion*>(), vector<Minion*>());
+    textDisplay td(&gameBoard);
+    gameBoard.addObserver(&td);
+    td.printBoard();
     
     // assuming that very first line is Player 1's name and second line is Player 2's name
     string cmd;
@@ -247,6 +252,8 @@ int main(int argc, char * argv[]) {
             for (auto m: gameBoard.p2Minions) {
                 cout << m->getMinionName() << endl;
             }
+
+            td.printBoard();
         }
         //////////////////////////////////////////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////////////////////////

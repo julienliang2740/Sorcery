@@ -7,7 +7,7 @@
 #include "minioncomponent.h"
 #include "minion.h"
 #include "enchantment.h"
-#include "enchantment.h"
+#include "enchantments.h"
 #include "spell.h"
 #include "board.h"
 #include "observer.h"
@@ -19,10 +19,9 @@ class textDisplay: public Observer {
     card_template_t p1minions[5] = {CARD_TEMPLATE_BORDER, CARD_TEMPLATE_BORDER, CARD_TEMPLATE_BORDER, CARD_TEMPLATE_BORDER, CARD_TEMPLATE_BORDER};
     card_template_t p2minions[5] = {CARD_TEMPLATE_BORDER, CARD_TEMPLATE_BORDER, CARD_TEMPLATE_BORDER, CARD_TEMPLATE_BORDER, CARD_TEMPLATE_BORDER};
     public:
-        textDisplay(const Board& b);
+        textDisplay(Board* b);
         ~textDisplay();
         void notify(int player, int whichCard) override;
-        triggerType subType() const override;
         void printBoard() const;
         static int getRowLength();
         // minion inspecting will just happen in main. so that this object doesn't take as much memory

@@ -3,7 +3,7 @@
 
 class Board;
 
-Observer::Observer(Board& b, triggerType t) : b(b), subtype(t) {}
+Observer::Observer(Board* b, triggerType t) : b(b), subtype(t) {}
 
 triggerType Observer::subType() const {
     return subtype;
