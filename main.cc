@@ -6,6 +6,7 @@
 #include "board.h"
 #include "deck.h"
 #include "minioncomponent.h"
+#include "ascii_graphics.h"
 #include "textdisplay.h"
 
 using namespace std;
@@ -206,6 +207,13 @@ int main(int argc, char * argv[]) {
             int i = 0;
             if (readFromFile) initfile >> i; else cin >> i;
             cout << "Inspecting " << i << ((i == 1) ? "st" : ((i == 2) ? "nd" : ((i == 3) ? "rd" : "th"))) << "minion" << endl;
+            std::vector<MinionComponent*> ownMinions = (activePlayerID == player1.getID()) ? gameBoard.p1Minions : gameBoard.p2Minions;
+            if (i < 1 || i > ownMinions.size()) {
+                cout << "invalid minion ID" << endl;
+                continue;
+            }
+
+            inspectMinion(ownMinions[i - 1]);
         }
         else if (cmd == "hand") { //  INCOMPLETE INCOMPLETE INCOMPLETE
 
@@ -217,6 +225,8 @@ int main(int argc, char * argv[]) {
             for (auto card: activePlayer.getHand()) {
                 cout << card->getName() << endl;
             }
+
+            printHand(activePlayer);
             /*
             vector<string> lines(11, "");
             for (auto card: activePlayer.getHand()) {

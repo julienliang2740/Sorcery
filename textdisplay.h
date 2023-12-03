@@ -12,6 +12,12 @@
 #include "board.h"
 #include "observer.h"
 
+card_template_t display_minion(MinionComponent* m);
+
+void printHand(const Player& p);
+
+void inspectMinion(MinionComponent* minion);
+
 class textDisplay: public Observer {
     static const int row_length = 5;
     card_template_t topRow[5] = {CARD_TEMPLATE_BORDER, CARD_TEMPLATE_EMPTY, PLAYER_1_TEMPLATE, CARD_TEMPLATE_EMPTY, CARD_TEMPLATE_BORDER};

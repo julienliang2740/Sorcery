@@ -10,6 +10,84 @@ card_template_t display_minion(MinionComponent* m) {
     }
 }
 
+card_template_t make_enchantment_card(Enchantment* e) {
+    if (e->getName() == "Giant Strength") {
+        return display_enchantment_attack_defence(e->getName(), e->getCost(), e->getCardDescription(), "+2", "+2");
+    } else if (e->getName() == "Enrage") {
+        return display_enchantment_attack_defence(e->getName(), e->getCost(), e->getCardDescription(), "*2", "*2");
+    } else {
+        return display_enchantment(e->getName(), e->getCost(), e->getCardDescription());
+    }
+}
+
+void printHand(const Player& p) {
+    std::string rowLines[11];
+
+    for (Card* c: p.getHand()) {
+
+        card_template_t displayCard;
+        if (c->getCardType() == cardtype::M) {
+            Minion* m = static_cast<Minion*>(c);
+            displayCard = display_minion(m);
+        } else if (c->getCardType() == cardtype::E) {
+            displayCard = make_enchantment_card(static_cast<Enchantment*>(c));
+        } else if (c->getCardType() == cardtype::S) {
+            displayCard = display_spell(c->getName(), c->getCost(), c->getCardDescription());
+        }
+
+        for (int i = 0; i < 11; ++i) {
+            rowLines[i] += displayCard[i];
+        }
+    }
+
+    for (int i = 0; i < 11; ++i) {
+        std::cout << rowLines[i] << std::endl;
+    }
+}
+
+void inspectMinion(MinionComponent* minion) {
+    std::string rowLines[11];
+    std::vector<Enchantment*> enchantments;
+
+    for (MinionComponent::Iterator it = minion->begin(); it != minion->end(); ++it) {
+        if ((*it)->getCardType() == cardtype:: M) {
+            break;
+        } else {
+            enchantments.emplace_back(static_cast<Enchantment*>(*it));
+        }
+    }
+
+    card_template_t theMinion = display_minion(minion);
+    for (std::string line: theMinion) {
+        std::cout << line << std::endl;
+    }
+
+    int enchantmentCount = 0;
+    for (std::vector<Enchantment*>::reverse_iterator it = enchantments.rbegin(); it != enchantments.rend(); ++it) {
+
+        if (enchantmentCount == 5) {
+            for (int i = 0; i < 11; ++i) {
+                std::cout << rowLines[i] << std::endl;
+                rowLines[i] = "";
+            }
+            enchantmentCount = 0;
+        }
+
+        card_template_t enchantmentCard = make_enchantment_card(*it);
+        for (int i = 0; i < 11; ++i) {
+            rowLines[i] += enchantmentCard[i];
+        }
+
+        ++enchantmentCount;
+    }
+
+    if (rowLines[0] != "") {
+        for (int i = 0; i < 11; ++i) {
+            std::cout << rowLines[i] << std::endl;
+        }
+    }
+}
+
 textDisplay::textDisplay(Board* b): Observer{b, triggerType::All} {
     // setting player cards
     topRow[2] = display_player_card(1, b->player1->getName(), b->player1->getHealth(), b->player1->getMagic());

@@ -41,10 +41,7 @@ class MinionComponent: public Card {
 
         // UNCOMMENT THESE WHEN YOU IMPLEMENT THEM
         // virtual int getNumActions() = 0;
-        // virtual void doActivatedAbility() = 0;
-        // virtual void attackPlayer() = 0;
         // virtual int getAbilityCost() = 0;
-        // virtual bool attackMinion() = 0;
 };
 
 #endif
