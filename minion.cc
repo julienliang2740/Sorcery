@@ -111,3 +111,11 @@ int Minion::getAbilityCost() const {
 std::string Minion::getMinionDescription() const {
     return description;
 }
+
+void Minion::modDefense(int n) {
+    defense += n;
+}
+
+void Minion::modAttack(int n) {
+    attack += n;
+}

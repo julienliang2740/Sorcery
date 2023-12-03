@@ -41,8 +41,7 @@ class Board {
         Board();
         Player* getActivePlayer();
         void attackPlayer(int minion);
-
-        
+        void destroyMinion(int player, int minion); // int minion is NOT zero-indexed     
 };
 
 #endif

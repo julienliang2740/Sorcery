@@ -42,6 +42,8 @@ class Minion: public MinionComponent {
         minionHasAbility getHasAbility() const override;
         int getAbilityCost() const override;
         std::string getMinionDescription() const override;
+        void modDefense(int n);
+        void modAttack(int n);
 };
 
 #endif

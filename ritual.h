@@ -19,6 +19,7 @@ class Ritual: public Card, public Observer {
         bool getOnState() const;
         void toggleOff() const;
         void toggleOn() const;
+        void setBoard(Board* b);
 };
 
 #endif

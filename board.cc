@@ -378,3 +378,9 @@ int Board::checkWinState() {
         return stillPlaying;
     }
 }
+
+void Board::destroyMinion(int player, int minion) {
+    Minion * m = deleteEnchantments(player, minion);
+    minions.erase(minions.begin() + (minion - 1));
+    delete m;
+}

@@ -18,11 +18,18 @@ AuraOfPower::AuraOfPower(int ownerID, Board* b):
             triggerType::MinionEnters, 4, 1}
 
 AuraOfPower::notify(int player, int whichCard) {
-    if (player == 1) {
-        
-    }
-    else {
-
+    if (player == ownershipID) {
+        if (onState) {
+            if (ownershipID == b->player1->getID()) {
+                Minion* m = static_cast(b->p1Minions[whichCard -1]); // "just trust me bro"
+                m->modDefense(1);
+                m->modAttack(1);
+            } else {
+                Minion* m = static_cast(b->p2Minions[whichCard - 1]);
+                m->modDefense(1);
+                m->modAttack(1);
+            }
+        }
     }
 }
 
@@ -31,5 +38,5 @@ Standstill::Standstill(int ownerID, Board* b):
             triggerType::MinionEnters, 4, 2}
 
 Standstill::notify(int player, int whichCard) {
-    
+    b->destroyMinion(player, whichCard);
 }
