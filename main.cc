@@ -168,6 +168,7 @@ int main(int argc, char * argv[]) {
                 cout << "player 2's health: " << player2.getHealth() << endl;
             } else {
                 cout << i << "th minion attacks enemy player's " << j << "th minion" << endl;
+                gameBoard.attackMinion(i, j);
             }
         }
         else if (cmd == "play") { //  INCOMPLETE INCOMPLETE INCOMPLETE
@@ -199,6 +200,7 @@ int main(int argc, char * argv[]) {
 
             if (p == -1) cout << "Use " << i << "th card in active player's hand" << endl;
             else cout << "Use " << i << "th card in active player's hand on card " << t << " owned by player " << p << endl;
+            gameBoard.useActivatedAbility(i, p, t);
         }
         else if (cmd == "inspect") { //  INCOMPLETE INCOMPLETE INCOMPLETE
             int i = 0;
@@ -248,15 +250,6 @@ int main(int argc, char * argv[]) {
             
         }
         else if (cmd == "board") { //  INCOMPLETE INCOMPLETE INCOMPLETE
-            cout << "p1 minions: " << endl;
-            for (auto m: gameBoard.p1Minions) {
-                cout << m->getMinionName() << endl;
-                cout << m->getName() << endl;
-            }
-            cout << "p2 minions: " << endl;
-            for (auto m: gameBoard.p2Minions) {
-                cout << m->getMinionName() << endl;
-            }
 
             td.printBoard();
         }

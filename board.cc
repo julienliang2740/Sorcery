@@ -366,7 +366,7 @@ bool Board::useActivatedAbility(int i, int p, int t) {
     }
 
     MinionComponent* theminion = (activePlayerID == player1->getID()) ? p1Minions[i - 1] : p2Minions[i - 1];
-    std::string name = theminion->getName();
+    std::string name = theminion->getMinionName();
     // ^def has to be miniontype
 
     if (theminion->abilityNeedsTarget()) {
@@ -375,10 +375,15 @@ bool Board::useActivatedAbility(int i, int p, int t) {
             return false;
         }
         
-        MinionComponent* thetarget = (p == player1->getID()) ? p1Minions[i - 1] : p2Minions[i - 1];
+        MinionComponent* thetarget = (p == player1->getID()) ? p1Minions[t - 1] : p2Minions[t - 1];
 
         if (name == "Novice Pyromancer") {
             thetarget->beAttacked(1);
+            for (Observer* o: observers) {
+                if (o->subType() == triggerType::All) {
+                    o->notify(p, t);
+                }
+            }
         }
         else std::cout << "bruga minion not picked properly" << std::endl;
         
@@ -464,6 +469,18 @@ bool Board::attackMinion(int curMinion, int target) {
 
     if (attacked->getDefense() - attacked->getTotalDamage() < 1) {
         moveMinionToGraveyard(1 + (activePlayerID % 2), target);
+    }
+
+    for (Observer* o: observers) {
+        if (o->subType() == triggerType::All) {
+            o->notify(attacker->getID(), curMinion);
+        }
+    }
+
+    for (Observer* o: observers) {
+        if (o->subType() == triggerType::All) {
+            o->notify(attacked->getID(), target);
+        }
     }
 
     return true;
