@@ -3,6 +3,8 @@
 
 #include "board.h"
 
+class Board;
+
 enum class triggerType{ BeginTurn, EndTurn, MinionEnters, MinionLeaves, All };
 
 class Observer {

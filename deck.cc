@@ -67,11 +67,11 @@ Enchantment* Deck::makeEnchantmentFromName(std::string name, int playerID) {
 Ritual* Deck::makeRitualFromName(std::string name, int playerID) {
     Ritual* newRitual = nullptr;
     if ((name == "Dark Ritual") || (name == "Dark Ritual\r")) {
-        newRitual = new DarkRitual(playerID);
+        newRitual = new DarkRitual(playerID, nullptr);
     } else if ((name == "Aura of Power") || (name == "Aura of Power\r")) {
-        newRitual = new AuraOfPower(playerID);
+        newRitual = new AuraOfPower(playerID, nullptr);
     } else {
-        newRitual = new Standstill(playerID)
+        newRitual = new Standstill(playerID, nullptr)
     }
 }
 

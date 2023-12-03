@@ -1,6 +1,4 @@
-#include <iostream>
-#include <string>
-#include <vector>
+#include "observer.h"
 #include "board.h"
 
 Board::Board(

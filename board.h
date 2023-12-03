@@ -9,6 +9,8 @@
 #include "minion.h"
 #include "observer.h"
 
+class Observer;
+
 class Board {
     Minion* deleteEnchantments(int ownershipID, int minion);
     bool moveMinionToGraveyard(int ownershipID, int minion);

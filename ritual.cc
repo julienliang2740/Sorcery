@@ -1,3 +1,5 @@
+#include "board.h"
+#include "observer.h"
 #include "ritual.h"
 
 Ritual::Ritual(int cost, std::string name, int ownershipID, std::string description, Board* b,
@@ -9,6 +11,10 @@ Ritual::~Ritual() {}
 
 int Ritual::getCharges() const {
     return charges;
+}
+
+void Ritual::addCharges(int n) {
+    charges += n;
 }
 
 int Ritual::getActivationCost() const {
