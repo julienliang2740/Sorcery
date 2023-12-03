@@ -7,6 +7,7 @@
 #include "player.h"
 #include "minioncomponent.h"
 #include "minion.h"
+#include "observer.h"
 
 class Board {
     Minion* deleteEnchantments(int ownershipID, int minion);
@@ -18,7 +19,7 @@ class Board {
         // ritual * p1Ritual; WILL UNCOMMENT ONCE RITUALS ARE IMPLEMENTED
         // ritual * p2Ritual;
         std::vector<Minion*> p1Graveyard, p2Graveyard;
-        std::vector<int> observers;
+        std::vector<Observer*> observers;
         
         bool placeMinion(std::vector<MinionComponent*>& minions, Minion* minion);
     
@@ -31,7 +32,7 @@ class Board {
             int activePlayerID,
             std::vector<Minion*> p1Graveyard, std::vector<Minion*> p2Graveyard);
         int getActiveID();
-        void addObserver(int n);
+        void addObserver(Observer* o);
         int endTurn();
         bool addMinion(Minion* minion);
         bool playCard(int i, int p = -1, int t = -1);

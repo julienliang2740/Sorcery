@@ -9,7 +9,7 @@ class Observer {
     Board *b;
     triggerType subtype;
  public:
-    Observer(Board& b, triggerType subtype);
+    Observer(Board* b, triggerType subtype);
     virtual void notify(int player, int whichCard) = 0;  // c is the Cell that called the notify method
     virtual triggerType subType() const;
     virtual ~Observer() = default;

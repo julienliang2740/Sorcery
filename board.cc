@@ -18,11 +18,18 @@ int Board::getActiveID() {
     return activePlayerID;
 }
 
-void Board::addObserver(int n) {
-    observers.emplace_back(n);
+void Board::addObserver(Observer* o) {
+    observers.emplace_back(o);
 }
 
 int Board::endTurn() {
+
+    for (auto observer: observers) {
+        if (observer->subType() == triggerType::EndTurn) {
+            observer->notify(activePlayerID, 0);
+        }
+    }
+
     if (activePlayerID == player1->getID()) {
         activePlayerID = player2->getID();
     } else {
@@ -30,8 +37,8 @@ int Board::endTurn() {
     }
 
     for (auto observer: observers) {
-        if (observer->subType() == triggerType::EndTurn) {
-            observer->notify(0, 0);
+        if (observer->subType() == triggerType::BeginTurn) {
+            observer->notify(activePlayerID, 0);
         }
     }
 
@@ -70,15 +77,15 @@ bool Board::placeMinion(std::vector<MinionComponent*>& minions, Minion* minion) 
 bool Board::addMinion(Minion* minion) {
     bool placed = false;
 
-    if (activePlayerID == player1->getID()) {
-        placed = placeMinion(p1Minions, minion);
-    } else {
-        placed = placeMinion(p2Minions, minion);
-    }
+    std::vector<MinionComponent*>& minions = (activePlayerID == player1->getID()) ? p1Minions : p2Minions;
+
+    placed = placeMinion(minions, minion);
 
     if (placed) {
         for (auto observer: observers) {
-            // LOOP THROUGH AND NOTIFY
+            if (observer->subType() == triggerType::MinionEnters || observer->subType() == triggerType::All) {
+                observer->notify(activePlayerID, minions.size());
+            }
         }
     }
 
@@ -232,23 +239,32 @@ bool Board::moveMinionToGraveyard(int ownershipID, int minion) {
         return false;
     }
 
-    std::vector<MinionComponent*>& minions = (activePlayerID == player1->getID()) ? p1Minions : p2Minions;
+    std::vector<MinionComponent*>& theMinions = (activePlayerID == player1->getID()) ? p1Minions : p2Minions;
     std::vector<Minion*>& graveyard = (activePlayerID == player1->getID()) ? p1Graveyard : p2Graveyard;
 
-    if (minion > minions.size()) {
+    if (minion > theMinions.size()) {
         std::cerr << "invalid minion ID" << std::endl;
         return false;
     }
 
     Minion* m = deleteEnchantments(ownershipID, minion);
-    minions.erase(minions.begin() + (minion - 1));
+    theMinions.erase(theMinions.begin() + (minion - 1));
+    for (auto observer: observers) {
+        if (observer->subType() == triggerType::MinionLeaves || observer->subType() == triggerType::All) {
+            observer->notify(m->getID(), minion);
+        }
+    }
     graveyard.emplace_back(m);
+    for (auto observer: observers) {
+        if (observer->subType() == triggerType::All) {
+            observer->notify(m->getID(), 8);
+        }
+    }
+
     return true;
 }
 
 bool Board::useActivatedAbility(int i, int p, int t) {
-    
-    Player* activePlayer = getActivePlayer();
 
     if (activePlayerID == 1) {
         if (i < 1 || i > p1Minions.size()) {
@@ -324,6 +340,7 @@ bool Board::useActivatedAbility(int i, int p, int t) {
                 for (int k = 0; k < 3; ++k) {
                     if (p2Minions.size() >= 5) {
                         std::cout << "board full, not summoning air elemental number " << k+1 << std::endl;
+                        break;
                     }
                     else {
                         Minion* toAdd = Minion::makeAirElemental(activePlayerID);
@@ -381,6 +398,7 @@ int Board::checkWinState() {
 
 void Board::destroyMinion(int player, int minion) {
     Minion * m = deleteEnchantments(player, minion);
+    std::vector<MinionComponent*>& minions = (activePlayerID == player1->getID()) ? p1Minions : p2Minions;
     minions.erase(minions.begin() + (minion - 1));
     delete m;
 }

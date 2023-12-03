@@ -3,6 +3,7 @@
 
 #include "card.h"
 #include "observer.h"
+#include "board.h"
 #include <string>
 
 class Ritual: public Card, public Observer {
