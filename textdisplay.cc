@@ -15,8 +15,6 @@ textDisplay::textDisplay(const Board& b): Observer{b, triggerType::All} {
     topRow[2] = display_player_card(1, b.player1->getName(), b.player1->getHealth(), b.player1->getMagic());
     bottomRow[2] = display_player_card(2, b.player2->getName(), b.player2->getHealth(), b.player2->getMagic());
 
-    // setting rituals. Will be done later
-
     if (!b.p1Graveyard.empty()) {
         Minion* lastMinion = b.p1Graveyard[p1Graveyard.size() - 1];
         topRow[row_length - 1] = display_minion(lastMinion);
@@ -75,55 +73,6 @@ void textDisplay::printBoard() const {
 
     std::cout << CENTRE_GRAPHIC[0] << std::endl;
 
-    /*
-    std::string rowLines[11];
-    for (int i = 0; i < row_length; ++i) {
-        for (int j = 0; j < 11; ++j) {
-            rowLines[j] += topRow[i][j];
-        }
-    }
-
-    for (int i = 0; i < 11; ++i) {
-        out << rowLines[i] << endl;
-        rowLines[i] = "";
-    }
-
-    for (int i = 0; i < row_length; ++i) {
-        for (int j = 0; j < 11; ++j) {
-            rowLines[j] += p1minions[i][j];
-        }
-    }
-
-    for (int i = 0; i < 11; ++i) {
-        out << rowLines[i] << endl;
-        rowLines[i] = "";
-    }
-
-    for (int i = 0; i < row_length; ++i) {
-        for (int j = 0; j < 11; ++j) {
-            rowLines[j] += p2minions[i][j];
-        }
-    }
-
-    for (int i = 0; i < 11; ++i) {
-        out << rowLines[i] << endl;
-        rowLines[i] = "";
-    }
-
-    for (auto line: CENTRE_GRAPHIC) {
-        out << line << endl;
-    }
-
-    for (int i = 0; i < row_length; ++i) {
-        for (int j = 0; j < 11; ++j) {
-            rowLines[j] += bottomRow[i][j];
-        }
-    }
-
-    for (int i = 0; i < 11; ++i) {
-        out << rowLines[i] << endl;
-    }
-    */
 }
 
 void textDisplay::notify(int player, int whichCard) {
