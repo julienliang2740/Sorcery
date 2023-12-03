@@ -34,6 +34,7 @@ class Player {
         void shuffle();
         void addMagic(int change);
         void addHealth(int change);
+        void freeCard(int card);
 };
 
 #endif

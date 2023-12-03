@@ -49,7 +49,6 @@ int main(int argc, char * argv[]) {
     Board gameBoard(vector<MinionComponent*>(), vector<MinionComponent*>(), &player1, &player2, 1, vector<Minion*>(), vector<Minion*>());
     textDisplay td(&gameBoard);
     gameBoard.addObserver(&td);
-    td.printBoard();
     
     // assuming that very first line is Player 1's name and second line is Player 2's name
     string cmd;
@@ -78,12 +77,16 @@ int main(int argc, char * argv[]) {
         // Processing Names
         if (lines_read == 0) {
             player1.assignName(cmd);
-            if (cmd != "") lines_read += 1;
+            if (cmd != "") {
+                lines_read += 1;
+                td.notify(1, 7);
+            }
         }
         else if (lines_read == 1) {
             player2.assignName(cmd);
             if (cmd != "") {
                 lines_read += 1;
+                td.notify(2, 7);
                 cout << "It is now the turn of " << ((activePlayerID == player1.getID()) ? player1.getName() : player2.getName()) << endl;
                 
                 if (!config.testing) {
@@ -139,6 +142,7 @@ int main(int argc, char * argv[]) {
             
             if (config.testing) {
                 cout << "discard " << i << ((i == 1) ? "st " : ((i == 2) ? "nd " : ((i == 3) ? "rd " : "th "))) << "card in hand" << endl;
+                activePlayer.freeCard(i);
                 if (!activePlayer.removeCard(i)) cout << "could not discard card";
             }
             else {

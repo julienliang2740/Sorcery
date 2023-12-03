@@ -12,6 +12,28 @@ Board::Board(
     activePlayerID{activePlayerID},
     p1Graveyard{p1Graveyard}, p2Graveyard{p2Graveyard} {}
 
+Board::~Board() {
+    int i = 1;
+    for (MinionComponent* mc: p1Minions) {
+        Minion* m = deleteEnchantments(player1->getID(), i++);
+        delete m;
+    }
+
+    int j = 1;
+    for (MinionComponent* mc: p2Minions) {
+        Minion* m = deleteEnchantments(player2->getID(), j++);
+        delete m;
+    }
+
+    for (Minion* m: p1Graveyard) {
+        delete m;
+    }
+
+    for (Minion* m: p2Graveyard) {
+        delete m;
+    }
+}
+
 int Board::getActiveID() {
     return activePlayerID;
 }
@@ -59,6 +81,12 @@ void Board::attackPlayer(int minion) {
     Player* victim = (activePlayer == player1) ? player2 : player1;
 
     victim->addHealth(-(ownMinions[minion - 1]->getAttack()));
+
+    for (auto p: observers) {
+        if (p->subType() == triggerType::All) {
+            p->notify(victim->getID(), 7);
+        }
+    }
 }
 
 
@@ -102,6 +130,7 @@ bool Board::playCard(int i, int p, int t) {
 
     Card* c = activePlayer->getHand()[i - 1];
 
+
     if (c->hasATarget() && (((p != 1) && (p != 2)) || t < 1)) {
         std::cerr << "must provide target for card" << std::endl;
         return false;
@@ -110,8 +139,6 @@ bool Board::playCard(int i, int p, int t) {
     std::vector<MinionComponent*>& targetMinions = (p == player1->getID()) ? p1Minions : p2Minions;
 
     if (static_cast<int>(targetMinions.size()) < t) {
-        std::cerr << "target minions size: " << targetMinions.size() << std::endl;
-        std::cerr << "provided t-value: " << t << std::endl;
         std::cerr << "invalid target minion" << std::endl;
         return false;
     }
@@ -130,6 +157,8 @@ bool Board::playCard(int i, int p, int t) {
     else if (type == cardtype::S) {
         if (name == "Banish") {
             moveMinionToGraveyard(p, t);
+            delete c;
+            wasplaced = true;
         }
         else if (name == "Unsummon") { //wip
             Player* targetPlayer = (p == player1->getID()) ? player1 : player2;
@@ -142,6 +171,16 @@ bool Board::playCard(int i, int p, int t) {
             Minion* m = deleteEnchantments(targetPlayer->getID(), t);
             targetMinions.erase(targetMinions.begin() + (t - 1));
             targetPlayer->addCardToHand(m);
+
+            for (Observer* o: observers) {
+                if (o->subType() == triggerType::All) {
+                    o->notify(targetPlayer->getID(), t);
+                }
+            }
+
+            delete c;
+
+            wasplaced = true;
         }
         else if (name == "Recharge") {
             std::cout << "Recharge is currently under development" << std::endl;
@@ -156,28 +195,78 @@ bool Board::playCard(int i, int p, int t) {
             MinionComponent* temp = targetMinions[t - 1];
             targetMinions[t - 1] = (targetMinions[t - 1])->getNext();
             delete temp;
+            for (auto observer: observers) {
+                if (observer->subType() == triggerType::All) {
+                    observer->notify(p, t);
+                }
+            }
+
+            delete c;
             wasplaced = true;
         }
         else if (name == "Raise Dead") { //wip
             
-            std::vector<MinionComponent*> ownMinions = (c->getID() == player1->getID()) ? p1Minions : p2Minions;
+            std::vector<MinionComponent*>& ownMinions = (c->getID() == player1->getID()) ? p1Minions : p2Minions;
             if (ownMinions.size() > 4) {
                 std::cerr << "minions are at capacity. Cannot raise dead" << std::endl;
+                return false;
             }
 
             std::vector<Minion*>& graveyard = (c->getID() == player1->getID()) ? p1Graveyard : p2Graveyard;
             if (graveyard.empty()) {
                 std::cerr << "no minions in graveyard to revive" << std::endl;
+                return false;
             }
 
+
             Minion* m = graveyard.back();
+            m->setDefense(1);
             graveyard.pop_back();
             ownMinions.emplace_back(m);
+            for (Observer* o: observers) {
+                if (o->subType() == triggerType::All) {
+                    o->notify(c->getID(), 8);
+                }
+            }
+
+            for (Observer* o: observers) {
+                if (o->subType() == triggerType::All || o->subType() == triggerType::MinionEnters) {
+                    o->notify(c->getID(), ownMinions.size());
+                }
+            }
+
+            delete c;
             wasplaced = true;
         }
         else if (name == "Blizzard") {
-            for (MinionComponent* victim : p1Minions) victim->beAttacked(2);
-            for (MinionComponent* victim : p1Minions) victim->beAttacked(2);
+
+            int p1MinionPos = 1;
+            int p2MinionPos = 1;
+
+            if (!p1Minions.empty()) {
+                for (MinionComponent* victim: p1Minions) {
+                    victim->beAttacked(2);
+                    std::cout << "p1 Minion position: " << p1MinionPos << std::endl;
+                    for (Observer* o: observers) {
+                        o->notify(1, p1MinionPos);
+                    }
+                    ++p1MinionPos;
+                }
+            }
+
+            if (!p2Minions.empty()) {
+                for (MinionComponent* victim : p1Minions) {
+                    std::cout << "p2 Minion position: " << p2MinionPos << std::endl;
+                    victim->beAttacked(2);
+                    for (Observer* o: observers) {
+                        o->notify(2, p2MinionPos);
+                    }
+                }
+            }
+            
+            delete c;
+
+            wasplaced = true;
         }
         else std::cout << "bruga spells isnt getting picked properly" << std::endl;
     } 
@@ -191,6 +280,9 @@ bool Board::playCard(int i, int p, int t) {
         Enchantment* newEnchantment = static_cast<Enchantment*>(c);
         newEnchantment->setNext(temp);
         targetMinions[t - 1] = newEnchantment;
+        for (auto observer: observers) {
+            observer->notify(p, t); // we should make helper functions for this btw
+        }
         wasplaced = true;
     }
 
@@ -207,7 +299,7 @@ Minion* Board::deleteEnchantments(int ownershipID, int minion) {
         return nullptr;
     }
 
-    std::vector<MinionComponent*>& minions = (activePlayerID == player1->getID()) ? p1Minions : p2Minions;
+    std::vector<MinionComponent*>& minions = (ownershipID == player1->getID()) ? p1Minions : p2Minions;
 
     if (minion > minions.size()) {
         std::cerr << "invalid minion ID" << std::endl;
@@ -222,10 +314,6 @@ Minion* Board::deleteEnchantments(int ownershipID, int minion) {
         delete temp;
     }
 
-    // Minion* theMinion = new Minion{cur}; // copies over the contents of cur into a new minion.
-    // this is because we want the return type to be a Minion*, not a MinionComponent*
-    // JK FIX THIS. USE STATIC CASTING PLEASE FIX THIS FIX THIS FIX THIS FIX THIS
-
     Minion* theMinion = static_cast<Minion*>(cur);
     minions[minion - 1] = theMinion;
     return theMinion;
@@ -237,8 +325,8 @@ bool Board::moveMinionToGraveyard(int ownershipID, int minion) {
         return false;
     }
 
-    std::vector<MinionComponent*>& theMinions = (activePlayerID == player1->getID()) ? p1Minions : p2Minions;
-    std::vector<Minion*>& graveyard = (activePlayerID == player1->getID()) ? p1Graveyard : p2Graveyard;
+    std::vector<MinionComponent*>& theMinions = (ownershipID == player1->getID()) ? p1Minions : p2Minions;
+    std::vector<Minion*>& graveyard = (ownershipID == player1->getID()) ? p1Graveyard : p2Graveyard;
 
     if (minion > theMinions.size()) {
         std::cerr << "invalid minion ID" << std::endl;

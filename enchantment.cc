@@ -2,7 +2,7 @@
 #include "enchantment.h"
 
 Enchantment::Enchantment(int cost, std::string name, int ownershipID, MinionComponent* next, bool hasStats, std::string description) : 
-    MinionComponent{cost, name, ownershipID, cardtype::E, false, next, description}, hasStats{hasStats} {}
+    MinionComponent{cost, name, ownershipID, cardtype::E, true, next, description}, hasStats{hasStats} {}
 
 Enchantment::~Enchantment() {}
 

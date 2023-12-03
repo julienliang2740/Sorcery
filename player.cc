@@ -46,6 +46,15 @@ int Player::getHealth() const {
     return health;
 }
 
+// frees the ith card in the player's hand.
+void Player::freeCard(int i) {
+    if (i < 1 || i > hand.size()) {
+        return;
+    } else {
+        delete hand[i - 1];
+    }
+}
+
 bool Player::removeCard(int i) {
     if (i < 1 || i > hand.size()) {
         return false;

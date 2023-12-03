@@ -12,7 +12,7 @@
 class Observer;
 
 class Board {
-    Minion* deleteEnchantments(int ownershipID, int minion);
+    Minion* deleteEnchantments(int ownershipID, int minion);   
     bool moveMinionToGraveyard(int ownershipID, int minion);
     public:
         std::vector<MinionComponent*> p1Minions;
@@ -36,6 +36,7 @@ class Board {
             Player* player1, Player* player2, 
             int activePlayerID,
             std::vector<Minion*> p1Graveyard, std::vector<Minion*> p2Graveyard);
+        ~Board();
         int getActiveID();
         void addObserver(Observer* o);
         int endTurn();
@@ -47,7 +48,7 @@ class Board {
         Board();
         Player* getActivePlayer();
         void attackPlayer(int minion);
-        void destroyMinion(int player, int minion); // int minion is NOT zero-indexed     
+        void destroyMinion(int player, int minion); // int minion is NOT zero-indexed
 };
 
 #endif
