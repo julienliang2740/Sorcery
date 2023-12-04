@@ -93,10 +93,8 @@ void Player::shuffle() {
 
 void Player::addMagic(int change) {
     magic += change;
-    std::cout << "Player " << playerID << " (" << name << ") now has " << magic << "magic" << std::endl; 
 }
 
 void Player::addHealth(int change) {
     health += change;
-    std::cout << "Player " << playerID << " (" << name << ") now has " << health << "health" << std::endl;
 }

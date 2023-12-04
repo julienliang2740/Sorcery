@@ -73,6 +73,8 @@ Ritual* Deck::makeRitualFromName(std::string name, int playerID) {
     } else {
         newRitual = new Standstill(playerID, nullptr);
     }
+
+    return newRitual;
 }
 
 bool Deck::nameIsMinion(std::string name) {
@@ -100,11 +102,16 @@ Deck::Deck(std::ifstream& deckFile, int ownerID): theDeck{std::vector<Card *>()}
 
     while (getline(deckFile, cardName)) {
         ++cardsNumber;
-        Card * newCard = (nameIsMinion(cardName)) ? makeMinionFromName(cardName, ownershipID)
-                        : ((nameIsSpell(cardName)) ? makeSpellFromName(cardName, ownershipID)
-                        : ((nameIsEnchantment(cardName)) ? makeEnchantmentFromName(cardName, ownershipID)
-                        : new Card(0, cardName, ownerID, cardtype::R, false, "default - nothing")));
-        theDeck.emplace_back(newCard);
+
+        if (nameIsMinion(cardName)) {
+            theDeck.emplace_back(makeMinionFromName(cardName, ownershipID));
+        } else if (nameIsSpell(cardName)) {
+            theDeck.emplace_back(makeSpellFromName(cardName, ownershipID));
+        } else if (nameIsEnchantment(cardName)) {
+            theDeck.emplace_back(makeEnchantmentFromName(cardName, ownershipID));
+        } else {
+            theDeck.emplace_back(makeRitualFromName(cardName, ownershipID));
+        }
     }
 }
 

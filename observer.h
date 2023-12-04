@@ -12,6 +12,7 @@ class Observer {
     Observer(Board* b, triggerType subtype);
     virtual void notify(int player, int whichCard) = 0;  // c is the Cell that called the notify method
     triggerType subType() const;
+    void setBoard(Board* b);
     virtual ~Observer() = default;
 };
 

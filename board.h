@@ -18,8 +18,7 @@ class Board {
         std::vector<MinionComponent*> p1Minions;
         std::vector<MinionComponent*> p2Minions;
         int activePlayerID;
-
-        // Delinquent code:
+        
         Ritual * p1Ritual;
         Ritual * p2Ritual;
 

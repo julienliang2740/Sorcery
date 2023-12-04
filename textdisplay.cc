@@ -33,6 +33,9 @@ void printHand(const Player& p) {
             displayCard = make_enchantment_card(static_cast<Enchantment*>(c));
         } else if (c->getCardType() == cardtype::S) {
             displayCard = display_spell(c->getName(), c->getCost(), c->getCardDescription());
+        } else if (c->getCardType() == cardtype::R) {
+            Ritual* r = static_cast<Ritual*>(c);
+            displayCard = display_ritual(r->getName(), r->getCost(), r->getActivationCost(), r->getCardDescription(), r->getCharges());
         }
 
         for (int i = 0; i < 11; ++i) {
@@ -210,14 +213,28 @@ void textDisplay::printBoard() const {
 
 void textDisplay::notify(int player, int whichCard) {
 
-    std::cout << "calling td notify" << std::endl;
+    // std::cout << "calling td notify" << std::endl;
 
     int ritualCard = 6;
     int playerCard = 7;
     int graveyardCard = 8;
 
     if (whichCard == ritualCard) {
-        // stuff
+        if (player == b->player1->getID()) {
+            Ritual* r = b->p1Ritual;
+            if (r == nullptr) {
+                topRow[0] = CARD_TEMPLATE_BORDER;
+            } else {
+                topRow[0] = display_ritual(r->getName(), r->getCost(), r->getActivationCost(), r->getCardDescription(), r->getCharges());
+            }
+        } else if (player == b->player2->getID()) {
+            Ritual* r = b->p2Ritual;
+            if (r == nullptr) {
+                bottomRow[0] = CARD_TEMPLATE_BORDER;
+            } else {
+                bottomRow[0] = display_ritual(r->getName(), r->getCost(), r->getActivationCost(), r->getCardDescription(), r->getCharges());
+            }
+        }
     } else if (whichCard == playerCard) {
 
         if (player == b->player1->getID()) {

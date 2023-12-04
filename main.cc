@@ -50,6 +50,9 @@ int main(int argc, char * argv[]) {
     Board gameBoard(vector<MinionComponent*>(), vector<MinionComponent*>(), &player1, &player2, 1, vector<Minion*>(), vector<Minion*>());
     textDisplay td(&gameBoard);
     gameBoard.addObserver(&td);
+
+    player1.playerDeck->setBoardForRituals(&gameBoard);
+    player2.playerDeck->setBoardForRituals(&gameBoard);
     
     // assuming that very first line is Player 1's name and second line is Player 2's name
     string cmd;
@@ -128,8 +131,6 @@ int main(int argc, char * argv[]) {
             break;
         }
         else if (cmd == "draw") { //  INCOMPLETE INCOMPLETE INCOMPLETE
-            std::cout << "player 1 deck length: " << player1.playerDeck->getNumCards() << std::endl;
-            std::cout << "player 2 deck length: " << player2.playerDeck->getNumCards() << std::endl;
             if (config.testing) {
                 if (activePlayer.drawCard()) cout << activePlayer.getName() << " drew a card" << endl;
             }
@@ -227,41 +228,22 @@ int main(int argc, char * argv[]) {
             }
 
             printHand(activePlayer);
-            /*
-            vector<string> lines(11, "");
-            for (auto card: activePlayer.getHand()) {
-                ifstream cardFile{card->getFile()};
-                string line;
-                for (int i = 0; i < 11; ++i) {
-                    getline(cardFile, line);
-                    if (line.length() > 0 && (line[line.length() - 1] == '\r')) {
-                        line = line.substr(0, line.length() - 1);
-                    }
-                    lines[i] += line;
-                }
-
-                if (cardFile.fail()) {
-                    std::cerr << "Error reading file: " << card->getFile() << std::endl;
-                    // Handle the error as needed
-                }
-            }
-
-            for (int i = 0; i < 11; ++i) {
-                cout << lines[i] << endl;
-            }
-            
-            // SPECIAL CASE: IF THE CARDTYPE IS MINION THEN
-            // YOU NEED TO PRINT ITS DEFENSE - TOTALDAMAGE INSTEAD OF DEFENSE
-            
-            for (auto card: activePlayer.getHand()) {
-                cout << card->getName() << endl;
-            }
-            */
             
         }
         else if (cmd == "board") { //  INCOMPLETE INCOMPLETE INCOMPLETE
 
             td.printBoard();
+            cout << "p1 minions:" << endl;
+            for (MinionComponent* m: gameBoard.p1Minions) {
+                cout << m->getMinionName() << endl;
+                cout << m->getID() << endl;
+            }
+
+            cout << "p2 minions:" << endl;
+            for (MinionComponent* m: gameBoard.p2Minions) {
+                cout << m->getMinionName() << endl;
+                cout << m->getID() << endl;
+            }
         }
         //////////////////////////////////////////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////////////////////////

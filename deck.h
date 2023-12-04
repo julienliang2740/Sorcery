@@ -40,6 +40,7 @@ class Deck {
         bool addCardFront(Card *theCard); // returns true if succesfully added
         bool addCardBack(Card *theCard); // returns true if succesfully added
         ~Deck();
+        void setBoardForRituals(Board* b);
         Deck& operator=(Deck&& other) noexcept;
 };
 
