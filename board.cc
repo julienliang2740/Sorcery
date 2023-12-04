@@ -584,6 +584,7 @@ bool Board::moveMinionToGraveyard(int ownershipID, int minion) {
 
 bool Board::useActivatedAbility(int i, int p, int t) {
 
+
     if (activePlayerID == 1) {
         if (i < 1 || i > p1Minions.size()) {
             std::cerr << "no such card exists" << std::endl;
@@ -600,6 +601,13 @@ bool Board::useActivatedAbility(int i, int p, int t) {
     MinionComponent* theminion = (activePlayerID == player1->getID()) ? p1Minions[i - 1] : p2Minions[i - 1];
     std::string name = theminion->getMinionName();
     // ^def has to be miniontype
+    if (theminion->getActivatedAbility() == actAbility::silenced) {
+        std::cerr << "activated ability is being silenced. It cannot be used." << std::endl;
+        return false;
+    } else if (theminion->getActivatedAbility() == actAbility::none) {
+        std::cerr << "this minion has no activated ability." << std::endl;
+        return false;
+    }
 
     if (theminion->abilityNeedsTarget()) {
         if (((p != 1) && (p != 2)) || t < 1) {
