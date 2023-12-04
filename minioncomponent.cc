@@ -17,6 +17,7 @@ MinionComponent::Iterator::Iterator( MinionComponent* cur): cur{cur} {}
 
 MinionComponent::Iterator MinionComponent::Iterator::operator++() {
     cur = cur->next;
+    return MinionComponent::Iterator{next};
 }
 
 bool MinionComponent::Iterator::operator!=(const MinionComponent::Iterator& other) const {
