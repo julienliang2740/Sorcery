@@ -372,6 +372,7 @@ bool Board::playCard(int i, int p, int t) {
         if (name == "Banish") {
             if (t < 6) {
                 destroyMinion(p, t);
+                wasplaced = true;
             } else if (t == 6) {
                 wasplaced = destroyRitual(p);
             }
