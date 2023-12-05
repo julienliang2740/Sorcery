@@ -233,17 +233,6 @@ int main(int argc, char * argv[]) {
         else if (cmd == "board") { //  INCOMPLETE INCOMPLETE INCOMPLETE
 
             td.printBoard();
-            cout << "p1 minions:" << endl;
-            for (MinionComponent* m: gameBoard.p1Minions) {
-                cout << m->getMinionName() << endl;
-                cout << m->getID() << endl;
-            }
-
-            cout << "p2 minions:" << endl;
-            for (MinionComponent* m: gameBoard.p2Minions) {
-                cout << m->getMinionName() << endl;
-                cout << m->getID() << endl;
-            }
         }
         else if (cmd == "players") {
             cout << "Player 1: " << player1.getName() << endl;

@@ -213,8 +213,6 @@ void textDisplay::printBoard() const {
 
 void textDisplay::notify(int player, int whichCard) {
 
-    // std::cout << "calling td notify" << std::endl;
-
     int ritualCard = 6;
     int playerCard = 7;
     int graveyardCard = 8;
@@ -264,11 +262,7 @@ void textDisplay::notify(int player, int whichCard) {
 
     } else if (whichCard >= 1 && whichCard <= 5) {
 
-        std::cout << "whichCard: " << whichCard << std::endl;
-
         int minionIndex = whichCard - 1;
-
-        std::cout << "Minion Index: " << minionIndex << std::endl;
 
         std::vector<MinionComponent*>& minions = ((player == b->player1->getID()) ? b->p1Minions : b->p2Minions);
 
@@ -285,8 +279,6 @@ void textDisplay::notify(int player, int whichCard) {
         } else {
             p2minions[minionIndex] = newcard;
         }
-
-        std::cout << "Modified td" << std::endl;
 
     }
 }

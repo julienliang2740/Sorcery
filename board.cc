@@ -4,10 +4,10 @@
 #include "deck.h"
 
 void Board::addObserver(Observer* o) {
-    std::cout << "adding an observer" << std::endl;
     observers.emplace_back(o);
 }
 
+// a deck function to attach the board to each ritual.
 void Deck::setBoardForRituals(Board* b) {
     for (Card* c: theDeck) {
         if (c->getCardType() == cardtype::R) {
@@ -20,41 +20,42 @@ void Deck::setBoardForRituals(Board* b) {
 
 void DarkRitual::notify(int player, int whichCard) {
 
+    if (!onState) {
+        // card is not in play
+        return;
+    }
+
     if (player != this->ownershipID) {
-        std::cout << "player is not equal to this card's ownershipID" << std::endl;
-        std::cout << "player: " << player << ", ownershipID: " << this->ownershipID << std::endl;
+        // do not modify the other player
         return;
     }
 
     if (player == 1) {
         b->player1->addMagic(1);
-        std::cout << "player 1 Magic: " << b->player1->getMagic() << std::endl;
-    }
-    else {
+    } else {
         b->player2->addMagic(1);
-        std::cout << "player 2 Magic: " << b->player2->getMagic() << std::endl;
     }
 
+    int playerCard = 7;
     for (Observer* o: b->observers) {
         if (o->subType() == triggerType::All) {
-            o->notify(player, 7);
+            o->notify(player, playerCard);
         }
     }
 }
 
 void AuraOfPower::notify(int player, int whichCard) {
-    std::cout << "Aura of Power owner ID: " << ownershipID << std::endl;
     if (player == ownershipID) {
         if (onState) {
-            if (ownershipID == b->player1->getID()) {
-                Minion* m = static_cast<Minion*>(b->p1Minions[whichCard -1]); // "just trust me bro"
-                m->modDefense(1);
-                m->modAttack(1);
-            } else {
-                Minion* m = static_cast<Minion*>(b->p2Minions[whichCard - 1]);
-                m->modDefense(1);
-                m->modAttack(1);
-            }
+
+            std::vector<MinionComponent*> ownMinions = (ownershipID == b->player1->getID()) ? b->p1Minions : b->p2Minions;
+
+            // As the minion has just entered, it should not have enchantments.
+            // As such we may static_cast this to a Minion*
+            Minion* m = static_cast<Minion*>(ownMinions[whichCard - 1]);
+            m->modDefense(1);
+            m->modAttack(1);
+
         }
 
         for (Observer* o: b->observers) {
@@ -63,6 +64,33 @@ void AuraOfPower::notify(int player, int whichCard) {
             }
         }
     }
+}
+
+// this helper function deletes the enchantments on a minion and returns a pointer to the base minion.
+Minion* Board::deleteEnchantments(int ownershipID, int minion) {
+    if (ownershipID != 1 && ownershipID != 2) {
+        std::cerr << "invalid player ID" << std::endl;
+        return nullptr;
+    }
+
+    std::vector<MinionComponent*>& minions = (ownershipID == player1->getID()) ? p1Minions : p2Minions;
+
+    if (minion > minions.size()) {
+        std::cerr << "invalid minion ID" << std::endl;
+        return nullptr;
+    }
+
+    MinionComponent* cur = minions[minion - 1];
+
+    while (cur->getType() != cardtype::M) {
+        MinionComponent* temp = cur;
+        cur = cur->getNext();
+        delete temp;
+    }
+
+    Minion* theMinion = static_cast<Minion*>(cur);
+    minions[minion - 1] = theMinion;
+    return theMinion;
 }
 
 void Board::destroyMinion(int player, int minion) {
@@ -157,6 +185,7 @@ void Board::attackPlayer(int minion) {
     std::vector<MinionComponent*> ownMinions = (activePlayerID == player1->getID()) ? p1Minions : p2Minions;
     
     if (static_cast<int>(ownMinions.size()) < minion || minion < 1) {
+        // checking to see if the minion ID provided is valid
         std::cerr << "invalid minion" << std::endl;
         return;
     }
@@ -165,15 +194,15 @@ void Board::attackPlayer(int minion) {
 
     victim->addHealth(-(ownMinions[minion - 1]->getAttack()));
 
+    int playerCard = 7;
     for (auto p: observers) {
         if (p->subType() == triggerType::All) {
-            p->notify(victim->getID(), 7);
+            p->notify(victim->getID(), playerCard);
         }
     }
 }
 
 
-// EDIT THIS FUNCTION AFTER MINION CLASS IS MADE
 bool Board::placeMinion(std::vector<MinionComponent*>& minions, Minion* minion) {
     if (minions.size() > 4) {
         return false;
@@ -193,7 +222,6 @@ bool Board::addMinion(Minion* minion) {
     if (placed) {
         for (auto observer: observers) {
             if (observer->subType() == triggerType::MinionEnters || observer->subType() == triggerType::All) {
-                std::cout << "notifying an observer that a minion was added" << std::endl;
                 observer->notify(activePlayerID, minions.size());
             }
         }
@@ -202,6 +230,39 @@ bool Board::addMinion(Minion* minion) {
     return placed;
 }
 
+bool Board::destroyRitual(int playerID) {
+    Ritual* toDestroy = (playerID == player1->getID()) ? p1Ritual : p2Ritual;
+
+    if (toDestroy == nullptr) {
+        return false;
+        // no ritual to destroy, function does nothing
+    }
+                        
+    // finding the index of the ritual in the board's observers
+    int i = 0;
+    for (Observer* o: observers) {
+        if (o == toDestroy) {
+            break;
+        }
+        ++i;
+    }
+
+    observers.erase(observers.begin() + i);
+
+    if (playerID == player1->getID()) {
+        p1Ritual = nullptr;
+    } else {
+        p2Ritual = nullptr;
+    }
+
+    for (Observer* o: observers) {
+        if (o->subType() == triggerType::All) {
+            o->notify(playerID, 6);
+        }
+    }
+
+    delete toDestroy;
+}
 
 bool Board::playCard(int i, int p, int t) {
 
@@ -214,7 +275,6 @@ bool Board::playCard(int i, int p, int t) {
 
     Card* c = activePlayer->getHand()[i - 1];
 
-
     if (c->hasATarget() && (((p != 1) && (p != 2)) || t < 1)) {
         std::cerr << "must provide target for card" << std::endl;
         return false;
@@ -222,15 +282,15 @@ bool Board::playCard(int i, int p, int t) {
 
     std::vector<MinionComponent*>& targetMinions = (p == player1->getID()) ? p1Minions : p2Minions;
 
-    if (static_cast<int>(targetMinions.size()) < t) {
+    cardtype type = c->getCardType();
+    std::string name = c->getName();
+
+    if (!(name == "Banish" && t == 6) && static_cast<int>(targetMinions.size()) < t) {
         std::cerr << "invalid target minion" << std::endl;
         return false;
     }
 
     bool wasplaced = false;
-
-    cardtype type = c->getCardType();
-    std::string name = c->getName();
 
     if (type == cardtype::M) {
         std::cout << "placing a minion" << std::endl;
@@ -240,71 +300,14 @@ bool Board::playCard(int i, int p, int t) {
 
     else if (type == cardtype::S) {
         if (name == "Banish") {
-            if (t < 6) destroyMinion(p, t);
-            else if (t == 6) {
-                if (p == player1->getID()) {
-                    if (p1Ritual) {
-                        Ritual* temp = p1Ritual;
-                        
-                        // removing the target ritual from board's observers vector
-                        int i = 0;
-                        for (Observer* o: observers) {
-                            if (o == temp) {
-                                break;
-                            }
-                            ++i;
-                        }
-
-                        observers.erase(observers.begin() + i);
-
-                        p1Ritual = nullptr;
-
-                        for (Observer* o: observers) {
-                            if (o->subType() == triggerType::All) {
-                                o->notify(p, 6);
-                            }
-                        }
-
-                        delete temp;
-                        wasplaced = true;
-                    } else {
-                        std::cerr << "No ritual to banish" << std::endl;
-                        return false;
-                    }
-                } else if (p == player2->getID()) {
-                    if (p2Ritual) {
-                        Ritual* temp = p2Ritual;
-
-                        // removing the target ritual from board's observers vector
-                        int i = 0;
-                        for (Observer* o: observers) {
-                            if (o == temp) {
-                                break;
-                            }
-                            ++i;
-                        }
-
-                        observers.erase(observers.begin() + i);
-
-                        for (Observer* o: observers) {
-                            if (o->subType() == triggerType::All) {
-                                o->notify(p, 6);
-                            }
-                        }
-
-                        p2Ritual = nullptr;
-                        delete temp;
-                        wasplaced = true;
-                    } else {
-                        std::cerr << "No ritual to banish" << std::endl;
-                        return false;
-                    }
-                }
+            if (t < 6) {
+                destroyMinion(p, t);
+            } else if (t == 6) {
+                wasplaced = destroyRitual(p);
             }
-            delete c;
-            wasplaced = true;
+            if (wasplaced) delete c;
         }
-        else if (name == "Unsummon") { //wip
+        else if (name == "Unsummon") {
             Player* targetPlayer = (p == player1->getID()) ? player1 : player2;
             if ((targetPlayer != activePlayer) && (targetPlayer->getHand().size() >= Player::getHandMax())) {
                 std::cerr << "cannot unsummon. Opponent's hand is full.";
@@ -385,8 +388,11 @@ bool Board::playCard(int i, int p, int t) {
 
             Minion* m = graveyard.back();
             m->setDefense(1);
+            m->resetDamage();
+
             graveyard.pop_back();
             ownMinions.emplace_back(m);
+
             for (Observer* o: observers) {
                 if (o->subType() == triggerType::All) {
                     o->notify(c->getID(), 8);
@@ -407,25 +413,24 @@ bool Board::playCard(int i, int p, int t) {
             int p1MinionPos = 1;
             int p2MinionPos = 1;
 
-            if (!p1Minions.empty()) {
-                for (MinionComponent* victim: p1Minions) {
-                    victim->beAttacked(2);
-                    std::cout << "p1 Minion position: " << p1MinionPos << std::endl;
-                    for (Observer* o: observers) {
-                        o->notify(1, p1MinionPos);
+            for (MinionComponent* victim: p1Minions) {
+                victim->beAttacked(2);
+                for (Observer* o: observers) {
+                    if (o->subType() == triggerType::All) {
+                        o->notify(player1->getID(), p1MinionPos);
                     }
-                    ++p1MinionPos;
                 }
+                ++p1MinionPos;
             }
 
-            if (!p2Minions.empty()) {
-                for (MinionComponent* victim : p1Minions) {
-                    std::cout << "p2 Minion position: " << p2MinionPos << std::endl;
-                    victim->beAttacked(2);
-                    for (Observer* o: observers) {
-                        o->notify(2, p2MinionPos);
+            for (MinionComponent* victim : p2Minions) {
+                victim->beAttacked(2);
+                for (Observer* o: observers) {
+                    if (o->subType() == triggerType::All) {
+                        o->notify(player2->getID(), p2MinionPos);
                     }
                 }
+                ++p2MinionPos;
             }
 
             int i = 0;
@@ -445,65 +450,40 @@ bool Board::playCard(int i, int p, int t) {
                     ++i;
                 }
             }
+
+            for (int j = 1; j < 6; ++j) {
+                for (Observer* o: observers) {
+                    if (o->subType() == triggerType::All) {
+                        o->notify(player1->getID(), j);
+                        o->notify(player2->getID(), j);
+                    }
+                }
+            }
             
             delete c;
 
             wasplaced = true;
         }
-        else std::cout << "bruga spells isnt getting picked properly" << std::endl;
     } 
 
-    else if (type == cardtype::R) { // LEAKS MEMORY WHEN RITUALS ARE OVERLAYED ON TOP OF EACH OTHER
+    else if (type == cardtype::R) {
         Ritual* r = static_cast<Ritual*>(c);
         Ritual* oldRitual = nullptr;
         r->toggleOn();
+
+        destroyRitual(activePlayerID);
         
         if (activePlayerID == player1->getID()) {
-
-            /*
-            oldRitual = p1Ritual;
-            
-            int i = 0;
-            for (Observer* o: observers) {
-                if (o == oldRitual) {
-                    break;
-                }
-                ++i;
-            }
-            observers.erase(observers.begin() + i);
-            delete oldRitual;
-            */
-
             p1Ritual = r;
-
-            for (Observer* o: observers) {
-                if (o->subType() == triggerType::All) {
-                    o->notify(activePlayerID, 6);
-                }
-            }
-
         } else {
-            
-            /*
-            oldRitual = p2Ritual;
-            
-            int i = 0;
-            for (Observer* o: observers) {
-                if (o == oldRitual) {
-                    break;
-                }
-                ++i;
-            }
-            observers.erase(observers.begin() + i);
-            delete oldRitual;
-            */
-
             p2Ritual = r;
+        }
 
-            for (Observer* o: observers) {
-                if (o->subType() == triggerType::All) {
-                    o->notify(activePlayerID, 6);
-                }
+        int ritualCard = 6;
+
+        for (Observer* o: observers) {
+            if (o->subType() == triggerType::All) {
+                o->notify(activePlayerID, ritualCard);
             }
         }
 
@@ -511,12 +491,17 @@ bool Board::playCard(int i, int p, int t) {
     }
     
     else if (type == cardtype::E) {
+        // attaching the enchantment onto the target minion
         MinionComponent* temp = targetMinions[t - 1];
         Enchantment* newEnchantment = static_cast<Enchantment*>(c);
         newEnchantment->setNext(temp);
         targetMinions[t - 1] = newEnchantment;
-        for (auto observer: observers) {
-            observer->notify(p, t); // we should make helper functions for this btw
+
+        // notifying display observers that an enchantment was placed
+        for (Observer* o: observers) {
+            if (o->subType() == triggerType::All) {
+                o->notify(p, t);
+            }
         }
         wasplaced = true;
     }
@@ -526,32 +511,6 @@ bool Board::playCard(int i, int p, int t) {
     }
 
     return wasplaced;
-}
-
-Minion* Board::deleteEnchantments(int ownershipID, int minion) {
-    if (ownershipID != 1 && ownershipID != 2) {
-        std::cerr << "invalid player ID" << std::endl;
-        return nullptr;
-    }
-
-    std::vector<MinionComponent*>& minions = (ownershipID == player1->getID()) ? p1Minions : p2Minions;
-
-    if (minion > minions.size()) {
-        std::cerr << "invalid minion ID" << std::endl;
-        return nullptr;
-    }
-
-    MinionComponent* cur = minions[minion - 1];
-
-    while (cur->getType() != cardtype::M) {
-        MinionComponent* temp = cur;
-        cur = cur->getNext();
-        delete temp;
-    }
-
-    Minion* theMinion = static_cast<Minion*>(cur);
-    minions[minion - 1] = theMinion;
-    return theMinion;
 }
 
 bool Board::moveMinionToGraveyard(int ownershipID, int minion) {
@@ -564,7 +523,7 @@ bool Board::moveMinionToGraveyard(int ownershipID, int minion) {
     std::vector<Minion*>& graveyard = (ownershipID == player1->getID()) ? p1Graveyard : p2Graveyard;
 
     if (minion > theMinions.size()) {
-        std::cerr << "invalid minion ID" << std::endl;
+        std::cerr << "invalid minion ID. Cannot move to graveyard." << std::endl;
         return false;
     }
 

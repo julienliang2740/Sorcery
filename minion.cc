@@ -42,7 +42,7 @@ void Minion::attackMinion(MinionComponent* other) {
     beAttacked(other->getAttack());
 }
 
-void Minion::reset() {
+void Minion::resetDamage() {
     totalDamage = 0;
 }
 

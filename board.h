@@ -14,6 +14,7 @@ class Observer;
 class Board {
     Minion* deleteEnchantments(int ownershipID, int minion);   
     bool moveMinionToGraveyard(int ownershipID, int minion);
+    bool destroyRitual(int playerID);
     public:
         std::vector<MinionComponent*> p1Minions;
         std::vector<MinionComponent*> p2Minions;

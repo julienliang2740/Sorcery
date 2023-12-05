@@ -5,9 +5,7 @@
 Ritual::Ritual(int cost, std::string name, int ownershipID, std::string description, Board* b,
                triggerType subtype, int charges, int activationCost):
     Card{cost, name, ownershipID, cardtype::R, false, description}, Observer{b, subtype}, 
-    charges{charges}, activationCost{activationCost}, onState{false} {
-        std::cout << "creating a ritual" << std::endl;
-    }
+    charges{charges}, activationCost{activationCost}, onState{false} {}
 
 Ritual::~Ritual() {}
 

@@ -36,7 +36,7 @@ class Minion: public MinionComponent {
         static Minion* makeAppSummoner(int ownershipID);
         static Minion* makeMsSummoner(int ownershipID);
         static Minion* makePotionSeller(int ownershipID);
-        void reset();
+        void resetDamage();
         void setDefense(int n);
         bool abilityNeedsTarget() const override;
         minionHasAbility getHasAbility() const override;
