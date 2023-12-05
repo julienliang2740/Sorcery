@@ -128,6 +128,7 @@ void Board::destroyMinion(int player, int minion) {
 }
 
 void Standstill::notify(int player, int whichCard) {
+
     if (!onState) {
         return;
     }
@@ -141,7 +142,9 @@ void Standstill::notify(int player, int whichCard) {
     addCharges(-(getActivationCost()));
 
     for (Observer* o: b->observers) {
-        o->notify(ownershipID, 6);
+        if (o->subType() == triggerType::All) {
+            o->notify(ownershipID, 6);
+        }
     }
 }
 
@@ -642,9 +645,11 @@ bool Board::useActivatedAbility(int i, int p, int t) {
     }
 
     Player* activePlayer = getActivePlayer();
-    MinionComponent* m = (activePlayerID == player1->getID()) ? p1Minions[i - 1] : p2Minions[i - 1];
-    int abilityCost = m->getAbilityCost();
-    if (m->getNumActions() < abilityCost || activePlayer->getMagic() < abilityCost) {
+    MinionComponent* theminion = (activePlayerID == player1->getID()) ? p1Minions[i - 1] : p2Minions[i - 1];
+    int abilityCost = theminion->getAbilityCost();
+    actAbility ability = theminion->getActivatedAbility();
+
+    if (theminion->getNumActions() < abilityCost || activePlayer->getMagic() < abilityCost) {
         std::cerr << "you don't have enough magic/actions to use the activated ability!" << std::endl;
         return false;
     }
@@ -655,10 +660,7 @@ bool Board::useActivatedAbility(int i, int p, int t) {
             o->notify(activePlayer->getID(), 7);
         }
     }
-
-    MinionComponent* theminion = (activePlayerID == player1->getID()) ? p1Minions[i - 1] : p2Minions[i - 1];
-    std::string name = theminion->getMinionName();
-    // ^def has to be miniontype
+    
     if (theminion->getActivatedAbility() == actAbility::silenced) {
         std::cerr << "activated ability is being silenced. It cannot be used." << std::endl;
         return false;
@@ -675,7 +677,7 @@ bool Board::useActivatedAbility(int i, int p, int t) {
         
         MinionComponent* thetarget = (p == player1->getID()) ? p1Minions[t - 1] : p2Minions[t - 1];
 
-        if (name == "Novice Pyromancer") {
+        if (ability == actAbility::pyro) {
             thetarget->beAttacked(1);
             if (thetarget->getDefense() - thetarget->getTotalDamage() < 0) {
                 moveMinionToGraveyard(p, t);
@@ -695,7 +697,7 @@ bool Board::useActivatedAbility(int i, int p, int t) {
             return false;
         }
 
-        if (name == "Apprentice Summoner") {
+        if (ability == actAbility::asumm) {
             if (activePlayerID == 1) {
                 if (p1Minions.size() >= 5) {
                     std::cout << "board full, not summoning air elemental" << std::endl;
@@ -715,7 +717,7 @@ bool Board::useActivatedAbility(int i, int p, int t) {
                 }
             }
         }
-        else if (name == "Master Summoner") {
+        else if (ability == actAbility::msumm) {
             if (activePlayerID == 1) {
                 for (int k = 0; k < 3; ++k) {
                     if (p1Minions.size() >= 5) {
