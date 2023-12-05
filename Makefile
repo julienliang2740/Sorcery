@@ -6,7 +6,10 @@ OBJECTS = ${SOURCES:.cc=.o}
 DEPENDS = ${OBJECTS:.o=.d}
 EXEC=sorcery
 
-$(EXEC): $(OBJECTS)
+# default target is sorcery
+.DEFAULT_GOAL := sorcery
+
+sorcery: $(OBJECTS)
 	$(CXX) $(CXXFLAGS) $(OBJECTS) -o $(EXEC) $(LIBFLAGS)
 
 %.o: %.cc 
@@ -17,4 +20,3 @@ $(EXEC): $(OBJECTS)
 .PHONY: clean tests
 clean:
 	rm  -f $(OBJECTS) $(DEPENDS) $(EXEC)
-

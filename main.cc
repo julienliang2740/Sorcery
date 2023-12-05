@@ -184,6 +184,16 @@ int main(int argc, char * argv[]) {
                 cout << i << "th minion attacks enemy player's " << j << "th minion" << endl;
                 gameBoard.attackMinion(i, j);
             }
+
+            // Seeing if any player died
+            if (gameBoard.checkWinState() == 1) { // player 1 wins
+                cout << "Player 1 (" << player1.getName() << ") wins" << endl;
+                break;
+            }
+            else if (gameBoard.checkWinState() == -1) { // player 1 loses -> player 2 wins
+                cout << "Player 2 (" << player2.getName() << ") wins" << endl;
+                break;
+            }
         }
         else if (cmd == "play") { //  INCOMPLETE INCOMPLETE INCOMPLETE
             int i = -1, p = -1, t = -1;
