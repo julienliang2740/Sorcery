@@ -267,7 +267,7 @@ void Board::attackPlayer(int minion) {
     int playerCard = 7;
     for (auto p: observers) {
         if (p->subType() == triggerType::All) {
-            p->notify(victim->getID(), playerCard);
+            p->notify(((activePlayerID == player1->getID()) ? player2->getID() : player1->getID()), playerCard);
         }
     }
 }
@@ -629,14 +629,14 @@ bool Board::moveMinionToGraveyard(int ownershipID, int minion) {
 
     for (Observer* o: observers) {
         if (o->subType() == triggerType::MinionLeaves) {
-            o->notify(m->getID(), minion);
+            o->notify(ownershipID, minion);
         }
     }
 
     for (int i = minion; i <= 5; ++i) {
         for (Observer* o: observers) {
             if (o->subType() == triggerType::All) {
-                o->notify(m->getID(), i);
+                o->notify(ownershipID, i);
             }
         }
     }
@@ -644,7 +644,7 @@ bool Board::moveMinionToGraveyard(int ownershipID, int minion) {
     graveyard.emplace_back(m);
     for (auto observer: observers) {
         if (observer->subType() == triggerType::All) {
-            observer->notify(m->getID(), 8);
+            observer->notify(ownershipID, 8);
         }
     }
 
@@ -806,13 +806,13 @@ bool Board::attackMinion(int curMinion, int target) {
 
     for (Observer* o: observers) {
         if (o->subType() == triggerType::All) {
-            o->notify(attacker->getID(), curMinion);
+            o->notify(activePlayerID, curMinion);
         }
     }
 
     for (Observer* o: observers) {
         if (o->subType() == triggerType::All) {
-            o->notify(attacked->getID(), target);
+            o->notify(((activePlayerID == player1->getID()) ? player2->getID() : player1->getID()), target);
         }
     }
 
