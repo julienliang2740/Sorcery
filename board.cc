@@ -672,7 +672,7 @@ bool Board::useActivatedAbility(int i, int p, int t) {
     int abilityCost = theminion->getAbilityCost();
     actAbility ability = theminion->getActivatedAbility();
 
-    if (theminion->getNumActions() < abilityCost || activePlayer->getMagic() < abilityCost) {
+    if (theminion->getNumActions() < 1 || activePlayer->getMagic() < abilityCost) {
         std::cerr << "you don't have enough magic/actions to use the activated ability!" << std::endl;
         return false;
     }
@@ -765,6 +765,7 @@ bool Board::useActivatedAbility(int i, int p, int t) {
                 }
             }
         }
+        theminion->useActions(1);
         return true;
     }
 }
