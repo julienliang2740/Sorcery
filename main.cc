@@ -187,15 +187,31 @@ int main(int argc, char * argv[]) {
         }
         else if (cmd == "play") { //  INCOMPLETE INCOMPLETE INCOMPLETE
             int i = -1, p = -1, t = -1;
+            char tChar;
             if (readFromFile) {
                 initfile >> i;
-                if (initfile.peek() != '\r' && initfile.peek() != '\n') initfile >> p >> t;
+                if (initfile.peek() != '\r' && initfile.peek() != '\n') {
+                    initfile >> p;
+                    initfile >> tChar;
+                    if (isdigit(tChar)) t = tChar - '0';
+                    else if (tChar == 'r') {
+                        t = 6;
+                    }
+                }
             }
             else {
                 cin >> i;
-                if (cin.peek() != '\n') cin >> p >> t;
+                if (cin.peek() != '\n') {
+                    cin >> p;
+                    cin >> tChar;
+                    if (isdigit(tChar)) t = tChar - '0';
+                    else if (tChar == 'r') {
+                        t = 6;
+                    }
+                }
             }
 
+            cout << i << p << t << endl;
             bool placed = gameBoard.playCard(i, p, t);
             if (!placed) {
                 std::cerr << "cannot place card" << std::endl;
