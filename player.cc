@@ -8,8 +8,8 @@ Player::Player(std::string newname, int playerID, std::vector<Card *> initalHand
 name(newname), 
 playerID(playerID), 
 hand(initalHand),
-playerDeck(playerDeck),
-magic(initialMagic), health(20) {}
+magic(initialMagic), health(20),
+playerDeck(playerDeck) {}
 
 Player::~Player() {
     for (auto card: hand) {

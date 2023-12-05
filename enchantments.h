@@ -24,7 +24,7 @@ class Haste: public Enchantment {
     public:
         Haste(int ownerID);
         Enchantment* makeHaste(int ownerID);
-        // int getNumActions() const override; // uncomment when actions currency is implemented
+        int getNumActions() const override; // uncomment when actions currency is implemented
 };
 
 class MagicFatigue: public Enchantment {

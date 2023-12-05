@@ -30,6 +30,11 @@ void DarkRitual::notify(int player, int whichCard) {
         return;
     }
 
+    if (getActivationCost() > getCharges()) {
+        // not enough charges: do not perform action
+        return;
+    }
+
     if (player == 1) {
         b->player1->addMagic(1);
     } else {
@@ -37,16 +42,27 @@ void DarkRitual::notify(int player, int whichCard) {
     }
 
     int playerCard = 7;
+    int ritualCard = 6;
+
+    addCharges(-(getActivationCost()));
+
     for (Observer* o: b->observers) {
         if (o->subType() == triggerType::All) {
             o->notify(player, playerCard);
+            o->notify(player, ritualCard);
         }
     }
 }
 
 void AuraOfPower::notify(int player, int whichCard) {
     if (player == ownershipID) {
+
         if (onState) {
+
+            if (getActivationCost() > getCharges()) {
+                // not enough charges to perform action
+                return;
+            }
 
             std::vector<MinionComponent*> ownMinions = (ownershipID == b->player1->getID()) ? b->p1Minions : b->p2Minions;
 
@@ -56,12 +72,17 @@ void AuraOfPower::notify(int player, int whichCard) {
             m->modDefense(1);
             m->modAttack(1);
 
-        }
+            addCharges(-(getActivationCost()));
 
-        for (Observer* o: b->observers) {
-            if (o->subType() == triggerType::All) {
-                o->notify(player, whichCard);
+            int ritualCard = 6;
+
+            for (Observer* o: b->observers) {
+                if (o->subType() == triggerType::All) {
+                    o->notify(player, whichCard);
+                    o->notify(player, ritualCard);
+                }
             }
+
         }
     }
 }
@@ -110,7 +131,18 @@ void Standstill::notify(int player, int whichCard) {
     if (!onState) {
         return;
     }
+
+    if (getActivationCost() > getCharges()) {
+        return;
+    }
+
     b->destroyMinion(player, whichCard);
+
+    addCharges(-(getActivationCost()));
+
+    for (Observer* o: b->observers) {
+        o->notify(ownershipID, 6);
+    }
 }
 
 Board::Board(
@@ -120,9 +152,10 @@ Board::Board(
     std::vector<Minion*> p1Graveyard, std::vector<Minion*> p2Graveyard) :
 
     p1Minions{p1Minions}, p2Minions{p2Minions},
-    player1{player1}, player2{player2},
-    activePlayerID{activePlayerID}, p1Ritual{nullptr}, p2Ritual{nullptr},
-    p1Graveyard{p1Graveyard}, p2Graveyard{p2Graveyard} {}
+    activePlayerID{activePlayerID},
+    p1Ritual{nullptr}, p2Ritual{nullptr},
+    p1Graveyard{p1Graveyard}, p2Graveyard{p2Graveyard},
+    player1{player1}, player2{player2} {}
 
 Board::~Board() {
     int i = 1;
@@ -165,6 +198,23 @@ int Board::endTurn() {
         activePlayerID = player2->getID();
     } else {
         activePlayerID = player1->getID();
+    }
+
+    for (MinionComponent* m: p1Minions) {
+        m->setActions(1);
+    }
+
+    for (MinionComponent* m: p2Minions) {
+        m->setActions(1);
+    }
+
+    (getActivePlayer())->addMagic(1);
+
+    for (Observer* o: observers) {
+        if (o->subType() == triggerType::All) {
+            o->notify(player1->getID(), 7);
+            o->notify(player2->getID(), 7);
+        }
     }
 
     for (auto observer: observers) {
@@ -262,6 +312,7 @@ bool Board::destroyRitual(int playerID) {
     }
 
     delete toDestroy;
+    return true;
 }
 
 bool Board::playCard(int i, int p, int t) {
@@ -274,6 +325,13 @@ bool Board::playCard(int i, int p, int t) {
     }
 
     Card* c = activePlayer->getHand()[i - 1];
+
+    int cardCost = c->getCost();
+
+    if (activePlayer->getMagic() < cardCost) {
+        std::cerr << "not enough magic to place that card" << std::endl;
+        return false;
+    }
 
     if (c->hasATarget() && (((p != 1) && (p != 2)) || t < 1)) {
         std::cerr << "must provide target for card" << std::endl;
@@ -346,6 +404,15 @@ bool Board::playCard(int i, int p, int t) {
                     std::cerr << "No ritual placed; cannot recharge" << std::endl;
                     return false;
                 }
+            }
+
+            if (wasplaced) {
+                for (Observer* o: observers) {
+                    if (o->subType() == triggerType::All) {
+                        o->notify(c->getID(), 6);
+                    }
+                }
+                delete c;
             }
         }
         else if (name == "Disenchant") { //wip
@@ -468,7 +535,6 @@ bool Board::playCard(int i, int p, int t) {
 
     else if (type == cardtype::R) {
         Ritual* r = static_cast<Ritual*>(c);
-        Ritual* oldRitual = nullptr;
         r->toggleOn();
 
         destroyRitual(activePlayerID);
@@ -508,6 +574,12 @@ bool Board::playCard(int i, int p, int t) {
 
     if (wasplaced) {
         activePlayer->removeCard(i);
+        activePlayer->addMagic(-cardCost);
+        for (Observer* o: observers) {
+            if (o->subType() == triggerType::All) {
+                o->notify(activePlayer->getID(), 7);
+            }
+        }
     }
 
     return wasplaced;
@@ -560,6 +632,21 @@ bool Board::useActivatedAbility(int i, int p, int t) {
         }
     }
 
+    Player* activePlayer = getActivePlayer();
+    MinionComponent* m = (activePlayerID == player1->getID()) ? p1Minions[i - 1] : p2Minions[i - 1];
+    int abilityCost = m->getAbilityCost();
+    if (m->getNumActions() < abilityCost || activePlayer->getMagic() < abilityCost) {
+        std::cerr << "you don't have enough magic/actions to use the activated ability!" << std::endl;
+        return false;
+    }
+
+    activePlayer->addMagic(-abilityCost);
+    for (Observer* o: observers) {
+        if (o->subType() == triggerType::All) {
+            o->notify(activePlayer->getID(), 7);
+        }
+    }
+
     MinionComponent* theminion = (activePlayerID == player1->getID()) ? p1Minions[i - 1] : p2Minions[i - 1];
     std::string name = theminion->getMinionName();
     // ^def has to be miniontype
@@ -581,14 +668,16 @@ bool Board::useActivatedAbility(int i, int p, int t) {
 
         if (name == "Novice Pyromancer") {
             thetarget->beAttacked(1);
+            if (thetarget->getDefense() - thetarget->getTotalDamage() < 0) {
+                moveMinionToGraveyard(p, t);
+            }
             for (Observer* o: observers) {
                 if (o->subType() == triggerType::All) {
                     o->notify(p, t);
                 }
             }
         }
-        else std::cout << "bruga minion not picked properly" << std::endl;
-        
+
         return true;
     }
     else {

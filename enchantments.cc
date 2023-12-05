@@ -24,6 +24,10 @@ int MagicFatigue::getAbilityCost() const {
     return 2 + next->getAbilityCost();
 }
 
+int Haste::getNumActions() const {
+    return 1 + next->getNumActions();
+}
+
 GiantStrength::GiantStrength(int ownershipID):
     Enchantment(1, "Giant Strength", ownershipID, nullptr, true, "") {}
 

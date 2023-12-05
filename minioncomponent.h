@@ -38,6 +38,9 @@ class MinionComponent: public Card {
         virtual minionHasAbility getHasAbility() const = 0;
         virtual int getAbilityCost() const = 0;
         virtual std::string getMinionDescription() const = 0;
+        virtual int getNumActions() const = 0;
+        virtual void setActions(int n) = 0;
+        virtual void useActions(int n) = 0;
 
         // UNCOMMENT THESE WHEN YOU IMPLEMENT THEM
         // virtual int getNumActions() = 0;

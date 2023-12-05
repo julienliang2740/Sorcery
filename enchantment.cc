@@ -55,6 +55,18 @@ int Enchantment::getAbilityCost() const {
     return next->getAbilityCost();
 }
 
+int Enchantment::getNumActions() const {
+    return next->getNumActions();
+}
+
 std::string Enchantment::getMinionDescription() const {
     return next->getMinionDescription();
+}
+
+void Enchantment::setActions(int n) {
+    next->setActions(n);
+}
+
+void Enchantment::useActions(int n) {
+    next->useActions(n);
 }

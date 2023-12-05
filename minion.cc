@@ -1,8 +1,8 @@
 #include "minion.h"
 
-Minion::Minion(int cost, std::string name, int ownershipID, int defense, int attack, int totalDamage, actAbility aAbility, bool needsTarget, minionHasAbility abilityOfMinion, int abilityCost, std::string description): 
+Minion::Minion(int cost, std::string name, int ownershipID, int defense, int attack, int totalDamage, int actions, actAbility aAbility, bool needsTarget, minionHasAbility abilityOfMinion, int abilityCost, std::string description): 
     MinionComponent{cost, name, ownershipID, cardtype::M, false, nullptr, description}, defense{defense},
-    attack{attack}, totalDamage{totalDamage}, aAbility{aAbility}, needsTarget{needsTarget}, abilityOfMinion{abilityOfMinion}, abilityCost{abilityCost} {}
+    attack{attack}, totalDamage{totalDamage}, actions{actions}, aAbility{aAbility}, needsTarget{needsTarget}, abilityOfMinion{abilityOfMinion}, abilityCost{abilityCost} {}
 
 Minion::Minion(MinionComponent* other):
     MinionComponent{other->getCost(), other->getName(), other->getID(), cardtype::M, false, nullptr, other->getMinionDescription()},
@@ -57,42 +57,42 @@ void Minion::setDefense(int n) {
 // static functions to make default minions
 
 Minion* Minion::makeAirElemental(int ownershipID) {
-    Minion* m = new Minion{0, "Air Elemental", ownershipID, 1, 1, 0, actAbility::none, false, minionHasAbility::hasnoability, 0, ""};
+    Minion* m = new Minion{0, "Air Elemental", ownershipID, 1, 1, 0, 0, actAbility::none, false, minionHasAbility::hasnoability, 0, ""};
     return m;
 }
 
 Minion* Minion::makeEarthElemental(int ownershipID) {
-    Minion* m = new Minion{3, "Earth Elemental", ownershipID, 4, 4, 0, actAbility::none, false, minionHasAbility::hasnoability, 0, ""};
+    Minion* m = new Minion{3, "Earth Elemental", ownershipID, 4, 4, 0, 0, actAbility::none, false, minionHasAbility::hasnoability, 0, ""};
     return m;
 }
 
 Minion* Minion::makeFireElemental(int ownershipID) {
-    Minion* m = new Minion{2, "Fire Elemental", ownershipID, 2, 2, 0, actAbility::none, false, minionHasAbility::hastriggeredability, 0, "Whenever an opponent’s minion enters play, deal 1 damage to it."};
+    Minion* m = new Minion{2, "Fire Elemental", ownershipID, 2, 2, 0, 0, actAbility::none, false, minionHasAbility::hastriggeredability, 0, "Whenever an opponent’s minion enters play, deal 1 damage to it."};
     return m;
 }
 
 Minion* Minion::makeBoneGolem(int ownershipID) {
-    Minion* m = new Minion{2, "Bone Golem", ownershipID, 1, 3, 0, actAbility::none, false, minionHasAbility::hastriggeredability, 0, "Gain +1/+1 whenever a minion leaves play."};
+    Minion* m = new Minion{2, "Bone Golem", ownershipID, 1, 3, 0, 0, actAbility::none, false, minionHasAbility::hastriggeredability, 0, "Gain +1/+1 whenever a minion leaves play."};
     return m;
 }
 
 Minion* Minion::makeNovicePyromancer(int ownershipID) {
-    Minion* m = new Minion{1, "Novice Pyromancer", ownershipID, 0, 1, 0, actAbility::pyro, true, minionHasAbility::hasactivatedability, 1, "Deal 1 damage to target minion"};
+    Minion* m = new Minion{1, "Novice Pyromancer", ownershipID, 0, 1, 0, 0, actAbility::pyro, true, minionHasAbility::hasactivatedability, 1, "Deal 1 damage to target minion"};
     return m;
 }
 
 Minion* Minion::makeAppSummoner(int ownershipID) {
-    Minion* m = new Minion{1, "Apprentice Summoner", ownershipID, 1, 1, 0, actAbility::asumm, false, minionHasAbility::hasactivatedability, 1, "Summon a 1/1 air elemental"};
+    Minion* m = new Minion{1, "Apprentice Summoner", ownershipID, 1, 1, 0, 0, actAbility::asumm, false, minionHasAbility::hasactivatedability, 1, "Summon a 1/1 air elemental"};
     return m;
 }
 
 Minion* Minion::makeMsSummoner(int ownershipID) {
-    Minion* m = new Minion{3, "Master Summoner", ownershipID, 2, 3, 0, actAbility::msumm, false, minionHasAbility::hasactivatedability, 2, "Summon up to three 1/1 air elementals"};
+    Minion* m = new Minion{3, "Master Summoner", ownershipID, 2, 3, 0, 0, actAbility::msumm, false, minionHasAbility::hasactivatedability, 2, "Summon up to three 1/1 air elementals"};
     return m;
 }
 
 Minion* Minion::makePotionSeller(int ownershipID) {
-    Minion* m = new Minion{2, "Potion Seller", ownershipID, 1, 3, 0, actAbility::none, false, minionHasAbility::hastriggeredability, 0, "At the end of your turn, all your minions gain +0/+1."};
+    Minion* m = new Minion{2, "Potion Seller", ownershipID, 1, 3, 0, 0, actAbility::none, false, minionHasAbility::hastriggeredability, 0, "At the end of your turn, all your minions gain +0/+1."};
     return m;
 }
 
@@ -108,6 +108,10 @@ int Minion::getAbilityCost() const {
     return abilityCost;
 }
 
+int Minion::getNumActions() const {
+    return actions;
+}
+
 std::string Minion::getMinionDescription() const {
     return description;
 }
@@ -118,4 +122,12 @@ void Minion::modDefense(int n) {
 
 void Minion::modAttack(int n) {
     attack += n;
+}
+
+void Minion::setActions(int n) {
+    actions = n;
+}
+
+void Minion::useActions(int n) {
+    actions -= n;
 }

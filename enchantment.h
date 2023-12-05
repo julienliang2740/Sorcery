@@ -20,7 +20,10 @@ class Enchantment: public MinionComponent {
         minionHasAbility getHasAbility() const override;
         bool getHasStats() const;
         int getAbilityCost() const override;
+        int getNumActions() const override;
         std::string getMinionDescription() const override;
+        void setActions(int n) override;
+        void useActions(int n) override;
 };
 
 #endif

@@ -15,6 +15,7 @@ class Board {
     Minion* deleteEnchantments(int ownershipID, int minion);   
     bool moveMinionToGraveyard(int ownershipID, int minion);
     bool destroyRitual(int playerID);
+    bool placeMinion(std::vector<MinionComponent*>& minions, Minion* minion);
     public:
         std::vector<MinionComponent*> p1Minions;
         std::vector<MinionComponent*> p2Minions;
@@ -25,11 +26,11 @@ class Board {
 
         std::vector<Minion*> p1Graveyard, p2Graveyard;
         std::vector<Observer*> observers;
-        
-        bool placeMinion(std::vector<MinionComponent*>& minions, Minion* minion);
-    
+            
         Player* player1;
         Player* player2;
+
+        
 
         Board(
             std::vector<MinionComponent*> p1Minions, std::vector<MinionComponent*> p2Minions, 

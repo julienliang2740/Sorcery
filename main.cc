@@ -92,6 +92,8 @@ int main(int argc, char * argv[]) {
                 lines_read += 1;
                 td.notify(2, 7);
                 cout << "It is now the turn of " << ((activePlayerID == player1.getID()) ? player1.getName() : player2.getName()) << endl;
+                player1.addMagic(1);
+                td.notify(1, 7);
                 
                 if (!config.testing) {
                     for (int i = 0; i < Player::getHandMax(); ++i) {
@@ -201,7 +203,7 @@ int main(int argc, char * argv[]) {
             }
 
             if (p == -1) cout << "Use " << i << "th card in active player's hand" << endl;
-            else cout << "Use " << i << "th card in active player's hand on card " << t << " owned by player " << p << endl;
+            else cout << "Use " << i << "th card in active player's minions on minion " << t << " owned by player " << p << endl;
             gameBoard.useActivatedAbility(i, p, t);
         }
         else if (cmd == "inspect") { //  INCOMPLETE INCOMPLETE INCOMPLETE
@@ -221,10 +223,6 @@ int main(int argc, char * argv[]) {
             if (activePlayer.getHand().empty()) {
                 cout << "hand is empty" << endl;
                 continue;
-            }
-            
-            for (auto card: activePlayer.getHand()) {
-                cout << card->getName() << endl;
             }
 
             printHand(activePlayer);
