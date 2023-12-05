@@ -79,6 +79,9 @@ void Board::destroyMinion(int player, int minion) {
 }
 
 void Standstill::notify(int player, int whichCard) {
+    if (!onState) {
+        return;
+    }
     b->destroyMinion(player, whichCard);
 }
 

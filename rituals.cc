@@ -14,4 +14,6 @@ AuraOfPower::AuraOfPower(int ownerID, Board* b):
 
 Standstill::Standstill(int ownerID, Board* b):
     Ritual{3, "Standstill", ownerID, "Whenever a minion enters play, destroy it", b, 
-            triggerType::MinionEnters, 4, 2} {}
+            triggerType::MinionEnters, 4, 2} {
+                std::cout << "onstate: " << this->getOnState();
+            }
