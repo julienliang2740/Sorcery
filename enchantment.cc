@@ -70,3 +70,7 @@ void Enchantment::setActions(int n) {
 void Enchantment::useActions(int n) {
     next->useActions(n);
 }
+
+int Enchantment::getMinionCost() const {
+    return next->getMinionCost();
+}

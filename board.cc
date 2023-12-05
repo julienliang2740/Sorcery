@@ -121,8 +121,16 @@ void Board::destroyMinion(int player, int minion) {
     delete m;
 
     for (Observer* o: observers) {
-        if (o->subType() == triggerType::All || o->subType() == triggerType::MinionLeaves) {
+        if (o->subType() == triggerType::MinionLeaves) {
             o->notify(player, minion);
+        }
+    }
+
+    for (int i = minion; i <= 5; ++i) {
+        for (Observer* o: observers) {
+            if (o->subType() == triggerType::All) {
+                o->notify(player, i);
+            }
         }
     }
 }
@@ -444,7 +452,7 @@ bool Board::playCard(int i, int p, int t) {
                 }
             }
 
-            if (targetMinions[t - 1]->getDefense() - targetMinions[t - 1]->getTotalDamage() < 0) {
+            if (targetMinions[t - 1]->getDefense() - targetMinions[t - 1]->getTotalDamage() <= 0) {
                 moveMinionToGraveyard(p, t);
             }
 
@@ -515,7 +523,7 @@ bool Board::playCard(int i, int p, int t) {
 
             int i = 0;
             while (i < p1Minions.size()) {
-                if (p1Minions[i]->getDefense() - p1Minions[i]->getTotalDamage() < 0) {
+                if (p1Minions[i]->getDefense() - p1Minions[i]->getTotalDamage() <= 0) {
                     moveMinionToGraveyard(player1->getID(), i + 1);
                 } else {
                     ++i;
@@ -524,7 +532,7 @@ bool Board::playCard(int i, int p, int t) {
 
             i = 0;
             while (i < p2Minions.size()) {
-                if (p2Minions[i]->getDefense() - p2Minions[i]->getTotalDamage() < 0) {
+                if (p2Minions[i]->getDefense() - p2Minions[i]->getTotalDamage() <= 0) {
                     moveMinionToGraveyard(player2->getID(), i + 1);
                 } else {
                     ++i;
@@ -614,11 +622,21 @@ bool Board::moveMinionToGraveyard(int ownershipID, int minion) {
 
     Minion* m = deleteEnchantments(ownershipID, minion);
     theMinions.erase(theMinions.begin() + (minion - 1));
-    for (auto observer: observers) {
-        if (observer->subType() == triggerType::MinionLeaves || observer->subType() == triggerType::All) {
-            observer->notify(m->getID(), minion);
+
+    for (Observer* o: observers) {
+        if (o->subType() == triggerType::MinionLeaves) {
+            o->notify(m->getID(), minion);
         }
     }
+
+    for (int i = minion; i <= 5; ++i) {
+        for (Observer* o: observers) {
+            if (o->subType() == triggerType::All) {
+                o->notify(m->getID(), i);
+            }
+        }
+    }
+    
     graveyard.emplace_back(m);
     for (auto observer: observers) {
         if (observer->subType() == triggerType::All) {
@@ -680,7 +698,7 @@ bool Board::useActivatedAbility(int i, int p, int t) {
 
         if (ability == actAbility::pyro) {
             thetarget->beAttacked(1);
-            if (thetarget->getDefense() - thetarget->getTotalDamage() < 0) {
+            if (thetarget->getDefense() - thetarget->getTotalDamage() <= 0) {
                 moveMinionToGraveyard(p, t);
             }
             for (Observer* o: observers) {

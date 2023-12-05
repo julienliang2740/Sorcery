@@ -7,8 +7,8 @@
 
 class Minion: public MinionComponent {
     //friend class Spell;
-    int defense;
     int attack;
+    int defense;
     int totalDamage;
     int actions;
     actAbility aAbility;
@@ -17,7 +17,7 @@ class Minion: public MinionComponent {
     int abilityCost;
     // triggeredAbility* tAbility; // or maybe a unique ptr if you don't wanna deal with memory management
     public:
-        Minion(int cost, std::string name, int ownershipID, int defense, int attack, int totalDamage, int actions, actAbility aAbility, bool needsTarget, minionHasAbility abilityOfMinion, int abilityCost, std::string description);
+        Minion(int cost, std::string name, int ownershipID, int attack, int defense, int totalDamage, int actions, actAbility aAbility, bool needsTarget, minionHasAbility abilityOfMinion, int abilityCost, std::string description);
         Minion(MinionComponent* other);
         ~Minion();
         int getDefense() const override;
@@ -46,6 +46,7 @@ class Minion: public MinionComponent {
         void modAttack(int n);
         void setActions(int n) override;
         void useActions(int n) override;
+        int getMinionCost() const override;
 };
 
 #endif

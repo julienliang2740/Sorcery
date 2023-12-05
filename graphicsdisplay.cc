@@ -126,8 +126,8 @@ void graphicsDisplay::graphics_printBoard(int x, int y, int cardWidth, int cardH
     if (b->p2Ritual != nullptr) theWindow->graphics_display_ritual(og_x+3, og_y+5*3+4*cardHeight, cardWidth, cardHeight, b->p2Ritual->getName(), b->p2Ritual->getCost(), b->p2Ritual->getActivationCost(), b->p2Ritual->getCardDescription(), b->p2Ritual->getCharges());
     
     // graveyard
-    if (b->p1Graveyard.size() != 0) graphics_display_minion(og_x+5+5*3+4*cardWidth, og_y+5+3, cardWidth, cardHeight, b->p1Graveyard[b->p1Graveyard.size()-1]);
-    if (b->p2Graveyard.size() != 0) graphics_display_minion(og_x+5+5*3+4*cardWidth, og_y+5+3, cardWidth, cardHeight, b->p2Graveyard[b->p2Graveyard.size()-1]);
+    if (b->p1Graveyard.size() != 0) graphics_display_minion(og_x+5*3+4*cardWidth, og_y+3, cardWidth, cardHeight, b->p1Graveyard[b->p1Graveyard.size()-1]);
+    if (b->p2Graveyard.size() != 0) graphics_display_minion(og_x+5*3+4*cardWidth, og_y+5*3+4*cardHeight, cardWidth, cardHeight, b->p2Graveyard[b->p2Graveyard.size()-1]);
 
     // minions
     for (int i = 0; i < b->p1Minions.size(); ++i) {

@@ -24,6 +24,7 @@ class Enchantment: public MinionComponent {
         std::string getMinionDescription() const override;
         void setActions(int n) override;
         void useActions(int n) override;
+        int getMinionCost() const override;
 };
 
 #endif

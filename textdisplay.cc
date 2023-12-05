@@ -2,11 +2,11 @@
 
 card_template_t display_minion(MinionComponent* m) {
     if (m->getHasAbility() == minionHasAbility::hasnoability) {
-        return display_minion_no_ability(m->getMinionName(), m->getCost(), m->getAttack(), m->getDefense() - m->getTotalDamage());
+        return display_minion_no_ability(m->getMinionName(), m->getMinionCost(), m->getAttack(), m->getDefense() - m->getTotalDamage());
     } else if (m->getHasAbility() == minionHasAbility::hasactivatedability) {
-        return display_minion_activated_ability(m->getMinionName(), m->getCost(), m->getAttack(), m->getDefense() - m->getTotalDamage(), m->getAbilityCost(), m->getMinionDescription());
+        return display_minion_activated_ability(m->getMinionName(), m->getMinionCost(), m->getAttack(), m->getDefense() - m->getTotalDamage(), m->getAbilityCost(), m->getMinionDescription());
     } else {
-        return display_minion_triggered_ability(m->getMinionName(), m->getCost(), m->getAttack(), m->getDefense() - m->getTotalDamage(), m->getMinionDescription());
+        return display_minion_triggered_ability(m->getMinionName(), m->getMinionCost(), m->getAttack(), m->getDefense() - m->getTotalDamage(), m->getMinionDescription());
     }
 }
 

@@ -1,12 +1,12 @@
 #include "minion.h"
 
-Minion::Minion(int cost, std::string name, int ownershipID, int defense, int attack, int totalDamage, int actions, actAbility aAbility, bool needsTarget, minionHasAbility abilityOfMinion, int abilityCost, std::string description): 
-    MinionComponent{cost, name, ownershipID, cardtype::M, false, nullptr, description}, defense{defense},
-    attack{attack}, totalDamage{totalDamage}, actions{actions}, aAbility{aAbility}, needsTarget{needsTarget}, abilityOfMinion{abilityOfMinion}, abilityCost{abilityCost} {}
+Minion::Minion(int cost, std::string name, int ownershipID, int attack, int defense, int totalDamage, int actions, actAbility aAbility, bool needsTarget, minionHasAbility abilityOfMinion, int abilityCost, std::string description): 
+    MinionComponent{cost, name, ownershipID, cardtype::M, false, nullptr, description}, attack{attack}, defense{defense},
+    totalDamage{totalDamage}, actions{actions}, aAbility{aAbility}, needsTarget{needsTarget}, abilityOfMinion{abilityOfMinion}, abilityCost{abilityCost} {}
 
 Minion::Minion(MinionComponent* other):
     MinionComponent{other->getCost(), other->getName(), other->getID(), cardtype::M, false, nullptr, other->getMinionDescription()},
-    defense{other->getDefense()}, attack{other->getAttack()}, totalDamage{other->getTotalDamage()} {}
+    attack{other->getAttack()}, defense{other->getDefense()}, totalDamage{other->getTotalDamage()} {}
 
 Minion::~Minion() {
     // delete actAbility;
@@ -130,4 +130,8 @@ void Minion::setActions(int n) {
 
 void Minion::useActions(int n) {
     actions -= n;
+}
+
+int Minion::getMinionCost() const {
+    return getCost();
 }
