@@ -1,27 +1,27 @@
 #include "graphicsdisplay.h"
 
-void graphics_display_minion(int x, int y, int cardWidth, int cardHeight, MinionComponent* m) {
+void graphicsDisplay::graphics_display_minion(int x, int y, int cardWidth, int cardHeight, MinionComponent* m) {
     if (m->getHasAbility() == minionHasAbility::hasnoability) {
-        return theWindow.graphics_display_minion_no_ability(x, y, cardWidth, cardHeight, m->getMinionName(), m->getCost(), m->getAttack(), m->getDefense() - m->getTotalDamage());
+        return theWindow->graphics_display_minion_no_ability(x, y, cardWidth, cardHeight, m->getMinionName(), m->getCost(), m->getAttack(), m->getDefense() - m->getTotalDamage());
     } else if (m->getHasAbility() == minionHasAbility::hasactivatedability) {
-        return theWindow.graphics_display_minion_activated_ability(x, y, cardWidth, cardHeight, m->getMinionName(), m->getCost(), m->getAttack(), m->getDefense() - m->getTotalDamage(), m->getAbilityCost(), m->getMinionDescription());
+        return theWindow->graphics_display_minion_activated_ability(x, y, cardWidth, cardHeight, m->getMinionName(), m->getCost(), m->getAttack(), m->getDefense() - m->getTotalDamage(), m->getAbilityCost(), m->getMinionDescription());
     } else {
-        return theWindow.graphics_display_minion_triggered_ability(x, y, cardWidth, cardHeight, m->getMinionName(), m->getCost(), m->getAttack(), m->getDefense() - m->getTotalDamage(), m->getMinionDescription());
+        return theWindow->graphics_display_minion_triggered_ability(x, y, cardWidth, cardHeight, m->getMinionName(), m->getCost(), m->getAttack(), m->getDefense() - m->getTotalDamage(), m->getMinionDescription());
     }
 }
 
-void graphics_make_enchantment_card(int x, int y, int cardWidth, int cardHeight, Enchantment* e) {
+void graphicsDisplay::graphics_make_enchantment_card(int x, int y, int cardWidth, int cardHeight, Enchantment* e) {
     if (e->getName() == "Giant Strength") {
-        return theWindow.graphics_display_enchantment_attack_defence(x, y, cardWidth, cardHeight, e->getName(), e->getCost(), e->getCardDescription(), "+2", "+2");
+        return theWindow->graphics_display_enchantment_attack_defence(x, y, cardWidth, cardHeight, e->getName(), e->getCost(), e->getCardDescription(), "+2", "+2");
     } else if (e->getName() == "Enrage") {
-        return theWindow.graphics_display_enchantment_attack_defence(x, y, cardWidth, cardHeight, e->getName(), e->getCost(), e->getCardDescription(), "*2", "*2");
+        return theWindow->graphics_display_enchantment_attack_defence(x, y, cardWidth, cardHeight, e->getName(), e->getCost(), e->getCardDescription(), "*2", "*2");
     } else {
-        return theWindow.graphics_display_enchantment(x, y, cardWidth, cardHeight, e->getName(), e->getCost(), e->getCardDescription());
+        return theWindow->graphics_display_enchantment(x, y, cardWidth, cardHeight, e->getName(), e->getCost(), e->getCardDescription());
     }
 }
 
-void graphics_printHand(int x, int y, int cardWidth, int cardHeight, const Player& p) {
-    theWindow.clearWindow();
+void graphicsDisplay::graphics_printHand(int x, int y, int cardWidth, int cardHeight, const Player& p) {
+    theWindow->clearWindow();
     for (Card* c: p.getHand()) {
         if (c->getCardType() == cardtype::M) {
             Minion* m = static_cast<Minion*>(c);
@@ -29,17 +29,17 @@ void graphics_printHand(int x, int y, int cardWidth, int cardHeight, const Playe
         } else if (c->getCardType() == cardtype::E) {
             graphics_make_enchantment_card(x, y, cardWidth, cardHeight, static_cast<Enchantment*>(c));
         } else if (c->getCardType() == cardtype::S) {
-            theWindow.graphics_display_spell(x, y, cardWidth, cardHeight, c->getName(), c->getCost(), c->getCardDescription());
+            theWindow->graphics_display_spell(x, y, cardWidth, cardHeight, c->getName(), c->getCost(), c->getCardDescription());
         } else if (c->getCardType() == cardtype::R) {
             Ritual* r = static_cast<Ritual*>(c);
-            theWindow.graphics_display_ritual(x, y, cardWidth, cardHeight, r->getName(), r->getCost(), r->getActivationCost(), r->getCardDescription(), r->getCharges());
+            theWindow->graphics_display_ritual(x, y, cardWidth, cardHeight, r->getName(), r->getCost(), r->getActivationCost(), r->getCardDescription(), r->getCharges());
         }
         x = x + cardWidth + 3;
     }
 }
 
-void graphics_inspectMinion(int x, int y, int cardWidth, int cardHeight, MinionComponent* minion) {
-    theWindow.clearWindow();
+void graphicsDisplay::graphics_inspectMinion(int x, int y, int cardWidth, int cardHeight, MinionComponent* minion) {
+    theWindow->clearWindow();
     std::vector<Enchantment*> enchantments;
 
     for (MinionComponent::Iterator it = minion->begin(); it != minion->end(); ++it) {
@@ -72,7 +72,7 @@ void graphics_inspectMinion(int x, int y, int cardWidth, int cardHeight, MinionC
     }
 }
 
-graphicsDisplay::graphicsDisplay(Board* b, Xwindow theWindow): Observer{b, triggerType::All}, theWindow{theWindow} {
+graphicsDisplay::graphicsDisplay(Board* b, Xwindow* theWindow): b{b}, theWindow{theWindow} {
     // The code below was from textdisplay
     /*
     // setting player cards
@@ -107,33 +107,35 @@ graphicsDisplay::graphicsDisplay(Board* b, Xwindow theWindow): Observer{b, trigg
     */
 }
 
-graphicsDisplay::~graphicsDisplay() {}
+graphicsDisplay::~graphicsDisplay() {
+    delete theWindow;
+}
 
-void graphicsDisplay::graphics_printBoard(int x, int y, int cardWidth, int cardHeight) const {
-    theWindow.clearWindow();
-    theWindow.buildBoard(cardWidth, cardHeight, 3);
+void graphicsDisplay::graphics_printBoard(int x, int y, int cardWidth, int cardHeight) {
+    theWindow->clearWindow();
+    theWindow->buildBoard(cardWidth, cardHeight, 3);
     const int og_x = x;
     const int og_y = y;
 
     // players
-    theWindow.graphics_display_player_card(og_x+5+3*3+2*cardWidth, og_y+5+3, cardWidth, cardHeight, 1, b->player1->getName(), b->player1->getHealth(), b->player1->getMagic());
-    theWindow.graphics_display_player_card(og_x+5+3*3+2*cardWidth, og_y+5+5*3+4*cardHeight, cardWidth, cardHeight, 2 b->player2->getName(), b->player2->getHealth(), b->player2->getMagic());
+    theWindow->graphics_display_player_card(og_x+5+3*3+2*cardWidth, og_y+5+3, cardWidth, cardHeight, 1, b->player1->getName(), b->player1->getHealth(), b->player1->getMagic());
+    theWindow->graphics_display_player_card(og_x+5+3*3+2*cardWidth, og_y+5+5*3+4*cardHeight, cardWidth, cardHeight, 2, b->player2->getName(), b->player2->getHealth(), b->player2->getMagic());
 
     // rituals
-    if (b->p1Ritual() != nullptr) theWindow.graphics_display_ritual(og_x+5+3, og_y+5+3, cardWidth, cardHeight, 1, b->p1Ritual->getName(), b->p1Ritual->getCost(), b->p1Ritual->getActivationCost(), b->p1Ritual->getCardDescription(), b->p1Ritual->getCharges());
-    if (b->p2Ritual() != nullptr) theWindow.graphics_display_ritual(og_x+5+3, og_y+5+5*3+4*cardHeight, cardWidth, cardHeight, 1, b->p2Ritual->getName(), b->p2Ritual->getCost(), b->p2Ritual->getActivationCost(), b->p2Ritual->getCardDescription(), b->p2Ritual->getCharges());
+    if (b->p1Ritual != nullptr) theWindow->graphics_display_ritual(og_x+5+3, og_y+5+3, cardWidth, cardHeight, b->p1Ritual->getName(), b->p1Ritual->getCost(), b->p1Ritual->getActivationCost(), b->p1Ritual->getCardDescription(), b->p1Ritual->getCharges());
+    if (b->p2Ritual != nullptr) theWindow->graphics_display_ritual(og_x+5+3, og_y+5+5*3+4*cardHeight, cardWidth, cardHeight, b->p2Ritual->getName(), b->p2Ritual->getCost(), b->p2Ritual->getActivationCost(), b->p2Ritual->getCardDescription(), b->p2Ritual->getCharges());
     
     // graveyard
-    if (b->p1Graveyard.size() != 0) graphics_display_minion(og_x+5+5*3+4*cardWidth, og_y+5+3, b->p1Graveyard[p1Graveyard.size()-1]);
-    if (b->p2Graveyard.size() != 0) graphics_display_minion(og_x+5+5*3+4*cardWidth, og_y+5+3, b->p2Graveyard[p2Graveyard.size()-1]);
+    if (b->p1Graveyard.size() != 0) graphics_display_minion(og_x+5+5*3+4*cardWidth, og_y+5+3, cardWidth, cardHeight, b->p1Graveyard[b->p1Graveyard.size()-1]);
+    if (b->p2Graveyard.size() != 0) graphics_display_minion(og_x+5+5*3+4*cardWidth, og_y+5+3, cardWidth, cardHeight, b->p2Graveyard[b->p2Graveyard.size()-1]);
 
     // minions
-    for (int i = 0; i < b->p1minions.size(); ++i) {
-        graphics_display_minion(x+5, y+5+2*3+cardHeight, b->p1minions[i]);
+    for (int i = 0; i < b->p1Minions.size(); ++i) {
+        graphics_display_minion(x+5, y+5+2*3+cardHeight, cardWidth, cardHeight, b->p1Minions[i]);
         x = x + 3 + cardWidth;
     }
-    for (int i = 0; i < b->p2minions.size(); ++i) {
-        graphics_display_minion(x+5, y+5+5*3+4*cardHeight, b->p2minions[i]);
+    for (int i = 0; i < b->p2Minions.size(); ++i) {
+        graphics_display_minion(x+5, y+5+5*3+4*cardHeight, cardWidth, cardHeight, b->p2Minions[i]);
     }
 
     // code below was from textdisplay

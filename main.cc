@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <memory>
 
 #include "player.h"
 #include "board.h"
@@ -8,6 +9,9 @@
 #include "minioncomponent.h"
 #include "ascii_graphics.h"
 #include "textdisplay.h"
+#include "graphicsdisplay.h"
+// #include "window.h"
+// (^included from graphicsdisplay.h)
 
 using namespace std;
 
@@ -18,6 +22,9 @@ struct GameConfig {
     bool testing = false;
     bool graphics = false;
 };
+
+const int cardWidth = 240;
+const int cardHeight = 160;
 
 int main(int argc, char * argv[]) {
     GameConfig config;
@@ -50,6 +57,9 @@ int main(int argc, char * argv[]) {
     Board gameBoard(vector<MinionComponent*>(), vector<MinionComponent*>(), &player1, &player2, 1, vector<Minion*>(), vector<Minion*>());
     textDisplay td(&gameBoard);
     gameBoard.addObserver(&td);
+
+    // for when config.graphics is true
+    unique_ptr<graphicsDisplay> gd = (config.graphics) ? std::make_unique<graphicsDisplay>(&gameBoard, new Xwindow()) : nullptr;
 
     player1.playerDeck->setBoardForRituals(&gameBoard);
     player2.playerDeck->setBoardForRituals(&gameBoard);
@@ -217,6 +227,7 @@ int main(int argc, char * argv[]) {
             }
 
             inspectMinion(ownMinions[i - 1]);
+            if (gd.get() != nullptr) gd->graphics_inspectMinion(5, 5, cardWidth, cardHeight, ownMinions[i - 1]);
         }
         else if (cmd == "hand") { //  INCOMPLETE INCOMPLETE INCOMPLETE
 
@@ -226,16 +237,21 @@ int main(int argc, char * argv[]) {
             }
 
             printHand(activePlayer);
+
+            if (gd.get() != nullptr) gd->graphics_printHand(5, 5, cardWidth, cardHeight, activePlayer);
             
         }
         else if (cmd == "board") { //  INCOMPLETE INCOMPLETE INCOMPLETE
 
             td.printBoard();
+            if (gd.get() != nullptr) gd->graphics_printBoard(5, 5, cardWidth, cardHeight);
         }
         else if (cmd == "players") {
             cout << "Player 1: " << player1.getName() << endl;
             cout << "Player 2: " << player2.getName() << endl;
         }
         cmd.clear();
+
+        if (gd.get() != nullptr) gd->graphics_printBoard(5, 5, cardWidth, cardHeight);
     }
 }

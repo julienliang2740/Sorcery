@@ -10,13 +10,13 @@
 #include "enchantments.h"
 #include "spell.h"
 #include "board.h"
-#include "observer.h"
 
 //card_template_t display_minion(MinionComponent* m);
 
 
-class graphicsDisplay: public Observer {
-    Xwindow theWindow;
+class graphicsDisplay{
+    Board* b;
+    Xwindow* theWindow;
     static const int row_length = 5;
     /*
     card_template_t topRow[5] = {CARD_TEMPLATE_BORDER, CARD_TEMPLATE_EMPTY, PLAYER_1_TEMPLATE, CARD_TEMPLATE_EMPTY, CARD_TEMPLATE_BORDER};
@@ -31,10 +31,10 @@ class graphicsDisplay: public Observer {
 
         void graphics_printHand(int x, int y, int cardWidth, int cardHeight, const Player& p);
         void graphics_inspectMinion(int x, int y, int cardWidth, int cardHeight, MinionComponent* minion);
-        graphicsDisplay(Board* b, Xwindow theWindow);
+        graphicsDisplay(Board* b, Xwindow* theWindow);
         ~graphicsDisplay();
         //void notify(int player, int whichCard) override;
-        void graphics_printBoard(int x, int y, int cardWidth, int cardHeight) const;
+        void graphics_printBoard(int x, int y, int cardWidth, int cardHeight);
         static int getRowLength();
 };
 
