@@ -242,7 +242,16 @@ void Board::attackPlayer(int minion) {
 
     Player* victim = (activePlayer == player1) ? player2 : player1;
 
-    victim->addHealth(-(ownMinions[minion - 1]->getAttack()));
+    MinionComponent* attacker = ownMinions[minion - 1];
+
+    if (attacker->getNumActions() < 1) {
+        std::cerr << "you don't have enough actions to attack your opponent!" << std::endl;
+        return;
+    } else {
+        attacker->useActions(1);
+    }
+
+    victim->addHealth(-(attacker->getAttack()));
 
     int playerCard = 7;
     for (auto p: observers) {
@@ -751,6 +760,13 @@ bool Board::attackMinion(int curMinion, int target) {
 
     MinionComponent* attacker = curMinions[curMinion - 1];
     MinionComponent* attacked = targetMinions[target - 1];
+
+    if (attacker->getNumActions() < 1) {
+        std::cerr << "you don't have enough actions to attack another minion!" << std::endl;
+        return false;
+    } else {
+        attacker->useActions(1);
+    }
 
     attacker->attackMinion(attacked);
 
