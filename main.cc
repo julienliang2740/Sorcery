@@ -250,8 +250,12 @@ int main(int argc, char * argv[]) {
             cout << "Player 1: " << player1.getName() << endl;
             cout << "Player 2: " << player2.getName() << endl;
         }
+        
+        if (cmd != "hand" && cmd !="inspect"){
+            if (gd.get() != nullptr) gd->graphics_printBoard(5, 5, cardWidth, cardHeight);
+        }
+        
         cmd.clear();
 
-        if (gd.get() != nullptr) gd->graphics_printBoard(5, 5, cardWidth, cardHeight);
     }
 }

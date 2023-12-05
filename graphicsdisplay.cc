@@ -118,12 +118,12 @@ void graphicsDisplay::graphics_printBoard(int x, int y, int cardWidth, int cardH
     const int og_y = y;
 
     // players
-    theWindow->graphics_display_player_card(og_x+5+3*3+2*cardWidth, og_y+5+3, cardWidth, cardHeight, 1, b->player1->getName(), b->player1->getHealth(), b->player1->getMagic());
-    theWindow->graphics_display_player_card(og_x+5+3*3+2*cardWidth, og_y+5+5*3+4*cardHeight, cardWidth, cardHeight, 2, b->player2->getName(), b->player2->getHealth(), b->player2->getMagic());
+    theWindow->graphics_display_player_card(og_x+3*3+2*cardWidth, og_y+3, cardWidth, cardHeight, 1, b->player1->getName(), b->player1->getHealth(), b->player1->getMagic());
+    theWindow->graphics_display_player_card(og_x+3*3+2*cardWidth, og_y+5*3+4*cardHeight, cardWidth, cardHeight, 2, b->player2->getName(), b->player2->getHealth(), b->player2->getMagic());
 
     // rituals
-    if (b->p1Ritual != nullptr) theWindow->graphics_display_ritual(og_x+5+3, og_y+5+3, cardWidth, cardHeight, b->p1Ritual->getName(), b->p1Ritual->getCost(), b->p1Ritual->getActivationCost(), b->p1Ritual->getCardDescription(), b->p1Ritual->getCharges());
-    if (b->p2Ritual != nullptr) theWindow->graphics_display_ritual(og_x+5+3, og_y+5+5*3+4*cardHeight, cardWidth, cardHeight, b->p2Ritual->getName(), b->p2Ritual->getCost(), b->p2Ritual->getActivationCost(), b->p2Ritual->getCardDescription(), b->p2Ritual->getCharges());
+    if (b->p1Ritual != nullptr) theWindow->graphics_display_ritual(og_x+3, og_y+3, cardWidth, cardHeight, b->p1Ritual->getName(), b->p1Ritual->getCost(), b->p1Ritual->getActivationCost(), b->p1Ritual->getCardDescription(), b->p1Ritual->getCharges());
+    if (b->p2Ritual != nullptr) theWindow->graphics_display_ritual(og_x+3, og_y+5*3+4*cardHeight, cardWidth, cardHeight, b->p2Ritual->getName(), b->p2Ritual->getCost(), b->p2Ritual->getActivationCost(), b->p2Ritual->getCardDescription(), b->p2Ritual->getCharges());
     
     // graveyard
     if (b->p1Graveyard.size() != 0) graphics_display_minion(og_x+5+5*3+4*cardWidth, og_y+5+3, cardWidth, cardHeight, b->p1Graveyard[b->p1Graveyard.size()-1]);
@@ -131,11 +131,13 @@ void graphicsDisplay::graphics_printBoard(int x, int y, int cardWidth, int cardH
 
     // minions
     for (int i = 0; i < b->p1Minions.size(); ++i) {
-        graphics_display_minion(x+5, y+5+2*3+cardHeight, cardWidth, cardHeight, b->p1Minions[i]);
+        graphics_display_minion(x+3, y+2*3+cardHeight, cardWidth, cardHeight, b->p1Minions[i]);
         x = x + 3 + cardWidth;
     }
+    x = og_x;
     for (int i = 0; i < b->p2Minions.size(); ++i) {
-        graphics_display_minion(x+5, y+5+5*3+4*cardHeight, cardWidth, cardHeight, b->p2Minions[i]);
+        graphics_display_minion(x+3, y+4*3+3*cardHeight, cardWidth, cardHeight, b->p2Minions[i]);
+        x = x + 3 + cardWidth;
     }
 
     // code below was from textdisplay

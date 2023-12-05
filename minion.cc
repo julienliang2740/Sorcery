@@ -67,7 +67,7 @@ Minion* Minion::makeEarthElemental(int ownershipID) {
 }
 
 Minion* Minion::makeFireElemental(int ownershipID) {
-    Minion* m = new Minion{2, "Fire Elemental", ownershipID, 2, 2, 0, 0, actAbility::none, false, minionHasAbility::hastriggeredability, 0, "Whenever an opponent’s minion enters play, deal 1 damage to it."};
+    Minion* m = new Minion{2, "Fire Elemental", ownershipID, 2, 2, 0, 0, actAbility::none, false, minionHasAbility::hastriggeredability, 0, "Whenever an opponent's minion enters play, deal 1 damage to it."};
     return m;
 }
 
