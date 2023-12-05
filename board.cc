@@ -297,6 +297,10 @@ bool Board::addMinion(Minion* minion) {
         }
     }
 
+    if (minion->getDefense() - minion->getTotalDamage() <= 0) {
+        moveMinionToGraveyard(minion->getID(), minions.size());
+    }
+
     return placed;
 }
 
@@ -594,7 +598,7 @@ bool Board::playCard(int i, int p, int t) {
     }
 
     if (wasplaced) {
-        activePlayer->removeCard(i);
+        if (name != "Unsummon") activePlayer->removeCard(i);
         activePlayer->addMagic(-cardCost);
         for (Observer* o: observers) {
             if (o->subType() == triggerType::All) {

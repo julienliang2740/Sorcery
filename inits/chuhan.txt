@@ -1,5 +1,4 @@
-项羽
-刘邦
+XiangYu
+LiuBang
 help
-天王盖地虎
 players
