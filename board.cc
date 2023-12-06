@@ -194,7 +194,7 @@ Minion* Board::deleteEnchantments(int ownershipID, int minion) {
 
 void Board::destroyMinion(int player, int minion) {
     Minion * m = deleteEnchantments(player, minion);
-    std::vector<MinionComponent*>& minions = (activePlayerID == player1->getID()) ? p1Minions : p2Minions;
+    std::vector<MinionComponent*>& minions = (player == player1->getID()) ? p1Minions : p2Minions;
     minions.erase(minions.begin() + (minion - 1));
 
     triggeredAbility* t = m->getTriggeredAbility();
