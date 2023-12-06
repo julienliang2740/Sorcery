@@ -2,15 +2,14 @@
 
 Minion::Minion(int cost, std::string name, int ownershipID, int attack, int defense, int totalDamage, int actions, actAbility aAbility, bool needsTarget, minionHasAbility abilityOfMinion, int abilityCost, std::string description): 
     MinionComponent{cost, name, ownershipID, cardtype::M, false, nullptr, description}, attack{attack}, defense{defense},
-    totalDamage{totalDamage}, actions{actions}, aAbility{aAbility}, needsTarget{needsTarget}, abilityOfMinion{abilityOfMinion}, abilityCost{abilityCost} {}
+    totalDamage{totalDamage}, actions{actions}, aAbility{aAbility}, needsTarget{needsTarget}, abilityOfMinion{abilityOfMinion}, abilityCost{abilityCost}, tAbility{nullptr} {}
 
 Minion::Minion(MinionComponent* other):
     MinionComponent{other->getCost(), other->getName(), other->getID(), cardtype::M, false, nullptr, other->getMinionDescription()},
     attack{other->getAttack()}, defense{other->getDefense()}, totalDamage{other->getTotalDamage()} {}
 
 Minion::~Minion() {
-    // delete actAbility;
-    // delete tAbility; // uncomment when abilities are implemented.
+    delete tAbility;
 }
 
 std::string Minion::getMinionName() const {
@@ -134,4 +133,32 @@ void Minion::useActions(int n) {
 
 int Minion::getMinionCost() const {
     return getCost();
+}
+
+int Minion::getMinionID() const {
+    return getID();
+}
+
+void Minion::setTriggeredAbility(triggeredAbility* t) {
+    tAbility = t;
+}
+
+triggeredAbility* Minion::getTriggeredAbility() const {
+    return tAbility;
+}
+
+void Minion::toggleAbilityOn() {
+    if (tAbility != nullptr) {
+        tAbility->toggleOn();
+    }
+}
+
+void Minion::toggleAbilityOff() {
+    if (tAbility != nullptr) {
+        tAbility->toggleOff();
+    }
+}
+
+Minion* Minion::getBaseMinion() const {
+    return const_cast<Minion*>(this);
 }

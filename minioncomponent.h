@@ -3,6 +3,8 @@
 
 #include "card.h"
 
+class Minion;
+
 enum class actAbility{ none, pyro, asumm, msumm, silenced };
 enum class minionHasAbility { hasnoability, hasactivatedability, hastriggeredability };
 
@@ -42,10 +44,12 @@ class MinionComponent: public Card {
         virtual void setActions(int n) = 0;
         virtual void useActions(int n) = 0;
         virtual int getMinionCost() const = 0;
-
-        // UNCOMMENT THESE WHEN YOU IMPLEMENT THEM
-        // virtual int getNumActions() = 0;
-        // virtual int getAbilityCost() = 0;
+        virtual int getMinionID() const = 0;
+        virtual void modAttack(int n) = 0;
+        virtual void modDefense(int n) = 0;
+        virtual void toggleAbilityOn() = 0;
+        virtual void toggleAbilityOff() = 0;
+        virtual Minion* getBaseMinion() const = 0;
 };
 
 #endif

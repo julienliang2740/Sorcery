@@ -176,12 +176,10 @@ int main(int argc, char * argv[]) {
                 if (cin.peek() != '\n') cin >> j;
             }         
             if (j == -1) {
-                cout << i << "th minion attacks enemy player" << endl;
+                cout << i << ((i == 1) ? "st " : ((i == 2) ? "nd " : ((i == 3) ? "rd " : "th "))) << "minion attacks enemy player" << endl;
                 gameBoard.attackPlayer(i);
-                cout << "player 1's health: " << player1.getHealth() << endl;
-                cout << "player 2's health: " << player2.getHealth() << endl;
             } else {
-                cout << i << "th minion attacks enemy player's " << j << "th minion" << endl;
+                cout << i << ((i == 1) ? "st " : ((i == 2) ? "nd " : ((i == 3) ? "rd " : "th "))) << "minion attacks enemy player's " << j << ((j == 1) ? "st " : ((j == 2) ? "nd " : ((j == 3) ? "rd " : "th "))) << "minion" << endl;
                 gameBoard.attackMinion(i, j);
             }
 
@@ -221,7 +219,6 @@ int main(int argc, char * argv[]) {
                 }
             }
 
-            cout << i << p << t << endl;
             bool placed = gameBoard.playCard(i, p, t);
             if (!placed) {
                 std::cerr << "cannot place card" << std::endl;
@@ -238,8 +235,8 @@ int main(int argc, char * argv[]) {
                 if (cin.peek() != '\n') cin >> p >> t;
             }
 
-            if (p == -1) cout << "Use " << i << "th card in active player's hand" << endl;
-            else cout << "Use " << i << "th card in active player's minions on minion " << t << " owned by player " << p << endl;
+            if (p == -1) cout << "Use " << i << ((i == 1) ? "st " : ((i == 2) ? "nd " : ((i == 3) ? "rd " : "th "))) << "card in active player's hand" << endl;
+            else cout << "Use " << i << ((i == 1) ? "st " : ((i == 2) ? "nd " : ((i == 3) ? "rd " : "th "))) << "card in active player's minions on minion " << t << " owned by player " << p << endl;
             gameBoard.useActivatedAbility(i, p, t);
         }
         else if (cmd == "inspect") { //  INCOMPLETE INCOMPLETE INCOMPLETE

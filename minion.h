@@ -2,7 +2,8 @@
 #define __MINION__
 
 #include "minioncomponent.h"
-
+#include "triggeredability.h"
+#include "triggeredabilities.h"
 
 
 class Minion: public MinionComponent {
@@ -15,7 +16,7 @@ class Minion: public MinionComponent {
     bool needsTarget;
     minionHasAbility abilityOfMinion;
     int abilityCost;
-    // triggeredAbility* tAbility; // or maybe a unique ptr if you don't wanna deal with memory management
+    triggeredAbility* tAbility;
     public:
         Minion(int cost, std::string name, int ownershipID, int attack, int defense, int totalDamage, int actions, actAbility aAbility, bool needsTarget, minionHasAbility abilityOfMinion, int abilityCost, std::string description);
         Minion(MinionComponent* other);
@@ -42,11 +43,17 @@ class Minion: public MinionComponent {
         int getAbilityCost() const override;
         int getNumActions() const override;
         std::string getMinionDescription() const override;
-        void modDefense(int n);
-        void modAttack(int n);
+        void modDefense(int n) override;
+        void modAttack(int n) override;
         void setActions(int n) override;
         void useActions(int n) override;
         int getMinionCost() const override;
+        int getMinionID() const override;
+        void setTriggeredAbility(triggeredAbility* t);
+        triggeredAbility* getTriggeredAbility() const;
+        void toggleAbilityOn() override;
+        void toggleAbilityOff() override;
+        Minion* getBaseMinion() const override;
 };
 
 #endif

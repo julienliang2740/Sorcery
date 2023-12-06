@@ -2,6 +2,7 @@
 #define __ENCHANTMENT__
 
 #include "minioncomponent.h"
+#include "minion.h"
 
 class Enchantment: public MinionComponent {
     bool hasStats;
@@ -25,6 +26,12 @@ class Enchantment: public MinionComponent {
         void setActions(int n) override;
         void useActions(int n) override;
         int getMinionCost() const override;
+        int getMinionID() const override;
+        void modAttack(int n) override;
+        void modDefense(int n) override;
+        void toggleAbilityOn() override;
+        void toggleAbilityOff() override;
+        Minion* getBaseMinion() const override;
 };
 
 #endif

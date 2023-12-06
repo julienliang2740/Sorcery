@@ -74,3 +74,27 @@ void Enchantment::useActions(int n) {
 int Enchantment::getMinionCost() const {
     return next->getMinionCost();
 }
+
+int Enchantment::getMinionID() const {
+    return next->getMinionID();
+}
+
+void Enchantment::modDefense(int n) {
+    next->modDefense(n);
+}
+
+void Enchantment::modAttack(int n) {
+    next->modAttack(n);
+}
+
+void Enchantment::toggleAbilityOff() {
+    next->toggleAbilityOff();
+}
+
+void Enchantment::toggleAbilityOn() {
+    next->toggleAbilityOn();
+}
+
+Minion* Enchantment::getBaseMinion() const {
+    return next->getBaseMinion();
+}

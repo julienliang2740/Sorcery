@@ -1,17 +1,24 @@
 #ifndef __TRIGGERED_ABILITIES__
 #define __TRIGGERED_ABILITIES__
 
+#include "triggeredability.h"
+
 class bgAbility: public triggeredAbility {
     public:
-        void notify() override;
+        bgAbility(Board* b, Minion* self);
+        void notify(int player, int whichCard) override;
 };
 
 class feAbility: public triggeredAbility {
     public:
-        void notify() override;
+        feAbility(Board* b, Minion* self);
+        void notify(int player, int whichCard) override;
 };
 
 class psAbility: public triggeredAbility {
     public:
-        void notify() override;
+        psAbility(Board* b, Minion* self);
+        void notify(int player, int whichCard) override;
 };
+
+#endif

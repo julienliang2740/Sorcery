@@ -2,6 +2,67 @@
 #include "board.h"
 #include "ritual.h"
 #include "deck.h"
+#include "triggeredabilities.h"
+
+void bgAbility::notify(int player, int whichCard) {
+    if (onState) {
+        self->modDefense(1);
+        self->modAttack(1);
+
+        int minionIndex = 1;
+        std::vector<MinionComponent*>& ownMinions = (self->getMinionID() == b->player1->getID()) ? b->p1Minions : b->p2Minions;
+
+        for (MinionComponent* m: ownMinions) {
+            if (m->getBaseMinion() == self) {
+                break;
+            }
+            ++minionIndex;
+        }
+
+        for (Observer* o: b->observers) {
+            if (o->subType() == triggerType::All) {
+                o->notify(self->getMinionID(), minionIndex);
+            }
+        }
+    }
+}
+
+void feAbility::notify(int player, int whichCard) {
+    if (onState) {
+        if (player != self->getMinionID()) {
+            std::vector<MinionComponent*>& otherMinions = (player == b->player1->getID()) ? b->p1Minions : b->p2Minions;
+            if (whichCard == otherMinions.size()) {
+                otherMinions[whichCard - 1]->beAttacked(1);
+                for (Observer* o: b->observers) {
+                    if (o->subType() == triggerType::All) {
+                        o->notify(player, whichCard);
+                    }
+                }
+            }
+        }
+    }
+}
+
+void psAbility::notify(int player, int whichCard) {
+
+    if (!onState) {
+        return;
+    }
+
+    if (player == self->getMinionID()) {
+        std::vector<MinionComponent*>& ownMinions = (player == b->player1->getID()) ? b->p1Minions : b->p2Minions;
+        int i = 1;
+        for (MinionComponent* m: ownMinions) {
+            m->modDefense(1);
+            for (Observer* o: b->observers) {
+                if (o->subType() == triggerType::All) {
+                    o->notify(player, i);
+                }
+            }
+            ++i;
+        }
+    }
+}
 
 void Board::addObserver(Observer* o) {
     observers.emplace_back(o);
@@ -14,6 +75,23 @@ void Deck::setBoardForRituals(Board* b) {
             Ritual* r = static_cast<Ritual*>(c);
             r->setBoard(b);
             b->addObserver(r);
+        } else if (c->getCardType() == cardtype::M) {
+            if (c->getName() == "Bone Golem") {
+                Minion* m = static_cast<Minion*>(c);
+                triggeredAbility* t = new bgAbility(b, m);
+                m->setTriggeredAbility(t);
+                b->addObserver(t);
+            } else if (c->getName() == "Potion Seller") {
+                Minion* m = static_cast<Minion*>(c);
+                triggeredAbility* t = new psAbility(b, m);
+                m->setTriggeredAbility(t);
+                b->addObserver(t);
+            } else if (c->getName() == "Fire Elemental") {
+                Minion* m = static_cast<Minion*>(c);
+                triggeredAbility* t = new feAbility(b, m);
+                m->setTriggeredAbility(t);
+                b->addObserver(t);
+            }
         }
     }
 }
@@ -118,6 +196,20 @@ void Board::destroyMinion(int player, int minion) {
     Minion * m = deleteEnchantments(player, minion);
     std::vector<MinionComponent*>& minions = (activePlayerID == player1->getID()) ? p1Minions : p2Minions;
     minions.erase(minions.begin() + (minion - 1));
+
+    triggeredAbility* t = m->getTriggeredAbility();
+    if (t != nullptr) {
+        int i = 0;
+        for (Observer* o: observers) {
+            if (o == t) {
+                break;
+            }
+            ++i;
+        }
+
+        observers.erase(observers.begin() + i);
+    }
+
     delete m;
 
     for (Observer* o: observers) {
@@ -290,6 +382,7 @@ bool Board::addMinion(Minion* minion) {
     placed = placeMinion(minions, minion);
 
     if (placed) {
+        minion->toggleAbilityOn();
         for (auto observer: observers) {
             if (observer->subType() == triggerType::MinionEnters || observer->subType() == triggerType::All) {
                 observer->notify(activePlayerID, minions.size());
@@ -399,6 +492,7 @@ bool Board::playCard(int i, int p, int t) {
 
             activePlayer->removeCard(i);
             Minion* m = deleteEnchantments(targetPlayer->getID(), t);
+            m->toggleAbilityOff();
             targetMinions.erase(targetMinions.begin() + (t - 1));
             targetPlayer->addCardToHand(m);
 
@@ -449,6 +543,12 @@ bool Board::playCard(int i, int p, int t) {
 
             MinionComponent* temp = targetMinions[t - 1];
             targetMinions[t - 1] = (targetMinions[t - 1])->getNext();
+            if (targetMinions[t - 1]->getActivatedAbility() == actAbility::silenced && targetMinions[t - 1]->getHasAbility() == minionHasAbility::hastriggeredability) {
+                targetMinions[t - 1]->toggleAbilityOff();
+            } else {
+                targetMinions[t - 1]->toggleAbilityOn();
+            }
+
             delete temp;
             for (auto observer: observers) {
                 if (observer->subType() == triggerType::All) {
@@ -481,6 +581,7 @@ bool Board::playCard(int i, int p, int t) {
             Minion* m = graveyard.back();
             m->setDefense(1);
             m->resetDamage();
+            m->toggleAbilityOn();
 
             graveyard.pop_back();
             ownMinions.emplace_back(m);
@@ -588,6 +689,11 @@ bool Board::playCard(int i, int p, int t) {
         newEnchantment->setNext(temp);
         targetMinions[t - 1] = newEnchantment;
 
+        if (targetMinions[t - 1]->getActivatedAbility() == actAbility::silenced && targetMinions[t - 1]->getHasAbility() == minionHasAbility::hastriggeredability) {
+            targetMinions[t - 1]->toggleAbilityOff();
+        } else {
+            targetMinions[t - 1]->toggleAbilityOn();
+        }
         // notifying display observers that an enchantment was placed
         for (Observer* o: observers) {
             if (o->subType() == triggerType::All) {
@@ -626,6 +732,7 @@ bool Board::moveMinionToGraveyard(int ownershipID, int minion) {
 
     Minion* m = deleteEnchantments(ownershipID, minion);
     theMinions.erase(theMinions.begin() + (minion - 1));
+    m->toggleAbilityOff();
 
     for (Observer* o: observers) {
         if (o->subType() == triggerType::MinionLeaves) {
