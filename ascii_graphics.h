@@ -1,6 +1,8 @@
 #include <vector>
 #include <string>
 
+// ascii_graphics file code from CS246 project written at University of Waterloo
+
 //SIMPLE_GRAPHICS = 0 displays a fancy style.
 //SIMPLE_GRAPHICS = 1 displays the style shown in the project specification's examples
 //You are encouraged to use SIMPLE_GRAPHICS = 0, but some terminals may not like it.
