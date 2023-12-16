@@ -29,4 +29,8 @@ Flags:
 // Enables xWindows graphics in additional to terminal display
 ```
 
-![image](https://github.com/julienliang2740/Sorcery/assets/88892980/5ee464aa-debd-4ec3-a9ba-a5e1ee7ce723)
+Text display:
+![image](https://github.com/julienliang2740/Sorcery/assets/88892980/b7ed82c7-1eb8-4088-9998-20ace2b9b4e7)
+
+Graphics display:
+
