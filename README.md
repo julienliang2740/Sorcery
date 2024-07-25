@@ -3,7 +3,7 @@ A terminal-based card game similar to Hearthstone and Magic, the Gathering.
 
 Gameplay instructions are in the "Information" folder.
 
-(First line is name for player 1, second line is name for player 2)
+(First line is for the name of player 1, second line is for the name of player 2)
 
 To run the game:
 ```
