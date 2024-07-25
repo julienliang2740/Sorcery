@@ -1,8 +1,6 @@
 # Sorcery
 A terminal-based card game similar to Hearthstone and Magic, the Gathering.
 
-The repo here is based on a game we started as a school project.
-
 Gameplay instructions are in the "Information" folder.
 
 (First line is name for player 1, second line is name for player 2)
